@@ -101,4 +101,18 @@ var _ = Describe("Flags", func() {
 			Expect(flagx.LookupEnvOrBool("TEST", false)).To(Equal(false))
 		})
 	})
+
+	Context("call usage", func() {
+		It("get the usage func", func() {
+			By("init flag set")
+			fs := flag.NewFlagSet("unit-test", flag.ExitOnError)
+			fs.String("test", "value", "flag for test")
+
+			By("get func")
+			f := flagx.UsageFor(fs, "unit-test [flags]")
+			Expect(f).ToNot(BeNil())
+			f()
+
+		})
+	})
 })
