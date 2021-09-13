@@ -1,6 +1,10 @@
 package logx
 
-import "context"
+import (
+	"context"
+	"github.com/go-logr/logr"
+	ctrl "sigs.k8s.io/controller-runtime"
+)
 
 // GetLogValues get values from context and return a key/value interface
 func GetLogValues(ctx context.Context) []interface{} {
@@ -17,4 +21,9 @@ func GetLogValues(ctx context.Context) []interface{} {
 		}
 	}
 	return values
+}
+
+// WithName provides a new logger with the name appended and values from context
+func WithName(ctx context.Context, name string) logr.Logger {
+	return ctrl.Log.WithName(name).WithValues(GetLogValues(ctx)...)
 }
