@@ -26,6 +26,8 @@ var _ = Describe("in logx package", func() {
 			Expect(values[1].(string)).To(Equal(correlationID))
 			Expect(values[3].(string)).To(Equal("test"))
 			Expect(values[5].(string)).To(Equal("127.0.0.42"))
+
+			Expect(logx.WithName(ctx, "UnitTest")).ToNot(BeNil())
 		})
 	})
 })
