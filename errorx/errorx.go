@@ -63,7 +63,10 @@ func (e *Error) Error() string {
 	if e.Cause == nil {
 		return e.Message
 	}
-	return errors.Wrap(e.Cause, e.Message).Error()
+	if e.Message == "" {
+		return fmt.Sprintf("%s", e.GetCause())
+	}
+	return fmt.Sprintf("%s: %s", e.GetMessage(), e.GetCause())
 }
 
 func New(err error, message string) error {
@@ -76,4 +79,15 @@ func NewHTTP(err error, code int, message string) error {
 
 func Wrap(err error, message string) error {
 	return &Error{Cause: errors.Wrap(err, message)}
+}
+
+func GetError(err error) *Error {
+	if err == nil {
+		return nil
+	}
+	e, ok := err.(*Error)
+	if ok {
+		return e
+	}
+	return &Error{ Cause: err }
 }

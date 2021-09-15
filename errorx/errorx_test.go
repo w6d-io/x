@@ -30,6 +30,13 @@ var _ = Describe("Error x", func() {
 			Expect(errorx.NewHTTP(nil, 200, "")).To(HaveOccurred())
 			err := errorx.Wrap(errUnitTest, "error wrapped")
 			Expect(err).To(HaveOccurred())
+
+			Expect(errorx.GetError(e.Cause)).ToNot(HaveOccurred())
+			Expect(errorx.GetError(&e)).To(HaveOccurred())
+			err = errorx.GetError(errors.New("not implement Error"))
+			_, ok := err.(*errorx.Error)
+			Expect(ok).To(Equal(true))
+			Expect(err.(*errorx.Error).Error()).To(Equal("not implement Error"))
 		})
 	})
 })
