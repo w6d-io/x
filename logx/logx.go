@@ -9,6 +9,9 @@ import (
 // GetLogValues get values from context and return a key/value interface
 func GetLogValues(ctx context.Context) []interface{} {
 	var values []interface{}
+	if ctx == nil {
+		return values
+	}
 	keys := []string{
 		"correlation_id",
 		"kind",
