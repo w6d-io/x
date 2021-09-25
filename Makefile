@@ -1,9 +1,9 @@
 SHELL=/bin/bash -o pipefail
 
-export GO111MODULE        := on
-export PATH               := bin:${PATH}
-export PWD                := $(shell pwd)
-
+export GO111MODULE  := on
+export PATH         := bin:${PATH}
+export PWD          := $(shell pwd)
+export NEXT_TAG     ?=
 
 GO_DEPENDENCIES = golang.org/x/tools/cmd/goimports
 
@@ -37,4 +37,6 @@ test: fmt vet
 	go test -v -coverpkg=./... -coverprofile=cover.out ./...
 	@go tool cover -func cover.out | grep total
 
-
+.PHONY: changelog
+changelog:
+	git-chglog -o CHANGELOG.md --next-tag $(NEXT_TAG)
