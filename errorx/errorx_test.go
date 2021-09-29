@@ -1,11 +1,13 @@
 package errorx_test
 
 import (
+	"net/http"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/pkg/errors"
+
 	"github.com/w6d-io/x/errorx"
-	"net/http"
 )
 
 var _ = Describe("Error x", func() {

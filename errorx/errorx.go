@@ -2,6 +2,7 @@ package errorx
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 )
 
@@ -89,5 +90,5 @@ func GetError(err error) *Error {
 	if ok {
 		return e
 	}
-	return &Error{ Cause: err }
+	return &Error{Cause: err}
 }

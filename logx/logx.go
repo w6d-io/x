@@ -2,6 +2,7 @@ package logx
 
 import (
 	"context"
+
 	"github.com/go-logr/logr"
 	ctrl "sigs.k8s.io/controller-runtime"
 )
@@ -29,4 +30,13 @@ func GetLogValues(ctx context.Context) []interface{} {
 // WithName provides a new logger with the name appended and values from context
 func WithName(ctx context.Context, name string) logr.Logger {
 	return ctrl.Log.WithName(name).WithValues(GetLogValues(ctx)...)
+}
+
+// GetCorrelationID get the correlation id from the context or return an empty string
+func GetCorrelationID(ctx context.Context) string {
+	value := ctx.Value("correlation_id")
+	if value == nil {
+		return ""
+	}
+	return value.(string)
 }
