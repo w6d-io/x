@@ -1,4 +1,20 @@
 
+<a name="v0.2.2"></a>
+## [v0.2.2](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.2.1...v0.2.2) (2021-10-06)
+
+### Features
+
+* add init function chore: remove flag set
+
+### Performance Improvements
+
+* improve unit test
+
+### Style
+
+* format code
+
+
 <a name="v0.2.1"></a>
 ## [v0.2.1](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.2.0...v0.2.1) (2021-09-29)
 
@@ -33,6 +49,10 @@
 
 <a name="v0.1.3"></a>
 ## [v0.1.3](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.1.2...v0.1.3) (2021-07-24)
+
+### Chore
+
+* make format
 
 
 <a name="v0.1.2"></a>
