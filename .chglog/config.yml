@@ -14,6 +14,7 @@ options:
         - perf
         - refactor
         - style
+        - chore
   commit_groups:
     title_maps:
       feat: Features
@@ -21,6 +22,7 @@ options:
       perf: Performance Improvements
       refactor: Code Refactoring
       style: Style
+      chore: Chore
   header:
     pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
     pattern_maps:
