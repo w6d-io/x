@@ -1,4 +1,4 @@
-package flagx
+package flagx_test
 
 import (
 	"testing"

@@ -3,13 +3,14 @@ package flagx
 import (
 	"flag"
 	"fmt"
+	zapraw "go.uber.org/zap"
 	"os"
+	ctrl "sigs.k8s.io/controller-runtime"
 	"strconv"
 	"strings"
 	"text/tabwriter"
 
 	"go.uber.org/zap/zapcore"
-
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
 
@@ -111,14 +112,14 @@ func (l LevelFlag) Set(flagValue string) error {
 }
 
 // BindFlags custom flags
-func BindFlags(o *zap.Options, fs *flag.FlagSet) {
+func BindFlags(o *zap.Options) {
 	var outputFormat OutputFormatFlag
 	outputFormat.ZapOptions = o
-	fs.Var(&outputFormat, "log-format", "log encoding ( 'json' or 'text')")
+	flag.Var(&outputFormat, "log-format", "log encoding ( 'json' or 'text')")
 
 	var level LevelFlag
 	level.ZapOptions = o
-	fs.Var(&level, "log-level", "log level verbosity. Can be 'debug', 'info', 'error', "+
+	flag.Var(&level, "log-level", "log level verbosity. Can be 'debug', 'info', 'error', "+
 		"or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
 }
 
@@ -140,17 +141,38 @@ func LookupEnvOrBool(key string, defaultVal bool) bool {
 }
 
 // UsageFor function for flag usage
-func UsageFor(fs *flag.FlagSet, short string) func() {
+func UsageFor(short string) func() {
 	return func() {
 		_, _ = fmt.Fprintf(os.Stderr, "USAGE\n")
 		_, _ = fmt.Fprintf(os.Stderr, "  %s\n", short)
 		_, _ = fmt.Fprintf(os.Stderr, "\n")
 		_, _ = fmt.Fprintf(os.Stderr, "FLAGS\n")
 		w := tabwriter.NewWriter(os.Stderr, 0, 2, 2, ' ', 0)
-		fs.VisitAll(func(f *flag.Flag) {
+		flag.VisitAll(func(f *flag.Flag) {
 			_, _ = fmt.Fprintf(w, "\t-%s %s\t%s\n", f.Name, f.DefValue, f.Usage)
 		})
 		_ = w.Flush()
 		_, _ = fmt.Fprintf(os.Stderr, "\n")
 	}
+}
+
+// Init the default flags
+func Init() *string {
+
+	var (
+		configPath = flag.String("config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
+	)
+
+	opts := zap.Options{
+		Development:     os.Getenv("RELEASE") != "prod",
+		StacktraceLevel: zapcore.PanicLevel,
+		Encoder:         zapcore.NewConsoleEncoder(TextEncoderConfig()),
+	}
+	BindFlags(&opts)
+	flag.Usage = UsageFor(os.Args[0] + " [flags]")
+	flag.Parse()
+	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(-1))))
+
+	return configPath
+
 }

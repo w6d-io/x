@@ -3,10 +3,8 @@ package flagx_test
 import (
 	"errors"
 	"flag"
-	"os"
-
 	"go.uber.org/zap/zapcore"
-
+	"os"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	"github.com/w6d-io/x/flagx"
@@ -17,25 +15,30 @@ import (
 
 var _ = Describe("Flags", func() {
 	Context("Check function", func() {
-		var (
-			opts zap.Options
-		)
-		BeforeEach(func() {
-			opts = zap.Options{
-				Encoder: zapcore.NewConsoleEncoder(flagx.TextEncoderConfig()),
-			}
-		})
+		//var (
+		//	opts zap.Options
+		//)
+		//BeforeEach(func() {
+		//	opts = zap.Options{
+		//		Encoder: zapcore.NewConsoleEncoder(flagx.TextEncoderConfig()),
+		//	}
+		//})
 		It("JsonEncoderConfig", func() {
 			Expect(flagx.JsonEncoderConfig()).ToNot(BeNil())
 		})
 		It("TextEncoderConfig", func() {
 			Expect(flagx.TextEncoderConfig()).ToNot(BeNil())
 		})
-		It("BindFlags", func() {
-			flagx.BindFlags(&opts, flag.CommandLine)
+		//It("BindFlags", func() {
+		//	flagx.BindFlags(&opts)
+		//})
+	})
+	Context("Check Init", func() {
+		It("returns the config path", func() {
+			Expect(flagx.Init()).ToNot(BeNil())
 		})
 	})
-	Context("Check flags methods check", func() {
+	Context("Check flags methods", func() {
 		var (
 			opts zap.Options
 		)
@@ -107,11 +110,10 @@ var _ = Describe("Flags", func() {
 	Context("call usage", func() {
 		It("get the usage func", func() {
 			By("init flag set")
-			fs := flag.NewFlagSet("unit-test", flag.ExitOnError)
-			fs.String("test", "value", "flag for test")
+			flag.String("test", "value", "flag for test")
 
 			By("get func")
-			f := flagx.UsageFor(fs, "unit-test [flags]")
+			f := flagx.UsageFor("unit-test [flags]")
 			Expect(f).ToNot(BeNil())
 			f()
 
