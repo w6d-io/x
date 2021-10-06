@@ -34,6 +34,9 @@ func WithName(ctx context.Context, name string) logr.Logger {
 
 // GetCorrelationID get the correlation id from the context or return an empty string
 func GetCorrelationID(ctx context.Context) string {
+	if ctx == nil {
+		return ""
+	}
 	value := ctx.Value("correlation_id")
 	if value == nil {
 		return ""
