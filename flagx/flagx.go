@@ -3,12 +3,13 @@ package flagx
 import (
 	"flag"
 	"fmt"
-	zapraw "go.uber.org/zap"
 	"os"
-	ctrl "sigs.k8s.io/controller-runtime"
 	"strconv"
 	"strings"
 	"text/tabwriter"
+
+	zapraw "go.uber.org/zap"
+	ctrl "sigs.k8s.io/controller-runtime"
 
 	"go.uber.org/zap/zapcore"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"

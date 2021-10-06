@@ -3,8 +3,9 @@ package flagx_test
 import (
 	"errors"
 	"flag"
-	"go.uber.org/zap/zapcore"
 	"os"
+
+	"go.uber.org/zap/zapcore"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	"github.com/w6d-io/x/flagx"
