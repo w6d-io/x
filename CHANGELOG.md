@@ -1,4 +1,16 @@
 
+<a name="v0.3.0"></a>
+## [v0.3.0](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.2.4...v0.3.0) (2021-10-07)
+
+
+<a name="v0.2.4"></a>
+## [v0.2.4](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.2.3...v0.2.4) (2021-10-07)
+
+### Features
+
+* add test in cmdx
+
+
 <a name="v0.2.3"></a>
 ## [v0.2.3](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.2.2...v0.2.3) (2021-10-07)
 
