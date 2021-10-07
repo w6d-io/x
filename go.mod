@@ -11,6 +11,7 @@ require (
 	github.com/onsi/gomega v1.14.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.2.1
+	github.com/spf13/pflag v1.0.5 // indirect
 	go.uber.org/zap v1.18.1
 	golang.org/x/tools v0.1.2 // indirect
 	k8s.io/client-go v0.22.2

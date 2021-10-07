@@ -1,13 +1,15 @@
-package flagx
+package pflagx
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 	"text/tabwriter"
 
+	"github.com/spf13/cobra"
+
+	flag "github.com/spf13/pflag"
 	zapraw "go.uber.org/zap"
 	ctrl "sigs.k8s.io/controller-runtime"
 
@@ -55,6 +57,10 @@ type OutputFormatFlag struct {
 	value      string
 }
 
+func (o *OutputFormatFlag) Type() string {
+	return "string"
+}
+
 func (o *OutputFormatFlag) String() string {
 	return o.value
 }
@@ -87,6 +93,10 @@ type LevelFlag struct {
 	value      string
 }
 
+func (l LevelFlag) Type() string {
+	return "string"
+}
+
 func (l LevelFlag) String() string {
 	return l.value
 }
@@ -113,14 +123,14 @@ func (l LevelFlag) Set(flagValue string) error {
 }
 
 // BindFlags custom flags
-func BindFlags(o *zap.Options) {
+func BindFlags(cmd *cobra.Command, o *zap.Options) {
 	var outputFormat OutputFormatFlag
 	outputFormat.ZapOptions = o
-	flag.Var(&outputFormat, "log-format", "log encoding ( 'json' or 'text')")
+	cmd.Flags().Var(&outputFormat, "log-format", "log encoding ( 'json' or 'text')")
 
 	var level LevelFlag
 	level.ZapOptions = o
-	flag.Var(&level, "log-level", "log level verbosity. Can be 'debug', 'info', 'error', "+
+	cmd.Flags().Var(&level, "log-level", "log level verbosity. Can be 'debug', 'info', 'error', "+
 		"or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
 }
 
@@ -158,10 +168,10 @@ func UsageFor(short string) func() {
 }
 
 // Init the default flags
-func Init() *string {
+func Init(cmd *cobra.Command) *string {
 
 	var (
-		configPath = flag.String("config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
+		configPath = cmd.Flags().String("config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
 	)
 
 	opts := zap.Options{
@@ -169,9 +179,9 @@ func Init() *string {
 		StacktraceLevel: zapcore.PanicLevel,
 		Encoder:         zapcore.NewConsoleEncoder(TextEncoderConfig()),
 	}
-	BindFlags(&opts)
-	flag.Usage = UsageFor(os.Args[0] + " [flags]")
-	flag.Parse()
+	BindFlags(cmd, &opts)
+	cmd.Flags().Usage = UsageFor(os.Args[0] + " [flags]")
+	//cmd.Flags().Parse()
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(-1))))
 
 	return configPath

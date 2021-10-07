@@ -1,4 +1,4 @@
-package flagx_test
+package pflagx_test
 
 import (
 	"testing"
@@ -13,7 +13,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestFlagX(t *testing.T) {
+func TestPFlagX(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, " Suite")
 }

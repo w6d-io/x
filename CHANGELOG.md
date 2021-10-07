@@ -1,4 +1,12 @@
 
+<a name="v0.3.1"></a>
+## [v0.3.1](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.3.0...v0.3.1) (2021-10-07)
+
+### Features
+
+* add pflagx
+
+
 <a name="v0.3.0"></a>
 ## [v0.3.0](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.2.4...v0.3.0) (2021-10-07)
 
