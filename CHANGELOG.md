@@ -1,4 +1,8 @@
 
+<a name="v0.2.3"></a>
+## [v0.2.3](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.2.2...v0.2.3) (2021-10-07)
+
+
 <a name="v0.2.2"></a>
 ## [v0.2.2](https://gitlab.w6d.io/w6d/kratos/-/compare/v0.2.1...v0.2.2) (2021-10-06)
 
