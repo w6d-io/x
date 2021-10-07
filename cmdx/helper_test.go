@@ -13,18 +13,21 @@ distributed under the License is prohibited.
 Created on 07/10/2021
 */
 
-package cmdx
+package cmdx_test
 
 import (
-	"fmt"
-	"os"
+	. "github.com/onsi/ginkgo"
+
+	"github.com/w6d-io/x/cmdx"
 )
 
-// Must fatales with the optional message if err is not nil.
-func Must(err error, message string, args ...interface{}) {
-	if err == nil {
-		return
-	}
-	_, _ = fmt.Fprintf(os.Stderr, message+"\n", args...)
-	os.Exit(1)
-}
+var _ = Describe("helper functions testing", func() {
+	Context("checking Must behaviour", func() {
+		It("Must works without printing", func() {
+			cmdx.Must(nil, "never write")
+		})
+		It("Must works without printing", func() {
+			//cmdx.Must(errors.New("test exits"), "all is good")
+		})
+	})
+})
