@@ -1,13 +1,13 @@
 package flagx
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 	"text/tabwriter"
 
+	flag "github.com/spf13/pflag"
 	zapraw "go.uber.org/zap"
 	ctrl "sigs.k8s.io/controller-runtime"
 
@@ -55,6 +55,10 @@ type OutputFormatFlag struct {
 	value      string
 }
 
+func (o *OutputFormatFlag) Type() string {
+	return "string"
+}
+
 func (o *OutputFormatFlag) String() string {
 	return o.value
 }
@@ -85,6 +89,10 @@ var levelStrings = map[string]zapcore.Level{
 type LevelFlag struct {
 	ZapOptions *zap.Options
 	value      string
+}
+
+func (l LevelFlag) Type() string {
+	return "string"
 }
 
 func (l LevelFlag) String() string {
