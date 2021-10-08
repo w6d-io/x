@@ -167,6 +167,7 @@ func UsageFor(short string) func() {
 	}
 }
 
+var CallerSkip = 0
 // Init the default flags
 func Init(cmd *cobra.Command) *string {
 
@@ -182,7 +183,7 @@ func Init(cmd *cobra.Command) *string {
 	BindFlags(cmd, &opts)
 	cmd.Flags().Usage = UsageFor(os.Args[0] + " [flags]")
 	//cmd.Flags().Parse()
-	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(-1))))
+	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(CallerSkip))))
 
 	return configPath
 
