@@ -2,7 +2,7 @@ style: gitlab
 template: CHANGELOG.tpl.md
 info:
   title: CHANGELOG
-  repository_url: https://gitlab.w6d.io/w6d/kratos
+  repository_url: https://github.com/w6d-io/x
 options:
   tag_filter_pattern: '^v'
   sort: "date"
