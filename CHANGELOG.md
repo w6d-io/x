@@ -5,6 +5,8 @@
 ### Bug Fixes
 
 * fill CVE-2019-19794
+* fill CVE-2019-19794
+* fill CVE-2019-19794
 
 
 <a name="v0.3.3"></a>
