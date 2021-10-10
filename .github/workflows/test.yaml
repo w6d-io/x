@@ -23,6 +23,9 @@ jobs:
       with:
         go-version: 1.16
 
+    - name: Download dependancies
+      run: go mod download
+
     - name: Test
       run: go test -v -coverprofile=coverage.txt -covermode=atomic ./...
 
