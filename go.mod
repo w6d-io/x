@@ -2,6 +2,8 @@ module github.com/w6d-io/x
 
 go 1.16
 
+replace github.com/miekg/dns => github.com/miekg/dns v1.1.25
+
 require (
 	github.com/go-kit/kit v0.12.0
 	github.com/go-logr/logr v0.4.0
