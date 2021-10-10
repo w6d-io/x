@@ -168,6 +168,7 @@ func UsageFor(short string) func() {
 }
 
 var CallerSkip = 0
+
 // Init the default flags
 func Init(cmd *cobra.Command) *string {
 

@@ -1,7 +1,9 @@
 package errorx
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/pkg/errors"
 )
@@ -35,6 +37,26 @@ type Error struct {
 }
 
 var _ Interface = &Error{}
+
+var (
+	// ErrTokenInvalid is raised when token is invalid
+	ErrTokenInvalid = errors.New("invalid token")
+
+	// ErrTokenCheck is raised when check validity token failed
+	ErrTokenCheck = errors.New("check validity token failed")
+
+	// ErrTokenNotFound is raise when HTTP header does not contain Authorization
+	ErrTokenNotFound = errors.New("authorization not found in http header")
+
+	// ErrUnAuthorized is raised by check token on kratos with a non authorized token
+	ErrUnAuthorized = errors.New("401 Unauthorized")
+
+	// ErrMethod is raised when a internal call failed
+	ErrMethod = errors.New("resource can't be empty")
+
+	// ErrServiceUnavailable is raised when a remote service fail to response
+	ErrServiceUnavailable = errors.New("service unavailable")
+)
 
 func (e *Error) GetMessage() string {
 	return e.Message
@@ -91,4 +113,30 @@ func GetError(err error) *Error {
 		return e
 	}
 	return &Error{Cause: err}
+}
+
+// Error2code return the http code according the Error code field or try to deduce it from the error itself
+func Error2code(err error) int {
+	if e, ok := err.(*Error); ok {
+		code := http.StatusInternalServerError
+		if e.Code != 0 {
+			code = e.Code
+		}
+		return code
+	}
+	switch err {
+	case ErrTokenNotFound, ErrTokenInvalid, ErrUnAuthorized:
+		return http.StatusUnauthorized
+	case ErrMethod:
+		return http.StatusBadRequest
+	case ErrTokenCheck, ErrServiceUnavailable:
+		return http.StatusServiceUnavailable
+	}
+	return http.StatusInternalServerError
+}
+
+// ErrorEncoder writes the error into http.ResponseWriter
+func ErrorEncoder(err error, w http.ResponseWriter) {
+	w.WriteHeader(Error2code(err))
+	_ = json.NewEncoder(w).Encode(err.Error())
 }

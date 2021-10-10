@@ -43,3 +43,9 @@ var _ = BeforeSuite(func() {
 
 var _ = AfterSuite(func() {
 })
+
+type failedResponse struct {
+	err error
+}
+
+func (r failedResponse) Failed() error { return r.err }
