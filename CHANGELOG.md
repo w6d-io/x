@@ -1,10 +1,18 @@
 
+<a name="v0.3.6"></a>
+## [v0.3.6](https://github.com/w6d-io/x/compare/v0.3.5...v0.3.6) (2021-10-13)
+
+### Features
+
+* variabilize Skip Caller
+
+
 <a name="v0.3.5"></a>
 ## [v0.3.5](https://github.com/w6d-io/x/compare/v0.3.4...v0.3.5) (2021-10-10)
 
 ### Chore
 
-* update dependancy
+* update dependancies
 * update github action test
 
 

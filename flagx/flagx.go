@@ -156,7 +156,7 @@ func UsageFor(short string) func() {
 		_, _ = fmt.Fprintf(os.Stderr, "\n")
 	}
 }
-
+var CallerSkip = 0
 // Init the default flags
 func Init() *string {
 
@@ -172,7 +172,7 @@ func Init() *string {
 	BindFlags(&opts)
 	flag.Usage = UsageFor(os.Args[0] + " [flags]")
 	flag.Parse()
-	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(-1))))
+	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(CallerSkip))))
 
 	return configPath
 
