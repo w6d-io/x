@@ -1,4 +1,12 @@
 
+<a name="v0.3.7"></a>
+## [v0.3.7](https://github.com/w6d-io/x/compare/v0.3.6...v0.3.7) (2021-10-13)
+
+### Bug Fixes
+
+* update ErrorEncoder signature style: code format
+
+
 <a name="v0.3.6"></a>
 ## [v0.3.6](https://github.com/w6d-io/x/compare/v0.3.5...v0.3.6) (2021-10-13)
 
