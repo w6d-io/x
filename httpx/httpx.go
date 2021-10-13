@@ -30,7 +30,7 @@ func ReadRemoteIP(r *http.Request) string {
 func EncodeHTTPResponse(w http.ResponseWriter, response interface{}) error {
 
 	if f, ok := response.(endpoint.Failer); ok && f.Failed() != nil {
-		errorx.ErrorEncoder(f.Failed(), w)
+		errorx.ErrorEncoder(context.Background(), f.Failed(), w)
 		return nil
 	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")

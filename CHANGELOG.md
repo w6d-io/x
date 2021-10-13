@@ -1,4 +1,12 @@
 
+<a name="v0.3.8"></a>
+## [v0.3.8](https://github.com/w6d-io/x/compare/v0.3.7...v0.3.8) (2021-10-13)
+
+### Bug Fixes
+
+* httpx call
+
+
 <a name="v0.3.7"></a>
 ## [v0.3.7](https://github.com/w6d-io/x/compare/v0.3.6...v0.3.7) (2021-10-13)
 
