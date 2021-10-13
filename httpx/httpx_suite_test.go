@@ -1,6 +1,7 @@
 package httpx_test
 
 import (
+	"context"
 	"testing"
 
 	"go.uber.org/zap/zapcore"
@@ -18,6 +19,9 @@ func TestHTTPx(t *testing.T) {
 	RunSpecs(t, "HTTPx Suite")
 }
 
+var (
+	ctx context.Context
+)
 var _ = BeforeSuite(func() {
 	encoder := zapcore.EncoderConfig{
 		// Keys can be anything except the empty string.
@@ -39,6 +43,7 @@ var _ = BeforeSuite(func() {
 		StacktraceLevel: zapcore.PanicLevel,
 	}
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller())))
+	ctx = context.Background()
 }, 60)
 
 var _ = AfterSuite(func() {

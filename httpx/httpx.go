@@ -3,6 +3,7 @@ package httpx
 import (
 	"context"
 	"encoding/json"
+	"github.com/w6d-io/x/logx"
 	"net"
 	"net/http"
 
@@ -27,9 +28,11 @@ func ReadRemoteIP(r *http.Request) string {
 
 // EncodeHTTPResponse writes the error from response if the response is a type of endpoint.Failer
 // or returns the json encoded error
-func EncodeHTTPResponse(w http.ResponseWriter, response interface{}) error {
+func EncodeHTTPResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+	log := logx.WithName(ctx, "EncodeHTTPResponse")
 
 	if f, ok := response.(endpoint.Failer); ok && f.Failed() != nil {
+		log.Error(f.Failed(), "")
 		errorx.ErrorEncoder(context.Background(), f.Failed(), w)
 		return nil
 	}

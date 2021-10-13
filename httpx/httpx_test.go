@@ -61,36 +61,36 @@ var _ = Describe("", func() {
 			rsp := &failedResponse{
 				err: errors.New("test"),
 			}
-			err := httpx.EncodeHTTPResponse(w, rsp)
+			err := httpx.EncodeHTTPResponse(ctx, w, rsp)
 			Expect(err).ToNot(HaveOccurred())
 
 			rsp = &failedResponse{
 				err: &errorx.Error{Code: 800},
 			}
-			err = httpx.EncodeHTTPResponse(w, rsp)
+			err = httpx.EncodeHTTPResponse(ctx, w, rsp)
 			Expect(err).ToNot(HaveOccurred())
 
 			rsp = &failedResponse{
 				err: errorx.ErrTokenNotFound,
 			}
-			err = httpx.EncodeHTTPResponse(w, rsp)
+			err = httpx.EncodeHTTPResponse(ctx, w, rsp)
 			Expect(err).ToNot(HaveOccurred())
 
 			rsp = &failedResponse{
 				err: errorx.ErrMethod,
 			}
-			err = httpx.EncodeHTTPResponse(w, rsp)
+			err = httpx.EncodeHTTPResponse(ctx, w, rsp)
 			Expect(err).ToNot(HaveOccurred())
 
 			rsp = &failedResponse{
 				err: errorx.ErrTokenCheck,
 			}
-			err = httpx.EncodeHTTPResponse(w, rsp)
+			err = httpx.EncodeHTTPResponse(ctx, w, rsp)
 			Expect(err).ToNot(HaveOccurred())
 		})
 		It("json encodes the error into http.ResponseWriter", func() {
 			w := httptest.NewRecorder()
-			err := httpx.EncodeHTTPResponse(w, struct {
+			err := httpx.EncodeHTTPResponse(ctx, w, struct {
 				Error string
 			}{
 				Error: "failed",
