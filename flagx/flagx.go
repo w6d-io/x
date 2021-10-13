@@ -156,7 +156,9 @@ func UsageFor(short string) func() {
 		_, _ = fmt.Fprintf(os.Stderr, "\n")
 	}
 }
+
 var CallerSkip = 0
+
 // Init the default flags
 func Init() *string {
 

@@ -1,9 +1,12 @@
 package errorx
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/w6d-io/x/logx"
 
 	"github.com/pkg/errors"
 )
@@ -136,7 +139,8 @@ func Error2code(err error) int {
 }
 
 // ErrorEncoder writes the error into http.ResponseWriter
-func ErrorEncoder(err error, w http.ResponseWriter) {
+func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
+	logx.WithName(ctx, "ErrorEncoder").Error(err, "")
 	w.WriteHeader(Error2code(err))
 	_ = json.NewEncoder(w).Encode(err.Error())
 }

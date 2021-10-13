@@ -3,9 +3,10 @@ package httpx
 import (
 	"context"
 	"encoding/json"
-	"github.com/w6d-io/x/errorx"
 	"net"
 	"net/http"
+
+	"github.com/w6d-io/x/errorx"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/google/uuid"

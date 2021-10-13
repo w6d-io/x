@@ -13,5 +13,6 @@ require (
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/pflag v1.0.5
 	go.uber.org/zap v1.19.1
+	golang.org/x/tools v0.1.5 // indirect
 	sigs.k8s.io/controller-runtime v0.9.2
 )
