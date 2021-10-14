@@ -2,6 +2,7 @@ package errorx_test
 
 import (
 	"net/http"
+	"net/http/httptest"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -39,6 +40,13 @@ var _ = Describe("Error x", func() {
 			_, ok := err.(*errorx.Error)
 			Expect(ok).To(Equal(true))
 			Expect(err.(*errorx.Error).Error()).To(Equal("not implement Error"))
+			Expect(errorx.Error2code(&errorx.Error{Code: http.StatusContinue})).To(Equal(http.StatusContinue))
+			Expect(errorx.Error2code(errorx.ErrTokenNotFound)).To(Equal(http.StatusUnauthorized))
+			Expect(errorx.Error2code(errorx.ErrMethod)).To(Equal(http.StatusBadRequest))
+			Expect(errorx.Error2code(errors.New("internal server error test"))).To(Equal(http.StatusInternalServerError))
+			w := httptest.NewRecorder()
+			errorx.ErrorEncoder(nil, errorx.ErrTokenCheck, w)
+			Expect(w.Code).To(Equal(http.StatusServiceUnavailable))
 		})
 	})
 })

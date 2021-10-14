@@ -3,9 +3,10 @@ package httpx
 import (
 	"context"
 	"encoding/json"
-	"github.com/w6d-io/x/logx"
 	"net"
 	"net/http"
+
+	"github.com/w6d-io/x/logx"
 
 	"github.com/w6d-io/x/errorx"
 

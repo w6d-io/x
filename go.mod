@@ -6,6 +6,7 @@ require (
 	github.com/go-kit/kit v0.9.0
 	github.com/go-logr/logr v0.4.0
 	github.com/google/uuid v1.3.0
+	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/miekg/dns v1.1.43 // indirect
 	github.com/onsi/ginkgo v1.16.4
 	github.com/onsi/gomega v1.14.0

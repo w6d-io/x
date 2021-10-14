@@ -1,4 +1,16 @@
 
+<a name="v0.4.0"></a>
+## [v0.4.0](https://github.com/w6d-io/x/compare/v0.3.9...v0.4.0) (2021-10-14)
+
+### Features
+
+* add healthx
+
+### Performance Improvements
+
+* improve read remote ip address
+
+
 <a name="v0.3.9"></a>
 ## [v0.3.9](https://github.com/w6d-io/x/compare/v0.3.8...v0.3.9) (2021-10-13)
 
