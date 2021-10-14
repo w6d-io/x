@@ -16,14 +16,17 @@ import (
 
 // ReadRemoteIP tries to find the public address ip from the http header
 func ReadRemoteIP(r *http.Request) string {
-	IPAddress := r.Header.Get("X-Real-Ip")
-	if IPAddress == "" {
-		IPAddress = r.Header.Get("X-Forwarded-For")
+	var ipAddress string
+	if r.Header != nil {
+		ipAddress = r.Header.Get("X-Real-Ip")
+		if ipAddress == "" {
+			ipAddress = r.Header.Get("X-Forwarded-For")
+		}
 	}
-	if IPAddress == "" {
-		IPAddress = r.RemoteAddr
+	if ipAddress == "" {
+		ipAddress = r.RemoteAddr
 	}
-	return IPAddress
+	return ipAddress
 }
 
 // EncodeHTTPResponse writes the error from response if the response is a type of endpoint.Failer
