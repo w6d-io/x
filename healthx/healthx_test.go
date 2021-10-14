@@ -16,12 +16,14 @@ Created on 14/10/2021
 package healthx_test
 
 import (
+	"net/http"
+	"net/http/httptest"
+
 	"github.com/gorilla/mux"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+
 	"github.com/w6d-io/x/healthx"
-	"net/http"
-	"net/http/httptest"
 )
 
 var _ = Describe("To known the status of the application", func() {
@@ -50,6 +52,9 @@ var _ = Describe("To known the status of the application", func() {
 			}
 			c.ServeHTTP(w, req)
 			Expect(w.Code).To(Equal(http.StatusOK))
+		})
+		It("adds ready handler", func() {
+			healthx.AddReadyHandler(mux.NewRouter(), healthx.Checker{})
 		})
 		It("raises an error due to bad method", func() {
 			req := httptest.NewRequest("PUT", "/health/ready", nil)

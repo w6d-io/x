@@ -16,8 +16,9 @@ Created on 14/10/2021
 package healthx_test
 
 import (
-	"github.com/w6d-io/x/errorx"
 	"testing"
+
+	"github.com/w6d-io/x/errorx"
 
 	"go.uber.org/zap/zapcore"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"

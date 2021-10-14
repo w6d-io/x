@@ -1,10 +1,18 @@
 
+<a name="v0.4.1"></a>
+## [v0.4.1](https://github.com/w6d-io/x/compare/v0.4.0...v0.4.1) (2021-10-14)
+
+### Features
+
+* add handler ready add function perf: improve unit test
+
+
 <a name="v0.4.0"></a>
 ## [v0.4.0](https://github.com/w6d-io/x/compare/v0.3.9...v0.4.0) (2021-10-14)
 
 ### Features
 
-* add healthx
+* align call with new implementation perf: improve GetTokenByHttp method
 
 ### Performance Improvements
 

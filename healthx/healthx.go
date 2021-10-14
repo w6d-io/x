@@ -17,9 +17,10 @@ package healthx
 
 import (
 	"fmt"
-	"github.com/w6d-io/x/httpx"
 	"net/http"
 	"runtime"
+
+	"github.com/w6d-io/x/httpx"
 
 	"github.com/w6d-io/x/errorx"
 	"github.com/w6d-io/x/logx"
@@ -32,7 +33,11 @@ func Alive(w http.ResponseWriter, _ *http.Request) {
 }
 
 func AddAliveHandler(r *mux.Router) {
-	r.Methods("GET").Path("/health/ready").HandlerFunc(Alive)
+	r.Methods("GET").Path("/health/alive").HandlerFunc(Alive)
+}
+
+func AddReadyHandler(r *mux.Router, c Checker) {
+	r.Methods("GET").Path("/health/ready").Handler(c)
 }
 
 // Checkable should return nil when the thing they are checking is healthy, and an error otherwise.

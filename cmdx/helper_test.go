@@ -17,6 +17,8 @@ package cmdx_test
 
 import (
 	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
+	"github.com/pkg/errors"
 
 	"github.com/w6d-io/x/cmdx"
 )
@@ -27,7 +29,13 @@ var _ = Describe("helper functions testing", func() {
 			cmdx.Must(nil, "never write")
 		})
 		It("Must works without printing", func() {
-			//cmdx.Must(errors.New("test exits"), "all is good")
+			var got int
+			myExit := func(code int) {
+				got = code
+			}
+			cmdx.OsExit = myExit
+			cmdx.Must(errors.New("test exits"), "all is good")
+			Ω(got).To(Equal(1))
 		})
 	})
 })
