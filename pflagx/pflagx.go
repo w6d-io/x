@@ -126,10 +126,12 @@ func (l LevelFlag) Set(flagValue string) error {
 func BindFlags(cmd *cobra.Command, o *zap.Options) {
 	var outputFormat OutputFormatFlag
 	outputFormat.ZapOptions = o
+	_ = outputFormat.Set("text")
 	cmd.Flags().Var(&outputFormat, "log-format", "log encoding ( 'json' or 'text')")
 
 	var level LevelFlag
 	level.ZapOptions = o
+	_ = level.Set("info")
 	cmd.Flags().Var(&level, "log-level", "log level verbosity. Can be 'debug', 'info', 'error', "+
 		"or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
 }
@@ -172,9 +174,7 @@ var CallerSkip = 0
 // Init the default flags
 func Init(cmd *cobra.Command) *string {
 
-	var (
-		configPath = cmd.Flags().String("config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
-	)
+	configPath := cmd.Flags().String("config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
 
 	opts := zap.Options{
 		Development:     os.Getenv("RELEASE") != "prod",

@@ -1,4 +1,12 @@
 
+<a name="v0.4.2"></a>
+## [v0.4.2](https://github.com/w6d-io/x/compare/v0.4.1...v0.4.2) (2021-10-16)
+
+### Performance Improvements
+
+* improve pflagx and flagx
+
+
 <a name="v0.4.1"></a>
 ## [v0.4.1](https://github.com/w6d-io/x/compare/v0.4.0...v0.4.1) (2021-10-14)
 

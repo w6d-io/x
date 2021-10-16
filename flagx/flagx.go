@@ -116,10 +116,12 @@ func (l LevelFlag) Set(flagValue string) error {
 func BindFlags(o *zap.Options) {
 	var outputFormat OutputFormatFlag
 	outputFormat.ZapOptions = o
+	_ = outputFormat.Set("text")
 	flag.Var(&outputFormat, "log-format", "log encoding ( 'json' or 'text')")
 
 	var level LevelFlag
 	level.ZapOptions = o
+	_ = level.Set("info")
 	flag.Var(&level, "log-level", "log level verbosity. Can be 'debug', 'info', 'error', "+
 		"or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
 }
@@ -162,9 +164,7 @@ var CallerSkip = 0
 // Init the default flags
 func Init() *string {
 
-	var (
-		configPath = flag.String("config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
-	)
+	configPath := flag.String("config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
 
 	opts := zap.Options{
 		Development:     os.Getenv("RELEASE") != "prod",
