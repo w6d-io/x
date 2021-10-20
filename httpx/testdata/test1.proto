@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+option go_package = "github.com/w6d-io/x/httpx;httpx_test";
+
+message Test1 {
+  string Message = 1;
+}

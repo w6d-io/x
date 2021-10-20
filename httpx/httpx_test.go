@@ -87,6 +87,14 @@ var _ = Describe("", func() {
 			}
 			err = httpx.EncodeHTTPResponse(ctx, w, rsp)
 			Expect(err).ToNot(HaveOccurred())
+
+		})
+		It("deals with proto response", func() {
+			rsp := &Test1{
+				Message: "rocks",
+			}
+			w := httptest.NewRecorder()
+			Expect(httpx.EncodeHTTPResponse(ctx, w, rsp)).To(Succeed())
 		})
 		It("json encodes the error into http.ResponseWriter", func() {
 			w := httptest.NewRecorder()

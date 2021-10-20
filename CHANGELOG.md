@@ -1,4 +1,12 @@
 
+<a name="v0.4.3"></a>
+## [v0.4.3](https://github.com/w6d-io/x/compare/v0.4.2...v0.4.3) (2021-10-20)
+
+### Performance Improvements
+
+* add protobuf encode in httpx.EncodeHTTPResponse
+
+
 <a name="v0.4.2"></a>
 ## [v0.4.2](https://github.com/w6d-io/x/compare/v0.4.1...v0.4.2) (2021-10-16)
 

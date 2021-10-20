@@ -3,10 +3,13 @@ package httpx
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net"
 	"net/http"
 
 	"github.com/w6d-io/x/logx"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/w6d-io/x/errorx"
 
@@ -37,10 +40,22 @@ func EncodeHTTPResponse(ctx context.Context, w http.ResponseWriter, response int
 
 	if f, ok := response.(endpoint.Failer); ok && f.Failed() != nil {
 		log.Error(f.Failed(), "")
-		errorx.ErrorEncoder(context.Background(), f.Failed(), w)
+		errorx.ErrorEncoder(ctx, f.Failed(), w)
 		return nil
 	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	r, ok := response.(proto.Message)
+	fmt.Printf("ok=%v type=%T value=%+v\n", ok, response, response)
+	if ok {
+		var b []byte
+		var err error
+		opt := &protojson.MarshalOptions{
+			EmitUnpopulated: true,
+		}
+		b, _ = opt.Marshal(r)
+		_, err = w.Write(b)
+		return err
+	}
 	return json.NewEncoder(w).Encode(response)
 }
 
