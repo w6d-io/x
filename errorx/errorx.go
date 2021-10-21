@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-kit/kit/transport"
+
 	"github.com/w6d-io/x/logx"
 
 	"github.com/pkg/errors"
@@ -143,4 +145,19 @@ func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 	logx.WithName(ctx, "ErrorEncoder").Error(err, "")
 	w.WriteHeader(Error2code(err))
 	_ = json.NewEncoder(w).Encode(err.Error())
+}
+
+//
+// GRPC stuff
+//
+
+func NewErrorHandler() transport.ErrorHandler {
+	return &errorHandler{}
+}
+
+type errorHandler struct{}
+
+// Handle write the error in log
+func (errorHandler) Handle(ctx context.Context, err error) {
+	logx.WithName(ctx, "ErrorHandler").Error(err, "")
 }

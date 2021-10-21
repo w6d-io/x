@@ -68,6 +68,12 @@ bin/golangci-lint:
 bin/protoc-gen-go:
 	$(call go-get-tool,bin/protoc-gen-go,google.golang.org/protobuf/cmd/protoc-gen-go)
 
+
+GOIMPORTS = $(shell pwd)/bin/goimports
+bin/goimports: ## Download goimports locally if necessary
+	$(call go-get-tool,$(GOIMPORTS),golang.org/x/tools/cmd/goimports)
+
+
 .PHONY: protobuf
 protobuf: bin/protoc-gen-go bin/protoc
 
