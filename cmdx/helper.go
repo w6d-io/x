@@ -17,6 +17,7 @@ package cmdx
 
 import (
 	"fmt"
+	"github.com/w6d-io/x/logx"
 	"os"
 )
 
@@ -29,4 +30,11 @@ func Must(err error, message string, args ...interface{}) {
 	}
 	_, _ = fmt.Fprintf(os.Stderr, message+"\n", args...)
 	OsExit(1)
+}
+
+// Should checks the error and write the message in log in Error level
+func Should(message string, err error) {
+	if err != nil {
+		logx.WithName(nil, "Should").Error(err, message)
+	}
 }

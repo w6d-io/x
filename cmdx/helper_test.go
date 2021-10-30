@@ -37,5 +37,8 @@ var _ = Describe("helper functions testing", func() {
 			cmdx.Must(errors.New("test exits"), "all is good")
 			Ω(got).To(Equal(1))
 		})
+		It("should execute", func() {
+			cmdx.Should("it isn't ok", errors.New("unit-test"))
+		})
 	})
 })
