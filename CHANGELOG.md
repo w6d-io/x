@@ -1,4 +1,19 @@
 
+<a name="v0.4.4"></a>
+## [v0.4.4](https://github.com/w6d-io/x/compare/v0.4.3...v0.4.4) (2021-10-30)
+
+### Chore
+
+* fix field name in grpcx
+* remove vendor
+
+### Features
+
+* add http uri request in log field
+* add should function
+* add grpcx
+
+
 <a name="v0.4.3"></a>
 ## [v0.4.3](https://github.com/w6d-io/x/compare/v0.4.2...v0.4.3) (2021-10-20)
 

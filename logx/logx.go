@@ -17,6 +17,7 @@ func GetLogValues(ctx context.Context) []interface{} {
 		"correlation_id",
 		"kind",
 		"ipaddress",
+		"uri",
 	}
 	for _, key := range keys {
 		if ctx.Value(key) != nil {
