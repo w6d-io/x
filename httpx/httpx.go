@@ -65,7 +65,9 @@ func BeforeHttpFunc(ctx context.Context, req *http.Request) context.Context {
 	correlationID := uuid.New().String()
 	ctx = context.WithValue(ctx, "correlation_id", correlationID)
 	ctx = context.WithValue(ctx, "kind", "http")
-	ctx = context.WithValue(ctx, "uri", req.URL.RequestURI())
+	if req.URL != nil {
+		ctx = context.WithValue(ctx, "uri", req.URL.RequestURI())
+	}
 	ip := ReadRemoteIP(req)
 	ip, _, err := net.SplitHostPort(req.RemoteAddr)
 	if err != nil {

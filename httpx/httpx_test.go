@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 
 	"github.com/pkg/errors"
 
@@ -50,6 +51,9 @@ var _ = Describe("", func() {
 		It("fills ip address with an hyphen", func() {
 			req := &http.Request{
 				RemoteAddr: "0.1.1:4242",
+				URL: &url.URL{
+					Path: "/test",
+				},
 			}
 			ctx := httpx.BeforeHttpFunc(context.Background(), req)
 			Expect(ctx.Value("ipaddress")).Should(Equal("-"))
