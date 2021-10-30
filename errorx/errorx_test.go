@@ -1,6 +1,7 @@
 package errorx_test
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 
@@ -47,6 +48,7 @@ var _ = Describe("Error x", func() {
 			w := httptest.NewRecorder()
 			errorx.ErrorEncoder(nil, errorx.ErrTokenCheck, w)
 			Expect(w.Code).To(Equal(http.StatusServiceUnavailable))
+			errorx.NewErrorHandler().Handle(context.Background(), errors.New("unit-test"))
 		})
 	})
 })
