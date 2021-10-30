@@ -40,7 +40,7 @@ func GrpcOptions() []grpctransport.ServerOption {
 func BeforeGrpcFunc(ctx context.Context, _ metadata.MD) context.Context {
 	correlationID := uuid.New().String()
 	ctx = context.WithValue(ctx, "correlation_id", correlationID)
-	ctx = context.WithValue(ctx, "kind", "http")
+	ctx = context.WithValue(ctx, "kind", "grpc")
 	p, _ := peer.FromContext(ctx)
 	ip := p.Addr.String()
 	ip, _, err := net.SplitHostPort(ip)
