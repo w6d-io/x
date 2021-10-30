@@ -1,4 +1,12 @@
 
+<a name="v0.4.6"></a>
+## [v0.4.6](https://github.com/w6d-io/x/compare/v0.4.5...v0.4.6) (2021-10-30)
+
+### Chore
+
+* remove debug print
+
+
 <a name="v0.4.5"></a>
 ## [v0.4.5](https://github.com/w6d-io/x/compare/v0.4.4...v0.4.5) (2021-10-30)
 

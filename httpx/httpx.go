@@ -3,7 +3,6 @@ package httpx
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net"
 	"net/http"
 
@@ -46,7 +45,6 @@ func EncodeHTTPResponse(ctx context.Context, w http.ResponseWriter, response int
 	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	r, ok := response.(proto.Message)
-	fmt.Printf("ok=%v type=%T value=%+v\n", ok, response, response)
 	if ok {
 		var b []byte
 		var err error
