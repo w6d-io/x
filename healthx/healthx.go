@@ -17,15 +17,14 @@ package healthx
 
 import (
 	"fmt"
+	"github.com/w6d-io/x/cmdx"
 	"net/http"
 	"runtime"
 
 	"github.com/w6d-io/x/httpx"
 
-	"github.com/w6d-io/x/errorx"
-	"github.com/w6d-io/x/logx"
-
 	"github.com/gorilla/mux"
+	"github.com/w6d-io/x/errorx"
 )
 
 func Alive(w http.ResponseWriter, _ *http.Request) {
@@ -120,9 +119,7 @@ func DefaultHealthyHandler(w http.ResponseWriter, r *http.Request) {
 	err := httpx.EncodeHTTPResponse(r.Context(), w, StatusResponse{
 		Status: "ok",
 	})
-	if err != nil {
-		logx.WithName(r.Context(), "DefaultHealthyHandler").Error(err, "Failed to write JSON response")
-	}
+	cmdx.ShouldWithCtx(r.Context(), "failed to write JSON response in DefaultHealthyHandler", err)
 }
 
 func DefaultUnhealthyHandler(w http.ResponseWriter, r *http.Request, err error) {
@@ -138,9 +135,7 @@ func DefaultUnhealthyHandler(w http.ResponseWriter, r *http.Request, err error) 
 			Message: e.Error(),
 		},
 	})
-	if writeErr != nil {
-		logx.WithName(r.Context(), "DefaultHealthyHandler").Error(err, "Failed to write JSON response")
-	}
+	cmdx.ShouldWithCtx(r.Context(), "failed to write JSON response in DefaultUnhealthyHandler", writeErr)
 }
 
 type checkGoRoutine struct {
