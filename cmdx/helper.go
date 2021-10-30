@@ -18,8 +18,9 @@ package cmdx
 import (
 	"context"
 	"fmt"
-	"github.com/w6d-io/x/logx"
 	"os"
+
+	"github.com/w6d-io/x/logx"
 )
 
 var OsExit = os.Exit

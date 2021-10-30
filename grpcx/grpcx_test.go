@@ -21,8 +21,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/w6d-io/x/grpcx"
 	"google.golang.org/grpc/peer"
+
+	"github.com/w6d-io/x/grpcx"
 )
 
 var _ = Describe("run all grpc package functions", func() {

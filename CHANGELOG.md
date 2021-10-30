@@ -1,4 +1,23 @@
 
+<a name="v0.4.5"></a>
+## [v0.4.5](https://github.com/w6d-io/x/compare/v0.4.4...v0.4.5) (2021-10-30)
+
+### Features
+
+* add ShouldWithCtx in cmdx
+
+### Performance Improvements
+
+* inprove test in httpx perf: add check into httpx
+* improve coverage on healthx
+* adding test in grpcx perf: adding check into grpcx
+* improve test in errorx
+
+### Style
+
+* format code
+
+
 <a name="v0.4.4"></a>
 ## [v0.4.4](https://github.com/w6d-io/x/compare/v0.4.3...v0.4.4) (2021-10-30)
 
