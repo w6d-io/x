@@ -41,11 +41,15 @@ func BeforeGrpcFunc(ctx context.Context, _ metadata.MD) context.Context {
 	correlationID := uuid.New().String()
 	ctx = context.WithValue(ctx, "correlation_id", correlationID)
 	ctx = context.WithValue(ctx, "kind", "grpc")
-	p, _ := peer.FromContext(ctx)
+	p, ok := peer.FromContext(ctx)
+	if !ok {
+		return ctx
+	}
 	ip := p.Addr.String()
 	ip, _, err := net.SplitHostPort(ip)
 	if err != nil {
 		ctrl.Log.WithName("Transport.beforeGrpcFunc").WithValues("correlation_id", correlationID).Error(err, "get ipaddress failed")
+		return ctx
 	}
 	if ip != "" {
 		userIP := net.ParseIP(ip)
