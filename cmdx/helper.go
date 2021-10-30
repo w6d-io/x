@@ -16,6 +16,7 @@ Created on 07/10/2021
 package cmdx
 
 import (
+	"context"
 	"fmt"
 	"github.com/w6d-io/x/logx"
 	"os"
@@ -34,7 +35,12 @@ func Must(err error, message string, args ...interface{}) {
 
 // Should checks the error and write the message in log in Error level
 func Should(message string, err error) {
+	ShouldWithCtx(nil, message, err)
+}
+
+// ShouldWithCtx checks the error and write the message in log in Error level
+func ShouldWithCtx(ctx context.Context, message string, err error) {
 	if err != nil {
-		logx.WithName(nil, "Should").Error(err, message)
+		logx.WithName(ctx, "Should").Error(err, message)
 	}
 }
