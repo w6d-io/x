@@ -32,13 +32,17 @@ type Interface interface {
 
 type Error struct {
 	// Cause original error
-	Cause error
+	Cause error `json:"-"`
 
-	// Code for http response code
-	Code int
+	// StatusCode for http response code
+	StatusCode int `json:"-"`
 
-	// Message details for this error
-	Message string
+	// Code is the string convention from https://www.notion.so/w6d/Project-Spec-d1e49d91046b4b61952ecfc135983faf
+	Code string `json:"code"`
+
+	// Message from this error
+	Message string `json:"message"`
+
 }
 
 var _ Interface = &Error{}
@@ -68,7 +72,7 @@ func (e *Error) GetMessage() string {
 }
 
 func (e *Error) GetStatusCode() int {
-	return e.Code
+	return e.StatusCode
 }
 
 func (e *Error) GetCause() error {
@@ -102,11 +106,11 @@ func New(err error, message string) error {
 }
 
 func NewHTTP(err error, code int, message string) error {
-	return &Error{Cause: err, Code: code, Message: message}
+	return &Error{Cause: err, StatusCode: code, Message: message}
 }
 
 func Wrap(err error, message string) error {
-	return &Error{Cause: errors.Wrap(err, message)}
+	return &Error{Cause: errors.Wrap(err, message), Message: message}
 }
 
 func GetError(err error) *Error {
@@ -124,8 +128,8 @@ func GetError(err error) *Error {
 func Error2code(err error) int {
 	if e, ok := err.(*Error); ok {
 		code := http.StatusInternalServerError
-		if e.Code != 0 {
-			code = e.Code
+		if e.StatusCode != 0 {
+			code = e.StatusCode
 		}
 		return code
 	}
@@ -144,6 +148,10 @@ func Error2code(err error) int {
 func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 	logx.WithName(ctx, "ErrorEncoder").Error(err, "")
 	w.WriteHeader(Error2code(err))
+	if e, ok := err.(*Error); ok {
+		_ = json.NewEncoder(w).Encode(e)
+		return
+	}
 	_ = json.NewEncoder(w).Encode(err.Error())
 }
 
