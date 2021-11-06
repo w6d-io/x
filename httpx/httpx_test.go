@@ -69,7 +69,7 @@ var _ = Describe("", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			rsp = &failedResponse{
-				err: &errorx.Error{Code: 800},
+				err: &errorx.Error{StatusCode: 800},
 			}
 			err = httpx.EncodeHTTPResponse(ctx, w, rsp)
 			Expect(err).ToNot(HaveOccurred())
@@ -108,6 +108,20 @@ var _ = Describe("", func() {
 				Error: "failed",
 			})
 			Expect(err).ToNot(HaveOccurred())
+			Expect(w.Code).To(Equal(200))
+			Expect(w.Body.String()).To(Equal("{\"Error\":\"failed\"}\n"))
+		})
+		It("json encodes the errorx.Error into http.ResponseWriter", func() {
+			w := httptest.NewRecorder()
+			e := errorx.Error{
+				Cause:      errorx.ErrServiceUnavailable,
+				StatusCode: 601,
+				Code:       "httpx_write_errorx_error",
+				Message:    "should write this error",
+			}
+			Expect(httpx.EncodeHTTPResponse(ctx, w, e)).To(Succeed())
+			Expect(w.Code).To(Equal(601))
+			Expect(w.Body.String()).To(Equal("{\"code\":\"httpx_write_errorx_error\",\"message\":\"should write this error\"}\n"))
 		})
 	})
 })

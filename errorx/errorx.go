@@ -42,7 +42,6 @@ type Error struct {
 
 	// Message from this error
 	Message string `json:"message"`
-
 }
 
 var _ Interface = &Error{}

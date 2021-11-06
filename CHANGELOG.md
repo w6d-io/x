@@ -1,6 +1,10 @@
 
 <a name="v0.5.0"></a>
-## [v0.5.0](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.0) (2021-11-05)
+## [v0.5.0](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.0) (2021-11-06)
+
+### Chore
+
+* clean and fix test
 
 ### Features
 

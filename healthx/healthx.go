@@ -48,7 +48,7 @@ type Checkable interface {
 
 // Checker provides a way to make an endpoint which can be probed for system health.
 type Checker struct {
-	// Checks are the Checkables to be checked when probing.
+	// Checks are the Checkable to be checked when probing.
 	Checks []Checkable
 
 	// Unhealthyhandler is called when one or more of the checks are unhealthy.
@@ -126,14 +126,14 @@ func DefaultHealthyHandler(w http.ResponseWriter, r *http.Request) {
 
 func DefaultUnhealthyHandler(w http.ResponseWriter, r *http.Request, err error) {
 	e := errorx.GetError(err)
-	if e.Code == 0 {
-		e.Code = http.StatusInternalServerError
+	if e.StatusCode == 0 {
+		e.StatusCode = http.StatusInternalServerError
 	}
-	w.WriteHeader(e.Code)
+	w.WriteHeader(e.StatusCode)
 	writeErr := httpx.EncodeHTTPResponse(r.Context(), w, StatusResponse{
 		Status: "error",
 		Details: &StatusResponseDetails{
-			Code:    e.Code,
+			Code:    e.StatusCode,
 			Message: e.Error(),
 		},
 	})

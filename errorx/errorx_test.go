@@ -18,9 +18,9 @@ var _ = Describe("Error x", func() {
 			var errUnitTest = errors.New("unit test")
 			By("build errorx")
 			e := errorx.Error{
-				Cause:   errors.New("unit test"),
-				Code:    http.StatusInternalServerError,
-				Message: "message error",
+				Cause:      errors.New("unit test"),
+				StatusCode: http.StatusInternalServerError,
+				Message:    "message error",
 			}
 			Expect(e.Error()).To(Equal(errors.Wrap(errUnitTest, "message error").Error()))
 			Expect(e.GetStatusCode()).To(Equal(http.StatusInternalServerError))
@@ -41,13 +41,22 @@ var _ = Describe("Error x", func() {
 			_, ok := err.(*errorx.Error)
 			Expect(ok).To(Equal(true))
 			Expect(err.(*errorx.Error).Error()).To(Equal("not implement Error"))
-			Expect(errorx.Error2code(&errorx.Error{Code: http.StatusContinue})).To(Equal(http.StatusContinue))
+			Expect(errorx.Error2code(&errorx.Error{StatusCode: http.StatusContinue})).To(Equal(http.StatusContinue))
 			Expect(errorx.Error2code(errorx.ErrTokenNotFound)).To(Equal(http.StatusUnauthorized))
 			Expect(errorx.Error2code(errorx.ErrMethod)).To(Equal(http.StatusBadRequest))
 			Expect(errorx.Error2code(errors.New("internal server error test"))).To(Equal(http.StatusInternalServerError))
 			w := httptest.NewRecorder()
 			errorx.ErrorEncoder(nil, errorx.ErrTokenCheck, w)
 			Expect(w.Code).To(Equal(http.StatusServiceUnavailable))
+			w = httptest.NewRecorder()
+			errorx.ErrorEncoder(nil, &errorx.Error{
+				Cause:      errorx.ErrServiceUnavailable,
+				StatusCode: 600,
+				Code:       "unit_test_with_error",
+				Message:    "this error should be raised",
+			}, w)
+			Expect(w.Code).To(Equal(600))
+			Expect(w.Body.String()).To(Equal("{\"code\":\"unit_test_with_error\",\"message\":\"this error should be raised\"}\n"))
 			errorx.NewErrorHandler().Handle(context.Background(), errors.New("unit-test"))
 		})
 	})

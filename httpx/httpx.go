@@ -45,7 +45,8 @@ func EncodeHTTPResponse(ctx context.Context, w http.ResponseWriter, response int
 	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	if err, ok := response.(errorx.Error); ok {
-		return json.NewEncoder(w).Encode(err)
+		errorx.ErrorEncoder(ctx, &err, w)
+		return nil
 	}
 	r, ok := response.(proto.Message)
 	if ok {
