@@ -28,6 +28,18 @@ type Interface interface {
 
 	// ShowStack prints the stack if exist
 	ShowStack()
+
+	// Edit cause field from Error struct then return it
+	EditCause(error) *Error
+
+	// Edit message field from Error struct then return it
+	EditMessage(string) *Error
+
+	// Edit code field from Error struct then return it
+	EditCode(string) *Error
+
+	// Edit statusCode field from Error struct then return it
+	EditStatusCode(int) *Error
 }
 
 type Error struct {
@@ -65,6 +77,26 @@ var (
 	// ErrServiceUnavailable is raised when a remote service fail to response
 	ErrServiceUnavailable = errors.New("service unavailable")
 )
+
+func (e Error) EditCause(err error) *Error {
+	e.Cause = err
+	return &e
+}
+
+func (e Error) EditMessage(msg string) *Error {
+	e.Message = msg
+	return &e
+}
+
+func (e Error) EditCode(code string) *Error {
+	e.Code = code
+	return &e
+}
+
+func (e Error) EditStatusCode(statusCode int) *Error {
+	e.StatusCode = statusCode
+	return &e
+}
 
 func (e *Error) GetMessage() string {
 	return e.Message
