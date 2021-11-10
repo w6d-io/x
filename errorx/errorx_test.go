@@ -26,6 +26,11 @@ var _ = Describe("Error x", func() {
 			Expect(e.GetStatusCode()).To(Equal(http.StatusInternalServerError))
 			Expect(e.GetMessage()).To(Equal("message error"))
 			Expect(e.GetCause().Error()).To(Equal("unit test"))
+			Expect(errorx.Error{Message: "message"}.EditMessage("edit message")).To(Equal(&errorx.Error{Message: "edit message"}))
+			Expect(errorx.Error{Cause: errors.New("cause")}.EditCause(errors.New("edit cause"))).To(Equal(&errorx.Error{Cause: errors.New("edit cause")}))
+			Expect(errorx.Error{Code: "code"}.EditCode("edit code")).To(Equal(&errorx.Error{Code: "edit code"}))
+			Expect(errorx.Error{StatusCode: 500}.EditStatusCode(500)).To(Equal(&errorx.Error{StatusCode: 500}))
+			Expect(errorx.Error{}.EditStatusCode(500).EditMessage("edit message").EditCause(errors.New("edit cause")).EditCode("edit code")).To(Equal(&errorx.Error{Message: "edit message", Code: "edit code", Cause: errors.New("edit cause"), StatusCode: 500}))
 			e.ShowStack()
 			By("remove cause")
 			e.Cause = nil
