@@ -17,7 +17,7 @@ var _ = Describe("Event Marshaller", func() {
 		It("Publish (json format)", func() {
 			event := kafka.Event{}
 			msg := TTest{
-				Message: "Strada",
+				Message: "Hello World!",
 			}
 			_, err := event.Marshall(msg)
 			Expect(err).To(Succeed())
@@ -30,7 +30,7 @@ var _ = Describe("Event Marshaller", func() {
 		It("Publish (proto format)", func() {
 			event := kafka.Event{}
 			msg := Test{
-				Message: "Strada",
+				Message: "Hello World!",
 			}
 			_, err := event.Marshall(&msg)
 			Expect(err).To(Succeed())
