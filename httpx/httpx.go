@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net"
 	"net/http"
+	"strings"
 
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
@@ -70,6 +71,7 @@ func BeforeHttpFunc(ctx context.Context, req *http.Request) context.Context {
 	if req.URL != nil {
 		ctx = context.WithValue(ctx, "uri", req.URL.RequestURI())
 	}
+	ctx = context.WithValue(ctx, "method", strings.ToUpper(req.Method))
 	ip := ReadRemoteIP(req)
 	ip, _, err := net.SplitHostPort(req.RemoteAddr)
 	if err != nil {

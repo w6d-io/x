@@ -16,6 +16,7 @@ func GetLogValues(ctx context.Context) []interface{} {
 	keys := []string{
 		"correlation_id",
 		"kind",
+		"method",
 		"ipaddress",
 		"uri",
 	}
