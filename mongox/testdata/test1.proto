@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-option go_package="github.com/w6d-io/x/mongox;mongox_test";
-
-import "google/protobuf/timestamp.proto";
-
-message Test {
-    google.protobuf.Timestamp created_at = 1;
-}

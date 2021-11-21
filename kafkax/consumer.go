@@ -6,52 +6,69 @@ import (
 	"strings"
 	"time"
 
-	confluent "github.com/confluentinc/confluent-kafka-go/kafka"
+	cgo "github.com/confluentinc/confluent-kafka-go/kafka"
 
 	"github.com/w6d-io/x/logx"
 )
 
 var (
-	ErrConsumer = errors.New("Consumer Error")
+	ErrConsumer = errors.New("consumer error")
 )
 
-func (k *Kafka) Consumer(ctx context.Context, opts ...Option) (<-chan Event, error) {
-
-	log := logx.WithName(nil, "Consumer")
+func GetConsumerClient(bootstrapServer string, groupId string, username string, password string, opts ...Option) (ClientConsumerAPI, error) {
 	options := NewOptions(opts...)
 
-	config := &confluent.ConfigMap{
-		"bootstrap.servers": k.BootstrapServer,
+	config := &cgo.ConfigMap{
+		"bootstrap.servers": bootstrapServer,
 	}
 
-	config.SetKey("group.id", k.GroupId)
-	config.SetKey("auto.offset.reset", options.AutoOffsetReset)
-	config.SetKey("statistics.interval.ms", int(options.StatInterval/time.Millisecond))
-	config.SetKey("session.timeout.ms", int(options.SessionTimeout/time.Millisecond))
-	config.SetKey("max.poll.interval.ms", int(options.MaxPollInterval/time.Millisecond))
-	config.SetKey("go.events.channel.enable", true)
-	config.SetKey("go.application.rebalance.enable", options.EnableRebalance)
-	config.SetKey("enable.partition.eof", options.EnablePartitionEof)
+	_ = config.SetKey("group.id", groupId)
+	_ = config.SetKey("auto.offset.reset", options.AutoOffsetReset)
+	_ = config.SetKey("statistics.interval.ms", int(options.StatInterval/time.Millisecond))
+	_ = config.SetKey("session.timeout.ms", int(options.SessionTimeout/time.Millisecond))
+	_ = config.SetKey("max.poll.interval.ms", int(options.MaxPollInterval/time.Millisecond))
+	_ = config.SetKey("go.events.channel.enable", true)
+	_ = config.SetKey("go.application.rebalance.enable", options.EnableRebalance)
+	_ = config.SetKey("enable.partition.eof", options.EnablePartitionEof)
 
 	if options.GroupInstanceID != "" {
-		config.SetKey("group.instance.id", options.GroupInstanceID)
+		_ = config.SetKey("group.instance.id", options.GroupInstanceID)
 	}
 	if len(options.Debugs) > 0 {
-		config.SetKey("debug", strings.Join(options.Debugs, ","))
+		_ = config.SetKey("debug", strings.Join(options.Debugs, ","))
 	}
 	if options.AuthKafka {
-		config.SetKey("sasl.mechanisms", options.Mechanisms)
-		config.SetKey("security.protocol", options.Protocol)
-		config.SetKey("sasl.username", k.Username)
-		config.SetKey("sasl.password", k.Password)
+		_ = config.SetKey("sasl.mechanisms", options.Mechanisms)
+		_ = config.SetKey("security.protocol", options.Protocol)
+		_ = config.SetKey("sasl.username", username)
+		_ = config.SetKey("sasl.password", password)
 	}
 
-	c, err := confluent.NewConsumer(config)
+	c, err := cgo.NewConsumer(config)
 	if err != nil {
 		return nil, err
 	}
+	return &ClientConsumer{
+		Consumer: c,
+	}, err
+}
 
-	err = c.SubscribeTopics(k.ListenOnTopics, nil)
+func (cfg *Kafka) NewConsumer(opts ...Option) (ConsumerAPI, error) {
+	clt, err := GetConsumerClient(cfg.BootstrapServer, cfg.GroupId, cfg.Username, cfg.Password, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &Consumer{
+		ClientConsumerAPI: clt,
+		ListenOnTopics:    cfg.ListenOnTopics,
+	}, nil
+}
+
+func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
+
+	log := logx.WithName(nil, "Consumer")
+
+	err := c.SubscribeTopics(c.ListenOnTopics, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +84,7 @@ func (k *Kafka) Consumer(ctx context.Context, opts ...Option) (<-chan Event, err
 				return
 			case ev := <-c.Events():
 				switch e := ev.(type) {
-				case *confluent.Message:
+				case *cgo.Message:
 					event := Event{
 						Topic:     string([]byte(*e.TopicPartition.Topic)),
 						Key:       e.Key,
@@ -75,9 +92,6 @@ func (k *Kafka) Consumer(ctx context.Context, opts ...Option) (<-chan Event, err
 						Offset:    int64(e.TopicPartition.Offset),
 						Partition: e.TopicPartition.Partition,
 						Timestamp: e.Timestamp,
-					}
-					if k.SchemaRegistry != nil {
-						event.SchemaRegistry = k.SchemaRegistry
 					}
 					if e.Headers != nil {
 						for _, h := range e.Headers {
@@ -90,25 +104,25 @@ func (k *Kafka) Consumer(ctx context.Context, opts ...Option) (<-chan Event, err
 					}
 					messages <- event
 
-				case confluent.Error:
+				case cgo.Error:
 					log.Error(ErrConsumer, "Kafka event returns", "code", e.String())
 
-				case confluent.AssignedPartitions:
+				case cgo.AssignedPartitions:
 					log.Info("Assigned Partitions", "code", e.String())
 					c.Assign(e.Partitions)
 
-				case confluent.RevokedPartitions:
+				case cgo.RevokedPartitions:
 					log.Info("Revoked Partitions", "code", e.String())
 					c.Unassign()
 
-				case confluent.PartitionEOF:
+				case cgo.PartitionEOF:
 					log.Info("Partition EOF Reached", "code", e.String())
 
-				case confluent.OffsetsCommitted:
+				case cgo.OffsetsCommitted:
 					log.Info("OffsetsCommitted", "len", len(e.Offsets))
 
 				default:
-					log.Info("Ignored", "code", e.String())
+					log.V(2).Info("Ignored", "code", e.String())
 				}
 			}
 		}

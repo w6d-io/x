@@ -1,42 +1,33 @@
+// +build !integration
+
 package kafkax_test
 
 import (
+	"errors"
 	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
+	cgo "github.com/confluentinc/confluent-kafka-go/kafka"
 	kafka "github.com/w6d-io/x/kafkax"
 )
 
-var _ = Describe("Kafka", func() {
+var _ = Describe("Producer", func() {
 	Context("options", func() {
-		It("bad configuration", func() {
+		It("bad protocol configuration", func() {
 			var opts []kafka.Option
-			opts = append(opts, kafka.Protocol("SASL_SSL"))
-			opts = append(opts, kafka.Mechanisms("PLAIN"))
-			opts = append(opts, kafka.Async(false))
-			opts = append(opts, kafka.WriteTimeout(1*time.Second))
-			opts = append(opts, kafka.MaxWait(1*time.Second))
-			opts = append(opts, kafka.StatInterval(3*time.Second))
-			opts = append(opts, kafka.NumPartitions(10))
-			opts = append(opts, kafka.ReplicationFactor(3))
+			opts = append(opts, kafka.Protocol("Unknown"))
 			opts = append(opts, kafka.AuthKafka(true))
-			opts = append(opts, kafka.FullStats(false))
-			opts = append(opts, kafka.Debugs([]string{"deep"}))
-			opts = append(opts, kafka.SessionTimeout(10*time.Millisecond))
-			opts = append(opts, kafka.MaxPollInterval(10*time.Millisecond))
-			opts = append(opts, kafka.GroupInstanceID("test"))
-			opts = append(opts, kafka.ConfigMapKey("test"))
 			_ = kafka.NewOptions(opts...)
 			k := kafka.Kafka{
 				Username:        "test",
 				Password:        "test",
 				BootstrapServer: "localhost:9092",
 			}
-			err := k.Producer("TEST_ID", "message", opts...)
+			_, err := k.NewProducer(opts...)
 			Expect(err).ToNot(Succeed())
-			Expect(err.Error()).To(Equal("Local: Invalid argument or configuration"))
+			Expect(err.Error()).To(Equal("Invalid value \"Unknown\" for configuration property \"security.protocol\""))
 		})
 		It("", func() {
 			var opts []kafka.Option
@@ -56,8 +47,66 @@ var _ = Describe("Kafka", func() {
 				Password:        "test",
 				BootstrapServer: "localhost:9092",
 			}
-			err := k.Producer("TEST_ID", "message", opts...)
+			_, err := k.NewProducer(opts...)
 			Expect(err).To(Succeed())
+		})
+	})
+	Context("produce", func() {
+		It("success", func() {
+			client := &kafka.MockClientProducer{}
+			pm := kafka.Producer{
+				ClientProducerAPI: client,
+				ProducToTopic:     "test",
+			}
+			err := pm.Produce("test", []byte(string("Hello World")))
+			Expect(err).To(Succeed())
+		})
+		It("fails while producing", func() {
+			client := &kafka.MockClientProducer{
+				ErrProduce: errors.New("fail while producing"),
+			}
+			pm := kafka.Producer{
+				ClientProducerAPI: client,
+				ProducToTopic:     "test",
+			}
+			err := pm.Produce("test", []byte(string("Hello World")))
+			Expect(err).NotTo(Succeed())
+		})
+		It("partition error while producing", func() {
+			client := &kafka.MockClientProducer{
+				Event: &cgo.Message{
+					TopicPartition: cgo.TopicPartition{
+						Error: errors.New("partition error"),
+					},
+				},
+			}
+			pm := kafka.Producer{
+				ClientProducerAPI: client,
+				ProducToTopic:     "test",
+			}
+			err := pm.Produce("test", []byte(string("Hello World")))
+			Expect(err).To(Succeed())
+		})
+		It("success while producing", func() {
+			var topic string = "test"
+			var partition int32 = 1
+			var offset cgo.Offset = cgo.Offset(1)
+			client := &kafka.MockClientProducer{
+				Event: &cgo.Message{
+					TopicPartition: cgo.TopicPartition{
+						Topic:     &topic,
+						Partition: partition,
+						Offset:    offset,
+					},
+				},
+			}
+			pm := kafka.Producer{
+				ClientProducerAPI: client,
+				ProducToTopic:     "test",
+			}
+			err := pm.Produce("test", []byte(string("Hello World")))
+			Expect(err).To(Succeed())
+			pm.Close()
 		})
 	})
 })

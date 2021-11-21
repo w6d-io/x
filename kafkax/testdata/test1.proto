@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-option go_package="github.com/w6d-io/x/kafkax;kafkax_test";
-
-
-message Test {
-    string Message = 1;
-}

@@ -1,3 +1,5 @@
+// +build !integration
+
 package kafkax_test
 
 import (

@@ -78,7 +78,7 @@ bin/goimports: ## Download goimports locally if necessary
 protobuf: bin/protoc-gen-go bin/protoc
 
 .PHONY: proto
-proto: httpx/test1.pb_test.go kafkax/test1.pb_test.go mongox/test1.pb_test.go
+proto: httpx/test1.pb_test.go
 
 .PHONY: clean
 clean:
@@ -95,14 +95,6 @@ vet:
 httpx/test1.pb_test.go: bin/protoc bin/protoc-gen-go
 	$(PROTOC) --go_out=. --go_opt=module=github.com/w6d-io/x httpx/testdata/test1.proto
 	mv httpx/test1.pb.go httpx/test1.pb_test.go
-
-kafkax/test1.pb_test.go: bin/protoc bin/protoc-gen-go
-	$(PROTOC) --go_out=. --go_opt=module=github.com/w6d-io/x kafkax/testdata/test1.proto
-	mv kafkax/test1.pb.go kafkax/test1.pb_test.go
-
-mongox/test1.pb_test.go: bin/protoc bin/protoc-gen-go
-	$(PROTOC) --proto_path=./mongox/testdata --go_out=. --go_opt=module=github.com/w6d-io/x mongox/testdata/test1.proto
-	mv mongox/test1.pb.go mongox/test1.pb_test.go
 
 .PHONY: format
 format: bin/goimports
