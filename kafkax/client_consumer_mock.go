@@ -17,7 +17,7 @@ func (c *MockClientConsumer) SubscribeTopics(topics []string, rebalanceCb cgo.Re
 }
 
 func (c *MockClientConsumer) Events() chan cgo.Event {
-	evt := make(chan cgo.Event, 2)
+	evt := make(chan cgo.Event, 1)
 	evt <- c.Event
 	return evt
 }

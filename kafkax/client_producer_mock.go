@@ -16,7 +16,7 @@ func (p *MockClientProducer) Close() {
 }
 
 func (p *MockClientProducer) Events() chan cgo.Event {
-	evt := make(chan cgo.Event, 2)
+	evt := make(chan cgo.Event, 1)
 	evt <- p.Event
 	return evt
 }
