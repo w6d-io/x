@@ -1,10 +1,18 @@
 
+<a name="v0.7.0"></a>
+## [v0.7.0](https://github.com/w6d-io/x/compare/v0.6.2...v0.7.0) (2021-11-23)
+
+### Chore
+
+* initial kafkax & mongox implementation
+
+
 <a name="v0.6.2"></a>
 ## [v0.6.2](https://github.com/w6d-io/x/compare/v0.6.1...v0.6.2) (2021-11-19)
 
 ### Performance Improvements
 
-* logx: add method field perf: httpx: add method in context
+* logx: add method field ([#4](https://github.com/w6d-io/x/issues/4))
 
 
 <a name="v0.6.1"></a>
