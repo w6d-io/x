@@ -10,6 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 
 	cgo "github.com/confluentinc/confluent-kafka-go/kafka"
+
 	kafka "github.com/w6d-io/x/kafkax"
 )
 
