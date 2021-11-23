@@ -1,4 +1,12 @@
 
+<a name="v0.7.1"></a>
+## [v0.7.1](https://github.com/w6d-io/x/compare/v0.7.0...v0.7.1) (2021-11-23)
+
+### Chore
+
+* update dependancy
+
+
 <a name="v0.7.0"></a>
 ## [v0.7.0](https://github.com/w6d-io/x/compare/v0.6.2...v0.7.0) (2021-11-23)
 
