@@ -1,6 +1,6 @@
 
-<a name="v0.6.3"></a>
-## [v0.6.3](https://github.com/w6d-io/x/compare/v0.6.2...v0.6.3) (2021-11-22)
+<a name="v0.7.0"></a>
+## [v0.7.0](https://github.com/w6d-io/x/compare/v0.6.2...v0.7.0) (2021-11-23)
 
 ### Chore
 
