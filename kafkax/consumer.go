@@ -60,18 +60,20 @@ func (cfg *Kafka) NewConsumer(opts ...Option) (ConsumerAPI, error) {
 	}
 	return &Consumer{
 		ClientConsumerAPI: clt,
-		ListenOnTopics:    cfg.ListenOnTopics,
+		UpdateTopicsReq:   make(chan []string),
 	}, nil
+}
+
+func (c *Consumer) SetTopics(topics ...string) ConsumerAPI {
+	go func() {
+		c.UpdateTopicsReq <- topics
+	}()
+	return c
 }
 
 func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 
 	log := logx.WithName(nil, "Consumer")
-
-	err := c.SubscribeTopics(c.ListenOnTopics, nil)
-	if err != nil {
-		return nil, err
-	}
 
 	messages := make(chan Event)
 
@@ -82,6 +84,17 @@ func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 			case <-ctx.Done():
 				log.Info("Ctx.Done()")
 				return
+			case topics := <-c.UpdateTopicsReq:
+				err := c.Unsubscribe()
+				if err != nil {
+					log.Error(err, "error while unsubscribing")
+					return
+				}
+				err = c.SubscribeTopics(topics, nil)
+				if err != nil {
+					log.Error(err, "error while subscribing")
+					return
+				}
 			case ev := <-c.Events():
 				switch e := ev.(type) {
 				case *cgo.Message:
@@ -122,7 +135,7 @@ func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 					log.Info("OffsetsCommitted", "len", len(e.Offsets))
 
 				default:
-					log.V(2).Info("Ignored", "code", e.String())
+					log.V(2).Info("Ignored", "code", e)
 				}
 			}
 		}

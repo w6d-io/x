@@ -43,7 +43,6 @@ var _ = Describe("Producer", func() {
 			opts = append(opts, kafka.MaxPollInterval(10*time.Millisecond))
 			_ = kafka.NewOptions(opts...)
 			k := kafka.Kafka{
-				ProducToTopic:   "TEST",
 				Username:        "test",
 				Password:        "test",
 				BootstrapServer: "localhost:9092",
@@ -57,10 +56,17 @@ var _ = Describe("Producer", func() {
 			client := &kafka.MockClientProducer{}
 			pm := kafka.Producer{
 				ClientProducerAPI: client,
-				ProducToTopic:     "test",
 			}
-			err := pm.Produce("test", []byte(string("Hello World")))
+			err := pm.SetTopic("test").Produce("key", []byte(string("Hello World")))
 			Expect(err).To(Succeed())
+		})
+		It("missing topic while producing", func() {
+			client := &kafka.MockClientProducer{}
+			pm := kafka.Producer{
+				ClientProducerAPI: client,
+			}
+			err := pm.Produce("key", []byte(string("Hello World")))
+			Expect(err).NotTo(Succeed())
 		})
 		It("fails while producing", func() {
 			client := &kafka.MockClientProducer{
@@ -68,9 +74,8 @@ var _ = Describe("Producer", func() {
 			}
 			pm := kafka.Producer{
 				ClientProducerAPI: client,
-				ProducToTopic:     "test",
 			}
-			err := pm.Produce("test", []byte(string("Hello World")))
+			err := pm.SetTopic("test").Produce("key", []byte(string("Hello World")))
 			Expect(err).NotTo(Succeed())
 		})
 		It("partition error while producing", func() {
@@ -83,9 +88,8 @@ var _ = Describe("Producer", func() {
 			}
 			pm := kafka.Producer{
 				ClientProducerAPI: client,
-				ProducToTopic:     "test",
 			}
-			err := pm.Produce("test", []byte(string("Hello World")))
+			err := pm.SetTopic("test").Produce("key", []byte(string("Hello World")))
 			Expect(err).To(Succeed())
 		})
 		It("success while producing", func() {
@@ -103,9 +107,8 @@ var _ = Describe("Producer", func() {
 			}
 			pm := kafka.Producer{
 				ClientProducerAPI: client,
-				ProducToTopic:     "test",
 			}
-			err := pm.Produce("test", []byte(string("Hello World")))
+			err := pm.SetTopic("test").Produce("key", []byte(string("Hello World")))
 			Expect(err).To(Succeed())
 			pm.Close()
 		})

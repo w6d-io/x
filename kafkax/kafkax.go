@@ -5,12 +5,10 @@ import (
 )
 
 type Kafka struct {
-	BootstrapServer string   `json:"boostrapserver" mapstructure:"boostrapserver"`
-	Username        string   `json:"username" mapstructure:"username"`
-	Password        string   `json:"password" mapstructure:"password"`
-	GroupId         string   `json:"groupid" mapstructure:"groupid"`
-	ListenOnTopics  []string `json:"listenontopics" mapstructure:"listenontopics"`
-	ProducToTopic   string   `json:"productotopic" mapstructure:"productotopic"`
+	BootstrapServer string `json:"boostrapserver" mapstructure:"boostrapserver"`
+	Username        string `json:"username" mapstructure:"username"`
+	Password        string `json:"password" mapstructure:"password"`
+	GroupId         string `json:"groupid" mapstructure:"groupid"`
 }
 
 type ClientConsumer struct {
@@ -23,10 +21,10 @@ type ClientProducer struct {
 
 type Consumer struct {
 	ClientConsumerAPI
-	ListenOnTopics []string
+	UpdateTopicsReq chan []string
 }
 
 type Producer struct {
 	ClientProducerAPI
-	ProducToTopic string
+	Topic string
 }

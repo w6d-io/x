@@ -6,10 +6,15 @@ import (
 
 type MockClientConsumer struct {
 	ClientConsumerAPI
+	ErrUnsubscribe       error
 	ErrSubscribeTopics   error
 	ErrAssignPartition   error
 	ErrUnAssignPartition error
 	Event                cgo.Event
+}
+
+func (c *MockClientConsumer) Unsubscribe() (err error) {
+	return c.ErrUnsubscribe
 }
 
 func (c *MockClientConsumer) SubscribeTopics(topics []string, rebalanceCb cgo.RebalanceCb) (err error) {

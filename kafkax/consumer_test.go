@@ -67,7 +67,6 @@ var _ = Describe("Consumer", func() {
 			opts = append(opts, kafka.MaxPollInterval(10*time.Millisecond))
 			_ = kafka.NewOptions(opts...)
 			k := kafka.Kafka{
-				ProducToTopic:   "TEST",
 				Username:        "test",
 				Password:        "test",
 				BootstrapServer: "localhost:9092",
@@ -83,10 +82,10 @@ var _ = Describe("Consumer", func() {
 			}
 			cm := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
+				UpdateTopicsReq:   make(chan []string),
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			_, err := cm.SetTopics("test").Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -97,10 +96,10 @@ var _ = Describe("Consumer", func() {
 			}
 			cm := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
+				UpdateTopicsReq:   make(chan []string),
 			}
-			_, err := cm.Consume(context.Background())
-			Expect(err).NotTo(Succeed())
+			_, err := cm.SetTopics("test").Consume(context.Background())
+			Expect(err).To(Succeed())
 		})
 		It("read event while consuming", func() {
 			var topic string = "test"
@@ -124,13 +123,13 @@ var _ = Describe("Consumer", func() {
 			}
 			cm := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
+				UpdateTopicsReq:   make(chan []string),
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			_, err := cm.SetTopics("test").Consume(ctx)
+			Expect(err).To(Succeed())
 			time.Sleep(1 * time.Second)
 			cancel()
-			Expect(err).To(Succeed())
 		})
 		It("error event while consuming", func() {
 			client := &kafka.MockClientConsumer{
@@ -138,10 +137,10 @@ var _ = Describe("Consumer", func() {
 			}
 			cm := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
+				UpdateTopicsReq:   make(chan []string),
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			_, err := cm.SetTopics("test").Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -152,10 +151,10 @@ var _ = Describe("Consumer", func() {
 			}
 			cm := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
+				UpdateTopicsReq:   make(chan []string),
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			_, err := cm.SetTopics("test").Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -166,10 +165,10 @@ var _ = Describe("Consumer", func() {
 			}
 			cm := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
+				UpdateTopicsReq:   make(chan []string),
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			_, err := cm.SetTopics("test").Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -180,10 +179,10 @@ var _ = Describe("Consumer", func() {
 			}
 			cm := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
+				UpdateTopicsReq:   make(chan []string),
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			_, err := cm.SetTopics("test").Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -194,10 +193,25 @@ var _ = Describe("Consumer", func() {
 			}
 			cm := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
+				UpdateTopicsReq:   make(chan []string),
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			_, err := cm.SetTopics("test").Consume(ctx)
+			time.Sleep(1 * time.Second)
+			cancel()
+			Expect(err).To(Succeed())
+		})
+		It("unsubscribe error while consuming", func() {
+			client := &kafka.MockClientConsumer{
+				Event:          cgo.OffsetsCommitted{},
+				ErrUnsubscribe: errors.New("unsubscribe error"),
+			}
+			cm := kafka.Consumer{
+				ClientConsumerAPI: client,
+				UpdateTopicsReq:   make(chan []string),
+			}
+			ctx, cancel := context.WithCancel(context.Background())
+			_, err := cm.SetTopics("test").Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
