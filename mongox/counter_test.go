@@ -22,7 +22,6 @@ var _ = Describe("Counter", func() {
 		It("incr success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			_, err := m.Incr("key")
@@ -33,7 +32,6 @@ var _ = Describe("Counter", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("error connect"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			_, err := m.Incr("key")
@@ -44,7 +42,6 @@ var _ = Describe("Counter", func() {
 				ClientAPI: &MockClient{
 					ErrFind: errors.New("error find"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			_, err := m.Incr("key")
@@ -55,7 +52,6 @@ var _ = Describe("Counter", func() {
 				ClientAPI: &MockClient{
 					ErrInsertOne: errors.New("error insert"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			_, err := m.Incr("key")
@@ -66,7 +62,6 @@ var _ = Describe("Counter", func() {
 				ClientAPI: &MockClient{
 					ErrUpdateOne: errors.New("error update"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			_, err := m.Incr("key")

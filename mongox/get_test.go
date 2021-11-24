@@ -22,7 +22,6 @@ var _ = Describe("Get", func() {
 		It("get one success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var v interface{}
@@ -34,7 +33,6 @@ var _ = Describe("Get", func() {
 				ClientAPI: &MockClient{
 					ErrFind: errors.New("error find"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var v interface{}
@@ -46,7 +44,6 @@ var _ = Describe("Get", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("error connect"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var v interface{}
@@ -58,7 +55,6 @@ var _ = Describe("Get", func() {
 				ClientAPI: &MockClient{
 					ErrorCursorAll: errors.New("error cursor"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var v interface{}

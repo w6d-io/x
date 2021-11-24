@@ -21,7 +21,6 @@ var _ = Describe("Delete", func() {
 		It("delete one success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Delete(nil)
@@ -32,7 +31,6 @@ var _ = Describe("Delete", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("error on connect"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Delete(nil)
@@ -43,7 +41,6 @@ var _ = Describe("Delete", func() {
 				ClientAPI: &MockClient{
 					ErrDeleteOne: errors.New("error delete one"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Delete(nil)
@@ -52,7 +49,6 @@ var _ = Describe("Delete", func() {
 		It("delete many success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.DeleteAll()
@@ -63,7 +59,6 @@ var _ = Describe("Delete", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("error on connect"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.DeleteAll()
@@ -74,7 +69,6 @@ var _ = Describe("Delete", func() {
 				ClientAPI: &MockClient{
 					ErrDeleteMany: errors.New("error delete many"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.DeleteAll()

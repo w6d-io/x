@@ -21,7 +21,8 @@ var _ = Describe("Client", func() {
 					URL:        "",
 					AuthSource: "db",
 				}
-				_, err := cfg.New("", WithProtoCodec())
+				m := cfg.New()
+				err := m.Connect()
 				Expect(err).NotTo(Succeed())
 			})
 			It("success option", func() {
@@ -29,16 +30,11 @@ var _ = Describe("Client", func() {
 					URL:        "mongodb://127.0.0.1",
 					AuthSource: "db",
 				}
-				_, err := cfg.New("", WithProtoCodec())
-				Expect(err).To(Succeed())
-			})
-			It("success option, get collection", func() {
-				cfg := &Mongo{
-					URL:        "mongodb://127.0.0.1",
-					AuthSource: "db",
-				}
-				_, err := cfg.New("", WithProtoCodec())
-				Expect(err).To(Succeed())
+				m := cfg.New()
+				m = m.SetCollection("test")
+				m = m.SetOption(WithProtoCodec())
+				err := m.Connect()
+				Expect(err).NotTo(Succeed())
 			})
 			It("failure connect", func() {
 				m := MongoDB{
@@ -65,6 +61,22 @@ var _ = Describe("Client", func() {
 				}
 				err := m.Connect()
 				Expect(err).NotTo(Succeed())
+			})
+			It("set collection", func() {
+				clientOptions := mgoOtions.Client().ApplyURI("mongodb://127.0.0.1")
+				clt, _ := mongo.NewClient(clientOptions)
+				c := &Client{
+					Client:     clt,
+					Database:   "db",
+					Collection: "collection",
+				}
+				c.SetCollection("new_collection")
+			})
+			It("re-set collection", func() {
+				m := MongoDB{
+					ClientAPI: &MockClient{},
+				}
+				m.SetCollection("collection")
 			})
 			It("get collection", func() {
 				clientOptions := mgoOtions.Client().ApplyURI("mongodb://127.0.0.1")

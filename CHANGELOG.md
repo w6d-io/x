@@ -1,4 +1,12 @@
 
+<a name="v0.7.2"></a>
+## [v0.7.2](https://github.com/w6d-io/x/compare/v0.7.1...v0.7.2) (2021-11-24)
+
+### Chore
+
+* rework mongox interface to be able to dynamically change collection and options
+
+
 <a name="v0.7.1"></a>
 ## [v0.7.1](https://github.com/w6d-io/x/compare/v0.7.0...v0.7.1) (2021-11-23)
 

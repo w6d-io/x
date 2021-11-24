@@ -10,6 +10,8 @@ import (
 )
 
 type MongoAPI interface {
+	SetCollection(collection string) MongoAPI
+	SetOption(opts ...Option) MongoAPI
 	Connect() error
 	Get(filter interface{}, data interface{}) error
 	Insert(interface{}) error
@@ -25,6 +27,7 @@ type MongoAPI interface {
 }
 
 type ClientAPI interface {
+	SetCollection(collection string)
 	GetCollection() CollectionAPI
 	SetCursor(*mongo.Cursor) CursorAPI
 	SetSingleResult(*mongo.SingleResult) SingleResultAPI

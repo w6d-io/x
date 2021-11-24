@@ -2,7 +2,6 @@ package mongox
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -11,6 +10,10 @@ import (
 
 	"github.com/w6d-io/x/logx"
 )
+
+func (c *Client) SetCollection(collection string) {
+	c.Collection = collection
+}
 
 func (c *Client) GetCollection() CollectionAPI {
 	return &ClientCollection{
@@ -31,55 +34,71 @@ func (c *Client) SetSingleResult(singleresult *mongo.SingleResult) SingleResultA
 }
 
 // GetClient return the mongo client recorded or create a new instance
-func GetClient(database string, collection string, opts ...*mgoOtions.ClientOptions) (ClientAPI, error) {
-	log := logx.WithName(nil, "GetClient")
-	clt, err := mongo.NewClient(opts...)
+func GetClient(ctx context.Context, m *MongoDB) (ClientAPI, error) {
+	log := logx.WithName(ctx, "GetClient")
+
+	authSource := m.cfg.Name
+	if m.cfg.AuthSource != "" {
+		authSource = m.cfg.AuthSource
+	}
+	clientOptions := mgoOtions.Client().SetAuth(
+		mgoOtions.Credential{
+			Username:   m.cfg.Username,
+			Password:   m.cfg.Password,
+			AuthSource: authSource,
+		}).ApplyURI(m.cfg.URL)
+
+	if m.options.ProtoCodec {
+		clientOptions.SetRegistry(ProtoCodecRegistry().Build())
+	}
+
+	clt, err := mongo.NewClient(clientOptions)
 	if err != nil {
 		log.Error(err, "init mongo client failed")
 		return nil, err
 	}
 	return &Client{
 		Client:     clt,
-		opts:       opts,
-		Database:   database,
-		Collection: collection,
+		Database:   m.cfg.Name,
+		Collection: m.Collection,
 	}, nil
 }
 
 // New return a mongo instance
-func (cfg *Mongo) New(collection string, opts ...Option) (MongoAPI, error) {
-	options := NewOptions(opts...)
-	authSource := cfg.Name
-	if cfg.AuthSource != "" {
-		authSource = cfg.AuthSource
-	}
-	clientOptions := mgoOtions.Client().SetAuth(
-		mgoOtions.Credential{
-			Username:   cfg.Username,
-			Password:   cfg.Password,
-			AuthSource: authSource,
-		}).ApplyURI(cfg.URL)
-
-	if options.ProtoCodec {
-		clientOptions.SetRegistry(ProtoCodecRegistry().Build())
-	}
-	c, err := GetClient(cfg.Name, collection, clientOptions)
-
-	if err != nil {
-		return nil, errors.New("GetClient return nil")
-	}
+func (cfg *Mongo) New() MongoAPI {
 	return &MongoDB{
-		ClientAPI:   c,
+		cfg:         cfg,
+		options:     &Options{},
 		isConnected: false,
-		Database:    cfg.Name,
-		Collection:  collection,
-	}, nil
+	}
+}
+
+func (m *MongoDB) SetCollection(collection string) MongoAPI {
+	m.Collection = collection
+	if m.ClientAPI != nil {
+		m.ClientAPI.SetCollection(collection)
+	}
+	return m
+}
+
+func (m *MongoDB) SetOption(opts ...Option) MongoAPI {
+	options := NewOptions(opts...)
+	m.options = &options
+	return m
 }
 
 func (m *MongoDB) Connect() error {
 	log := logx.WithName(nil, "Connect")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+	if m.ClientAPI == nil {
+		c, err := GetClient(ctx, m)
+		if err != nil {
+			log.Error(err, "create mongo client failed")
+			return err
+		}
+		m.ClientAPI = c
+	}
 	if !m.isConnected {
 		err := m.ClientAPI.Connect(ctx)
 		if err != nil {

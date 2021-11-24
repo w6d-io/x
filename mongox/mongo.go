@@ -2,7 +2,6 @@ package mongox
 
 import (
 	mgo "go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Mongo struct {
@@ -14,7 +13,7 @@ type Mongo struct {
 	Name string `mapstructure:"name"`
 	// URL of the database
 	URL string `mapstructure:"url"`
-	// URL of the database
+	// Name of the authorisation database
 	AuthSource string `mapstructure:"authSource"`
 }
 
@@ -22,7 +21,6 @@ type Client struct {
 	*mgo.Client
 	Database   string
 	Collection string
-	opts       []*options.ClientOptions
 }
 
 type ClientDatabase struct {
@@ -47,7 +45,12 @@ type ClientIndex struct {
 
 type MongoDB struct {
 	ClientAPI
+	// Keep internal connection status
 	isConnected bool
-	Database    string
-	Collection  string
+	// From configuration section
+	cfg *Mongo
+	// Options
+	options *Options
+	// From user selection
+	Collection string
 }
