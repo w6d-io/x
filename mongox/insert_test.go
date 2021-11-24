@@ -23,7 +23,6 @@ var _ = Describe("Insert", func() {
 		It("insert one success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			type user struct {
@@ -44,7 +43,6 @@ var _ = Describe("Insert", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("error on connect"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			type user struct {
@@ -65,7 +63,6 @@ var _ = Describe("Insert", func() {
 				ClientAPI: &MockClient{
 					ErrInsertOne: errors.New("insert one failure"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			type user struct {
@@ -84,7 +81,6 @@ var _ = Describe("Insert", func() {
 		It("insert bulk success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var operations []*mongo.UpdateOneModel
@@ -97,7 +93,6 @@ var _ = Describe("Insert", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("error on connect"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var operations []*mongo.UpdateOneModel
@@ -110,7 +105,6 @@ var _ = Describe("Insert", func() {
 				ClientAPI: &MockClient{
 					ErrBulkWrite: errors.New("error on bulk write"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var operations []*mongo.UpdateOneModel

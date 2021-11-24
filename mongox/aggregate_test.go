@@ -22,7 +22,6 @@ var _ = Describe("Aggregate", func() {
 		It("aggregate success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var v interface{}
@@ -34,7 +33,6 @@ var _ = Describe("Aggregate", func() {
 				ClientAPI: &MockClient{
 					ErrAggregate: errors.New("error aggregate"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var v interface{}
@@ -46,7 +44,6 @@ var _ = Describe("Aggregate", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("error connect"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var v interface{}
@@ -58,7 +55,6 @@ var _ = Describe("Aggregate", func() {
 				ClientAPI: &MockClient{
 					ErrorCursorAll: errors.New("error cursor"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			var v interface{}

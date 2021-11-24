@@ -22,7 +22,6 @@ var _ = Describe("Cursor Mock", func() {
 		It("", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			ctx := context.Background()

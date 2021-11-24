@@ -21,7 +21,6 @@ var _ = Describe("update", func() {
 		It("update one success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Update(nil, nil)
@@ -32,7 +31,6 @@ var _ = Describe("update", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("connect error"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Update(nil, nil)
@@ -43,7 +41,6 @@ var _ = Describe("update", func() {
 				ClientAPI: &MockClient{
 					ErrUpdateOne: errors.New("update one error"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Update(nil, nil)
@@ -52,7 +49,6 @@ var _ = Describe("update", func() {
 		It("upsert one success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Upsert(nil, nil)
@@ -63,7 +59,6 @@ var _ = Describe("update", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("connect error"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Upsert(nil, nil)
@@ -74,7 +69,6 @@ var _ = Describe("update", func() {
 				ClientAPI: &MockClient{
 					ErrReplaceOne: errors.New("update one error"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.Upsert(nil, nil)
@@ -83,7 +77,6 @@ var _ = Describe("update", func() {
 		It("findoneandupdate one success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.FindAndUpdate(nil, nil, nil)
@@ -94,7 +87,6 @@ var _ = Describe("update", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("connect error"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.FindAndUpdate(nil, nil, nil)
@@ -105,7 +97,6 @@ var _ = Describe("update", func() {
 				ClientAPI: &MockClient{
 					ErrorSingleResultDecode: errors.New("single result error"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.FindAndUpdate(nil, nil, nil)

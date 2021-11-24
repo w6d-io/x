@@ -23,7 +23,6 @@ var _ = Describe("CreateIndexes", func() {
 		It("index one success", func() {
 			m := &MongoDB{
 				ClientAPI:  &MockClient{},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.CreateIndexes(mongo.IndexModel{})
@@ -34,7 +33,6 @@ var _ = Describe("CreateIndexes", func() {
 				ClientAPI: &MockClient{
 					ErrConnect: errors.New("error on connect"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.CreateIndexes(mongo.IndexModel{})
@@ -45,7 +43,6 @@ var _ = Describe("CreateIndexes", func() {
 				ClientAPI: &MockClient{
 					ErrIndex: errors.New("error index"),
 				},
-				Database:   "db",
 				Collection: "collection",
 			}
 			err := m.CreateIndexes(mongo.IndexModel{})

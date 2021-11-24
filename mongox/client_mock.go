@@ -32,6 +32,9 @@ type MockClient struct {
 	ErrIndex                error
 }
 
+func (p *MockClient) SetCollection(collection string) {
+}
+
 func (p *MockClient) Connect(ctx context.Context) error {
 	return p.ErrConnect
 }
