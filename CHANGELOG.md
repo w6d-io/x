@@ -1,4 +1,12 @@
 
+<a name="v0.7.3"></a>
+## [v0.7.3](https://github.com/w6d-io/x/compare/v0.7.2...v0.7.3) (2021-11-24)
+
+### Chore
+
+* rework kafkax interface to be able to dynamically change topic for consumer and producer
+
+
 <a name="v0.7.2"></a>
 ## [v0.7.2](https://github.com/w6d-io/x/compare/v0.7.1...v0.7.2) (2021-11-24)
 
