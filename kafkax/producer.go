@@ -47,16 +47,21 @@ func (cfg *Kafka) NewProducer(opts ...Option) (ProducerAPI, error) {
 }
 
 func (p *Producer) SetTopic(topic string) ProducerAPI {
-	p.Topic = topic
+	p.topic = topic
 	return p
+}
 
+func (p *Producer) GetTopic() string {
+	return p.topic
 }
 
 func (p *Producer) Produce(key string, value []byte, opts ...Option) error {
 
 	log := logx.WithName(nil, "Producer")
 
-	if p.Topic == "" {
+	topic := p.GetTopic()
+
+	if topic == "" {
 		log.Error(ErrProducerTopicIsNotSet, "topic is not set")
 		return ErrProducerTopicIsNotSet
 	}
@@ -82,7 +87,7 @@ func (p *Producer) Produce(key string, value []byte, opts ...Option) error {
 	}()
 
 	if err := p.ClientProducerAPI.Produce(&cgo.Message{
-		TopicPartition: cgo.TopicPartition{Topic: &p.Topic, Partition: cgo.PartitionAny},
+		TopicPartition: cgo.TopicPartition{Topic: &topic, Partition: cgo.PartitionAny},
 		Key:            []byte(key),
 		Value:          value,
 		Timestamp:      time.Now(),
