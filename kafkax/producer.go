@@ -10,7 +10,8 @@ import (
 )
 
 var (
-	ErrProducer = errors.New("Producer Error")
+	ErrProducer              = errors.New("producer error")
+	ErrProducerTopicIsNotSet = errors.New("topic for producing message is not set")
 )
 
 func GetProducerClient(bootstrapServer string, username string, password string, opts ...Option) (ClientProducerAPI, error) {
@@ -42,13 +43,28 @@ func (cfg *Kafka) NewProducer(opts ...Option) (ProducerAPI, error) {
 	}
 	return &Producer{
 		ClientProducerAPI: clt,
-		ProducToTopic:     cfg.ProducToTopic,
 	}, nil
+}
+
+func (p *Producer) SetTopic(topic string) ProducerAPI {
+	p.topic = topic
+	return p
+}
+
+func (p *Producer) GetTopic() string {
+	return p.topic
 }
 
 func (p *Producer) Produce(key string, value []byte, opts ...Option) error {
 
 	log := logx.WithName(nil, "Producer")
+
+	topic := p.GetTopic()
+
+	if topic == "" {
+		log.Error(ErrProducerTopicIsNotSet, "topic is not set")
+		return ErrProducerTopicIsNotSet
+	}
 
 	options := NewOptions(opts...)
 
@@ -71,7 +87,7 @@ func (p *Producer) Produce(key string, value []byte, opts ...Option) error {
 	}()
 
 	if err := p.ClientProducerAPI.Produce(&cgo.Message{
-		TopicPartition: cgo.TopicPartition{Topic: &p.ProducToTopic, Partition: cgo.PartitionAny},
+		TopicPartition: cgo.TopicPartition{Topic: &topic, Partition: cgo.PartitionAny},
 		Key:            []byte(key),
 		Value:          value,
 		Timestamp:      time.Now(),

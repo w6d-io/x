@@ -67,7 +67,6 @@ var _ = Describe("Consumer", func() {
 			opts = append(opts, kafka.MaxPollInterval(10*time.Millisecond))
 			_ = kafka.NewOptions(opts...)
 			k := kafka.Kafka{
-				ProducToTopic:   "TEST",
 				Username:        "test",
 				Password:        "test",
 				BootstrapServer: "localhost:9092",
@@ -81,26 +80,64 @@ var _ = Describe("Consumer", func() {
 			client := &kafka.MockClientConsumer{
 				Event: &cgo.Stats{},
 			}
-			cm := kafka.Consumer{
+			clientCons := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
+		})
+		It("set topic and read back", func() {
+			client := &kafka.MockClientConsumer{
+				Event: &cgo.Stats{},
+			}
+			clientCons := kafka.Consumer{
+				ClientConsumerAPI: client,
+			}
+			ctx, cancel := context.WithCancel(context.Background())
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
+			time.Sleep(1 * time.Second)
+			cancel()
+			Expect(err).To(Succeed())
+			Expect(cm.GetTopics()).To(Equal([]string{"test"}))
+		})
+		It("multiple set topics and read back", func() {
+			client := &kafka.MockClientConsumer{
+				Event: &cgo.Stats{},
+			}
+			clientCons := kafka.Consumer{
+				ClientConsumerAPI: client,
+			}
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.SetTopics("test")
+			Expect(err).NotTo(Succeed())
+		})
+		It("missing topic registration", func() {
+			client := &kafka.MockClientConsumer{}
+			cm := kafka.Consumer{
+				ClientConsumerAPI: client,
+			}
+			_, err := cm.Consume(context.Background())
+			Expect(err).NotTo(Succeed())
 		})
 		It("fails while subscribing", func() {
 			client := &kafka.MockClientConsumer{
 				ErrSubscribeTopics: errors.New("fail while subscribing"),
 			}
-			cm := kafka.Consumer{
+			clientCons := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
 			}
-			_, err := cm.Consume(context.Background())
-			Expect(err).NotTo(Succeed())
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(context.Background())
+			Expect(err).To(Succeed())
 		})
 		It("read event while consuming", func() {
 			var topic string = "test"
@@ -122,12 +159,13 @@ var _ = Describe("Consumer", func() {
 					}},
 				},
 			}
-			cm := kafka.Consumer{
+			clientCons := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -136,12 +174,13 @@ var _ = Describe("Consumer", func() {
 			client := &kafka.MockClientConsumer{
 				Event: cgo.Error{},
 			}
-			cm := kafka.Consumer{
+			clientCons := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -150,12 +189,13 @@ var _ = Describe("Consumer", func() {
 			client := &kafka.MockClientConsumer{
 				Event: cgo.AssignedPartitions{},
 			}
-			cm := kafka.Consumer{
+			clientCons := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -164,12 +204,13 @@ var _ = Describe("Consumer", func() {
 			client := &kafka.MockClientConsumer{
 				Event: cgo.RevokedPartitions{},
 			}
-			cm := kafka.Consumer{
+			clientCons := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -178,12 +219,13 @@ var _ = Describe("Consumer", func() {
 			client := &kafka.MockClientConsumer{
 				Event: cgo.PartitionEOF{},
 			}
-			cm := kafka.Consumer{
+			clientCons := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())
@@ -192,12 +234,29 @@ var _ = Describe("Consumer", func() {
 			client := &kafka.MockClientConsumer{
 				Event: cgo.OffsetsCommitted{},
 			}
-			cm := kafka.Consumer{
+			clientCons := kafka.Consumer{
 				ClientConsumerAPI: client,
-				ListenOnTopics:    []string{"test"},
 			}
 			ctx, cancel := context.WithCancel(context.Background())
-			_, err := cm.Consume(ctx)
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
+			time.Sleep(1 * time.Second)
+			cancel()
+			Expect(err).To(Succeed())
+		})
+		It("unsubscribe error while consuming", func() {
+			client := &kafka.MockClientConsumer{
+				Event:          cgo.OffsetsCommitted{},
+				ErrUnsubscribe: errors.New("unsubscribe error"),
+			}
+			clientCons := kafka.Consumer{
+				ClientConsumerAPI: client,
+			}
+			ctx, cancel := context.WithCancel(context.Background())
+			cm, err := clientCons.SetTopics("test")
+			Expect(err).To(Succeed())
+			_, err = cm.Consume(ctx)
 			time.Sleep(1 * time.Second)
 			cancel()
 			Expect(err).To(Succeed())

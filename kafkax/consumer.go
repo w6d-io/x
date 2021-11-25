@@ -12,7 +12,9 @@ import (
 )
 
 var (
-	ErrConsumer = errors.New("consumer error")
+	ErrConsumer               = errors.New("consumer error")
+	ErrConsumerTopicsRequest  = errors.New("topics request is not registered")
+	ErrConsumerTopicsIsNotSet = errors.New("topics for consumer message is not set")
 )
 
 func GetConsumerClient(bootstrapServer string, groupId string, username string, password string, opts ...Option) (ClientConsumerAPI, error) {
@@ -60,17 +62,36 @@ func (cfg *Kafka) NewConsumer(opts ...Option) (ConsumerAPI, error) {
 	}
 	return &Consumer{
 		ClientConsumerAPI: clt,
-		ListenOnTopics:    cfg.ListenOnTopics,
 	}, nil
+}
+
+func (c *Consumer) SetTopics(topics ...string) (ConsumerAPI, error) {
+	log := logx.WithName(nil, "Set topics")
+
+	if c.topicsReqChan == nil {
+		c.topicsReqChan = make(chan []string, 1)
+	}
+
+	select {
+	case c.topicsReqChan <- topics:
+	default:
+		log.Error(ErrConsumerTopicsRequest, "there is already pending request")
+		return nil, ErrConsumerTopicsRequest
+	}
+
+	return c, nil
+}
+
+func (c *Consumer) GetTopics() []string {
+	return c.topics
 }
 
 func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 
 	log := logx.WithName(nil, "Consumer")
 
-	err := c.SubscribeTopics(c.ListenOnTopics, nil)
-	if err != nil {
-		return nil, err
+	if c.topicsReqChan == nil {
+		return nil, ErrConsumerTopicsIsNotSet
 	}
 
 	messages := make(chan Event)
@@ -82,6 +103,18 @@ func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 			case <-ctx.Done():
 				log.Info("Ctx.Done()")
 				return
+			case topics := <-c.topicsReqChan:
+				err := c.Unsubscribe()
+				if err != nil {
+					log.Error(err, "error while unsubscribing")
+					return
+				}
+				err = c.SubscribeTopics(topics, nil)
+				if err != nil {
+					log.Error(err, "error while subscribing")
+					return
+				}
+				c.topics = topics
 			case ev := <-c.Events():
 				switch e := ev.(type) {
 				case *cgo.Message:
@@ -122,7 +155,7 @@ func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 					log.Info("OffsetsCommitted", "len", len(e.Offsets))
 
 				default:
-					log.V(2).Info("Ignored", "code", e.String())
+					log.V(2).Info("Ignored", "code", e)
 				}
 			}
 		}

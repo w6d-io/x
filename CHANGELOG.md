@@ -1,4 +1,14 @@
 
+<a name="v0.7.3"></a>
+## [v0.7.3](https://github.com/w6d-io/x/compare/v0.7.2...v0.7.3) (2021-11-25)
+
+### Chore
+
+* add Get/Set topic for Consumer and Producer
+* mongox cleanup interface
+* rework kafkax interface to be able to dynamically change topic for consumer and producer
+
+
 <a name="v0.7.2"></a>
 ## [v0.7.2](https://github.com/w6d-io/x/compare/v0.7.1...v0.7.2) (2021-11-24)
 
