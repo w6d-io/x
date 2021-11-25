@@ -21,10 +21,11 @@ type ClientProducer struct {
 
 type Consumer struct {
 	ClientConsumerAPI
-	UpdateTopicsReq chan []string
+	topicsReqChan chan []string
+	topics        []string
 }
 
 type Producer struct {
 	ClientProducerAPI
-	Topic string
+	topic string
 }
