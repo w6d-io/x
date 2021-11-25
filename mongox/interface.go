@@ -10,20 +10,20 @@ import (
 )
 
 type MongoAPI interface {
-	SetCollection(collection string) MongoAPI
-	SetOption(opts ...Option) MongoAPI
+	SetCollection(string) MongoAPI
+	SetOption(...Option) MongoAPI
 	Connect() error
-	Get(filter interface{}, data interface{}) error
+	Get(interface{}, interface{}) error
 	Insert(interface{}) error
 	InsertBulk([]*mongo.UpdateOneModel) error
-	Delete(filter interface{}) error
+	Delete(interface{}) error
 	DeleteAll() error
-	Update(filter interface{}, update interface{}) error
-	Upsert(filter interface{}, update interface{}) error
-	FindAndUpdate(filter interface{}, update interface{}, data interface{}) error
-	Aggregate(pipeline mongo.Pipeline, data interface{}) error
+	Update(interface{}, interface{}) error
+	Upsert(interface{}, interface{}) error
+	FindAndUpdate(interface{}, interface{}, interface{}) error
+	Aggregate(mongo.Pipeline, interface{}) error
 	CreateIndexes(mongo.IndexModel) error
-	Incr(key string) (int64, error)
+	Incr(string) (int64, error)
 }
 
 type ClientAPI interface {
@@ -31,33 +31,33 @@ type ClientAPI interface {
 	GetCollection() CollectionAPI
 	SetCursor(*mongo.Cursor) CursorAPI
 	SetSingleResult(*mongo.SingleResult) SingleResultAPI
-	Connect(ctx context.Context) error
-	Ping(ctx context.Context, rp *readpref.ReadPref) error
+	Connect(context.Context) error
+	Ping(context.Context, *readpref.ReadPref) error
 }
 
 type CollectionAPI interface {
 	GetIndex() IndexAPI
-	InsertOne(ctx context.Context, document interface{}, opts ...*mgoOtions.InsertOneOptions) (*mongo.InsertOneResult, error)
-	BulkWrite(ctx context.Context, models []mongo.WriteModel, opts ...*mgoOtions.BulkWriteOptions) (*mongo.BulkWriteResult, error)
-	Find(ctx context.Context, filter interface{}, opts ...*options.FindOptions) (*mongo.Cursor, error)
-	DeleteOne(ctx context.Context, filter interface{}, opts ...*options.DeleteOptions) (*mongo.DeleteResult, error)
-	DeleteMany(ctx context.Context, filter interface{}, opts ...*options.DeleteOptions) (*mongo.DeleteResult, error)
-	UpdateOne(ctx context.Context, filter interface{}, update interface{}, opts ...*options.UpdateOptions) (*mongo.UpdateResult, error)
-	ReplaceOne(ctx context.Context, filter interface{}, replacement interface{}, opts ...*options.ReplaceOptions) (*mongo.UpdateResult, error)
-	FindOneAndUpdate(ctx context.Context, filter interface{}, update interface{}, opts ...*options.FindOneAndUpdateOptions) *mongo.SingleResult
-	Aggregate(ctx context.Context, pipeline interface{}, opts ...*options.AggregateOptions) (*mongo.Cursor, error)
+	InsertOne(context.Context, interface{}, ...*mgoOtions.InsertOneOptions) (*mongo.InsertOneResult, error)
+	BulkWrite(context.Context, []mongo.WriteModel, ...*mgoOtions.BulkWriteOptions) (*mongo.BulkWriteResult, error)
+	Find(context.Context, interface{}, ...*options.FindOptions) (*mongo.Cursor, error)
+	DeleteOne(context.Context, interface{}, ...*options.DeleteOptions) (*mongo.DeleteResult, error)
+	DeleteMany(context.Context, interface{}, ...*options.DeleteOptions) (*mongo.DeleteResult, error)
+	UpdateOne(context.Context, interface{}, interface{}, ...*options.UpdateOptions) (*mongo.UpdateResult, error)
+	ReplaceOne(context.Context, interface{}, interface{}, ...*options.ReplaceOptions) (*mongo.UpdateResult, error)
+	FindOneAndUpdate(context.Context, interface{}, interface{}, ...*options.FindOneAndUpdateOptions) *mongo.SingleResult
+	Aggregate(context.Context, interface{}, ...*options.AggregateOptions) (*mongo.Cursor, error)
 }
 
 type CursorAPI interface {
-	Next(ctx context.Context) bool
-	All(ctx context.Context, results interface{}) error
-	Decode(v interface{}) error
+	Next(context.Context) bool
+	All(context.Context, interface{}) error
+	Decode(interface{}) error
 }
 
 type SingleResultAPI interface {
-	Decode(v interface{}) error
+	Decode(interface{}) error
 }
 
 type IndexAPI interface {
-	CreateOne(ctx context.Context, model mongo.IndexModel, opts ...*options.CreateIndexesOptions) (string, error)
+	CreateOne(context.Context, mongo.IndexModel, ...*options.CreateIndexesOptions) (string, error)
 }
