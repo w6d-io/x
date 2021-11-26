@@ -32,7 +32,7 @@ var _ = Describe("Client", func() {
 				}
 				m := cfg.New()
 				m = m.SetCollection("test")
-				m = m.SetOption(WithProtoCodec())
+				m = m.SetOptions(WithProtoCodec())
 				err := m.Connect()
 				Expect(err).NotTo(Succeed())
 			})
