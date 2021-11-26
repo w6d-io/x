@@ -1,4 +1,13 @@
 
+<a name="v0.7.4"></a>
+## [v0.7.4](https://github.com/w6d-io/x/compare/v0.7.3...v0.7.4) (2021-11-26)
+
+### Chore
+
+* mongox rename SetOption into SetOptions
+* mongox update Get and Aggregate interfaces to return a cursor
+
+
 <a name="v0.7.3"></a>
 ## [v0.7.3](https://github.com/w6d-io/x/compare/v0.7.2...v0.7.3) (2021-11-25)
 
