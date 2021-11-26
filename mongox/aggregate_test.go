@@ -24,8 +24,7 @@ var _ = Describe("Aggregate", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			var v interface{}
-			err := m.Aggregate(nil, &v)
+			_, err := m.Aggregate(nil)
 			Expect(err).To(Succeed())
 		})
 		It("aggregate error", func() {
@@ -35,8 +34,7 @@ var _ = Describe("Aggregate", func() {
 				},
 				Collection: "collection",
 			}
-			var v interface{}
-			err := m.Aggregate(nil, &v)
+			_, err := m.Aggregate(nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("aggregate error connect", func() {
@@ -46,19 +44,7 @@ var _ = Describe("Aggregate", func() {
 				},
 				Collection: "collection",
 			}
-			var v interface{}
-			err := m.Aggregate(nil, &v)
-			Expect(err).NotTo(Succeed())
-		})
-		It("aggregate error cursor", func() {
-			m := &MongoDB{
-				ClientAPI: &MockClient{
-					ErrorCursorAll: errors.New("error cursor"),
-				},
-				Collection: "collection",
-			}
-			var v interface{}
-			err := m.Aggregate(nil, &v)
+			_, err := m.Aggregate(nil)
 			Expect(err).NotTo(Succeed())
 		})
 	})

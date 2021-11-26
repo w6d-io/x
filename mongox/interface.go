@@ -13,7 +13,7 @@ type MongoAPI interface {
 	SetCollection(string) MongoAPI
 	SetOption(...Option) MongoAPI
 	Connect() error
-	Get(interface{}, interface{}) error
+	Get(interface{}) (CursorAPI, error)
 	Insert(interface{}) error
 	InsertBulk([]*mongo.UpdateOneModel) error
 	Delete(interface{}) error
@@ -21,13 +21,13 @@ type MongoAPI interface {
 	Update(interface{}, interface{}) error
 	Upsert(interface{}, interface{}) error
 	FindAndUpdate(interface{}, interface{}, interface{}) error
-	Aggregate(mongo.Pipeline, interface{}) error
+	Aggregate(pipeline mongo.Pipeline) (CursorAPI, error)
 	CreateIndexes(mongo.IndexModel) error
 	Incr(string) (int64, error)
 }
 
 type ClientAPI interface {
-	SetCollection(collection string)
+	SetCollection(string)
 	GetCollection() CollectionAPI
 	SetCursor(*mongo.Cursor) CursorAPI
 	SetSingleResult(*mongo.SingleResult) SingleResultAPI

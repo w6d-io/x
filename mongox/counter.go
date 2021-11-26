@@ -1,6 +1,8 @@
 package mongox
 
 import (
+	"context"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
@@ -17,11 +19,14 @@ func (m *MongoDB) Incr(key string) (int64, error) {
 		Id int64 `bson:"id"`
 	}
 	var pid []p
-	err := m.Get(bson.M{"_id": key}, &pid)
-	if err != nil || len(pid) == 0 {
-		if err != nil && err != mongo.ErrNoDocuments {
-			return 0, err
-		}
+	cursor, err := m.Get(bson.M{"_id": key})
+	if err != nil && err != mongo.ErrNoDocuments {
+		return 0, err
+	}
+	if err := cursor.All(context.Background(), &pid); err != nil {
+		return -1, errorx.Wrap(err, "fail connect")
+	}
+	if len(pid) == 0 {
 		pid = append(pid, p{Id: 1})
 		err = m.Insert(bson.M{"_id": key, "id": pid[0].Id})
 		if err != nil {

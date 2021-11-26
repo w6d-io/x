@@ -10,24 +10,19 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
-func (m *MongoDB) Get(filter interface{}, data interface{}) error {
+func (m *MongoDB) Get(filter interface{}) (CursorAPI, error) {
 	log := logx.WithName(nil, "Get")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {
-		return errorx.Wrap(err, "fail connect")
+		return nil, errorx.Wrap(err, "fail connect")
 	}
 	findOptions := options.Find()
 	cursor, err := m.GetCollection().Find(ctx, filter, findOptions)
 	if err != nil {
 		log.Error(err, "find")
-		return err
+		return nil, err
 	}
 
-	if err := m.SetCursor(cursor).All(ctx, data); err != nil {
-		log.Error(err, "get data")
-		return err
-	}
-	log.WithValues("data", data).V(1).Info("result from search")
-	return nil
+	return m.SetCursor(cursor), nil
 }

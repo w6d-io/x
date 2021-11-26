@@ -24,8 +24,7 @@ var _ = Describe("Get", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			var v interface{}
-			err := m.Get(nil, &v)
+			_, err := m.Get(nil)
 			Expect(err).To(Succeed())
 		})
 		It("get one error find", func() {
@@ -35,8 +34,7 @@ var _ = Describe("Get", func() {
 				},
 				Collection: "collection",
 			}
-			var v interface{}
-			err := m.Get(nil, &v)
+			_, err := m.Get(nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("get one error connect", func() {
@@ -46,19 +44,7 @@ var _ = Describe("Get", func() {
 				},
 				Collection: "collection",
 			}
-			var v interface{}
-			err := m.Get(nil, &v)
-			Expect(err).NotTo(Succeed())
-		})
-		It("get one error cursor", func() {
-			m := &MongoDB{
-				ClientAPI: &MockClient{
-					ErrorCursorAll: errors.New("error cursor"),
-				},
-				Collection: "collection",
-			}
-			var v interface{}
-			err := m.Get(nil, &v)
+			_, err := m.Get(nil)
 			Expect(err).NotTo(Succeed())
 		})
 	})

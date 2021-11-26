@@ -47,6 +47,16 @@ var _ = Describe("Counter", func() {
 			_, err := m.Incr("key")
 			Expect(err).NotTo(Succeed())
 		})
+		It("incr error cursor", func() {
+			m := &MongoDB{
+				ClientAPI: &MockClient{
+					ErrorCursorAll: errors.New("error cursor"),
+				},
+				Collection: "collection",
+			}
+			_, err := m.Incr("key")
+			Expect(err).NotTo(Succeed())
+		})
 		It("incr error insert", func() {
 			m := &MongoDB{
 				ClientAPI: &MockClient{
