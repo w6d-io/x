@@ -81,7 +81,7 @@ func (m *MongoDB) SetCollection(collection string) MongoAPI {
 	return m
 }
 
-func (m *MongoDB) SetOption(opts ...Option) MongoAPI {
+func (m *MongoDB) SetOptions(opts ...Option) MongoAPI {
 	options := NewOptions(opts...)
 	m.options = &options
 	return m
