@@ -55,10 +55,12 @@ type OutputFormatFlag struct {
 	value      string
 }
 
+// String returns the output format flag values
 func (o *OutputFormatFlag) String() string {
 	return o.value
 }
 
+// Set the output format flag
 func (o *OutputFormatFlag) Set(flagValue string) error {
 	flagValue = LookupEnvOrString("LOG_FORMAT", flagValue)
 	val := strings.ToLower(flagValue)
@@ -87,10 +89,12 @@ type LevelFlag struct {
 	value      string
 }
 
+// String returns the level flag values
 func (l LevelFlag) String() string {
 	return l.value
 }
 
+// Set the level flag
 func (l LevelFlag) Set(flagValue string) error {
 	flagValue = LookupEnvOrString("LOG_LEVEL", flagValue)
 	level, validLevel := levelStrings[strings.ToLower(flagValue)]
