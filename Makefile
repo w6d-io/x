@@ -60,9 +60,17 @@ endif
 bin/protoc: ## install protoc locally if necessary.
 	$(call install,$(PROTOC),"bin/protoc",$(PROTOC_ZIP))
 
+#.PHONY: bin/golint
+bin/golint:
+	$(call go-get-tool,bin/golint,golang.org/x/lint/golint)
+
 #.PHONY: bin/golang-ci-lint
 bin/golangci-lint:
 	bash <(curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh) -d -b .bin v1.28.3
+
+#.PHONY: bin/gocyclo
+bin/gocyclo:
+	$(call go-get-tool,bin/gocyclo,github.com/fzipp/gocyclo/cmd/gocyclo)
 
 #.PHONY: bin/protoc-gen-go
 bin/protoc-gen-go:
@@ -105,8 +113,13 @@ format: bin/goimports
 	goimports -w -local github.com/w6d-io .
 
 .PHONY: lint
-lint: bin/golangci-lint
+lint: bin/golangci-lint bin/golint
+	golint ./...
 	golangci-lint run -v ./...
+
+.PHONY: cyclo
+cyclo: bin/gocyclo
+	gocyclo -over 15 .
 
 .PHONY: test
 test: fmt vet
