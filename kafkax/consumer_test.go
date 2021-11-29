@@ -30,7 +30,7 @@ var _ = Describe("Consumer", func() {
 			opts = append(opts, kafka.FullStats(false))
 			opts = append(opts, kafka.ConfigMapKey("test"))
 			opts = append(opts, kafka.Rebalance(false))
-			opts = append(opts, kafka.PartitionEof(false))
+			opts = append(opts, kafka.PartitionEOF(false))
 			opts = append(opts, kafka.EarliestOffset())
 			_ = kafka.NewOptions(opts...)
 			k := kafka.Kafka{
@@ -231,7 +231,7 @@ var _ = Describe("Consumer", func() {
 			cancel()
 			Expect(err).To(Succeed())
 		})
-		It("comitted partition event while consuming", func() {
+		It("committed partition event while consuming", func() {
 			client := &kafka.MockClientConsumer{
 				Event: cgo.OffsetsCommitted{},
 			}

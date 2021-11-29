@@ -12,26 +12,30 @@ import (
 )
 
 var (
-	ErrConsumer               = errors.New("consumer error")
-	ErrConsumerTopicsRequest  = errors.New("topics request is not registered")
+	// ErrConsumer ...
+	ErrConsumer = errors.New("consumer error")
+	// ErrConsumerTopicsRequest ...
+	ErrConsumerTopicsRequest = errors.New("topics request is not registered")
+	// ErrConsumerTopicsIsNotSet ...
 	ErrConsumerTopicsIsNotSet = errors.New("topics for consumer message is not set")
 )
 
-func GetConsumerClient(bootstrapServer string, groupId string, username string, password string, opts ...Option) (ClientConsumerAPI, error) {
+// GetConsumerClient returns a ClientConsumerAPI
+func GetConsumerClient(bootstrapServer string, groupID string, username string, password string, opts ...Option) (ClientConsumerAPI, error) {
 	options := NewOptions(opts...)
 
 	config := &cgo.ConfigMap{
 		"bootstrap.servers": bootstrapServer,
 	}
 
-	_ = config.SetKey("group.id", groupId)
+	_ = config.SetKey("group.id", groupID)
 	_ = config.SetKey("auto.offset.reset", options.AutoOffsetReset)
 	_ = config.SetKey("statistics.interval.ms", int(options.StatInterval/time.Millisecond))
 	_ = config.SetKey("session.timeout.ms", int(options.SessionTimeout/time.Millisecond))
 	_ = config.SetKey("max.poll.interval.ms", int(options.MaxPollInterval/time.Millisecond))
 	_ = config.SetKey("go.events.channel.enable", true)
 	_ = config.SetKey("go.application.rebalance.enable", options.EnableRebalance)
-	_ = config.SetKey("enable.partition.eof", options.EnablePartitionEof)
+	_ = config.SetKey("enable.partition.eof", options.EnablePartitionEOF)
 
 	if options.GroupInstanceID != "" {
 		_ = config.SetKey("group.instance.id", options.GroupInstanceID)
@@ -55,8 +59,9 @@ func GetConsumerClient(bootstrapServer string, groupId string, username string, 
 	}, err
 }
 
+// NewConsumer creates a ConsumerAPI
 func (cfg *Kafka) NewConsumer(opts ...Option) (ConsumerAPI, error) {
-	clt, err := GetConsumerClient(cfg.BootstrapServer, cfg.GroupId, cfg.Username, cfg.Password, opts...)
+	clt, err := GetConsumerClient(cfg.BootstrapServer, cfg.GroupID, cfg.Username, cfg.Password, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,6 +70,7 @@ func (cfg *Kafka) NewConsumer(opts ...Option) (ConsumerAPI, error) {
 	}, nil
 }
 
+// SetTopics assign topics to the consumer
 func (c *Consumer) SetTopics(topics ...string) (ConsumerAPI, error) {
 	log := logx.WithName(nil, "Set topics")
 
@@ -82,10 +88,13 @@ func (c *Consumer) SetTopics(topics ...string) (ConsumerAPI, error) {
 	return c, nil
 }
 
+// GetTopics return topics assigned to the consumer
 func (c *Consumer) GetTopics() []string {
 	return c.topics
 }
 
+// Consume consumer message for consumer
+//gocyclo:ignore
 func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 
 	log := logx.WithName(nil, "Consumer")
@@ -142,11 +151,11 @@ func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 
 				case cgo.AssignedPartitions:
 					log.Info("Assigned Partitions", "code", e.String())
-					c.Assign(e.Partitions)
+					_ = c.Assign(e.Partitions)
 
 				case cgo.RevokedPartitions:
 					log.Info("Revoked Partitions", "code", e.String())
-					c.Unassign()
+					_ = c.Unassign()
 
 				case cgo.PartitionEOF:
 					log.Info("Partition EOF Reached", "code", e.String())
