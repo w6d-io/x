@@ -1,4 +1,12 @@
 
+<a name="v0.7.8"></a>
+## [v0.7.8](https://github.com/w6d-io/x/compare/v0.7.7...v0.7.8) (2021-11-29)
+
+### Chore
+
+* remove header text
+
+
 <a name="v0.7.7"></a>
 ## [v0.7.7](https://github.com/w6d-io/x/compare/v0.7.6...v0.7.7) (2021-11-29)
 
