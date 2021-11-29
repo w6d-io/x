@@ -1,6 +1,18 @@
 
+<a name="v0.7.6"></a>
+## [v0.7.6](https://github.com/w6d-io/x/compare/v0.7.5...v0.7.6) (2021-11-29)
+
+### Chore
+
+* add comment missing in flagx
+
+
+<a name="v0.7.5"></a>
+## [v0.7.5](https://github.com/w6d-io/x/compare/v0.7.4...v0.7.5) (2021-11-29)
+
+
 <a name="v0.7.4"></a>
-## [v0.7.4](https://github.com/w6d-io/x/compare/v0.7.3...v0.7.4) (2021-11-28)
+## [v0.7.4](https://github.com/w6d-io/x/compare/v0.7.3...v0.7.4) (2021-11-29)
 
 ### Chore
 
@@ -67,15 +79,15 @@
 
 
 <a name="v0.6.0"></a>
-## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.0...v0.6.0) (2021-11-10)
-
-
-<a name="v0.5.0"></a>
-## [v0.5.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.5.0) (2021-11-06)
+## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.6.0) (2021-11-10)
 
 
 <a name="v0.5.1"></a>
-## [v0.5.1](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.1) (2021-11-06)
+## [v0.5.1](https://github.com/w6d-io/x/compare/v0.5.0...v0.5.1) (2021-11-06)
+
+
+<a name="v0.5.0"></a>
+## [v0.5.0](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.0) (2021-11-06)
 
 ### Chore
 
