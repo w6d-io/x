@@ -73,7 +73,7 @@ func BeforeHttpFunc(ctx context.Context, req *http.Request) context.Context {
 	}
 	ctx = context.WithValue(ctx, "method", strings.ToUpper(req.Method))
 	ip := ReadRemoteIP(req)
-	ip, _, err := net.SplitHostPort(req.RemoteAddr)
+	ip, _, err := net.SplitHostPort(ip)
 	if err != nil {
 		ctrl.Log.WithName("Transport.beforeHttpFunc").WithValues("correlation_id", correlationID).Error(err, "get ipaddress failed")
 	}
