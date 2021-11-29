@@ -11,7 +11,7 @@ import (
 
 type MongoAPI interface {
 	SetCollection(string) MongoAPI
-	SetOption(...Option) MongoAPI
+	SetOptions(...Option) MongoAPI
 	Connect() error
 	Get(interface{}, interface{}) error
 	Insert(interface{}) error
