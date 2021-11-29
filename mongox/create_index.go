@@ -10,6 +10,7 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// CreateIndexes create index based on input mongo index model
 func (m *MongoDB) CreateIndexes(opt mongo.IndexModel) error {
 	log := logx.WithName(nil, "Create Index")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -25,6 +26,7 @@ func (m *MongoDB) CreateIndexes(opt mongo.IndexModel) error {
 	return err
 }
 
+// GetIndex return an IndexAPI from collection indexes
 func (c *ClientCollection) GetIndex() IndexAPI {
 	return &ClientIndex{
 		c.Indexes(),

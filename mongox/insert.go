@@ -11,6 +11,7 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// Insert single document value inside collection
 func (m *MongoDB) Insert(value interface{}) error {
 	log := logx.WithName(nil, "Insert")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -32,6 +33,7 @@ func (m *MongoDB) Insert(value interface{}) error {
 
 }
 
+// InsertBulk multiple documents value inside collection
 func (m *MongoDB) InsertBulk(operations []*mongo.UpdateOneModel) error {
 	log := logx.WithName(nil, "Insert Bulk")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

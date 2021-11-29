@@ -1,6 +1,6 @@
 package mongox
 
-// Option
+// Option ...
 type Option func(*Options)
 
 // Options ...
@@ -19,7 +19,7 @@ func NewOptions(opts ...Option) Options {
 	return opt
 }
 
-// Protobuf codec option
+// WithProtoCodec option
 func WithProtoCodec() Option {
 	return func(o *Options) {
 		o.ProtoCodec = true

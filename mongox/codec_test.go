@@ -31,12 +31,12 @@ var _ = Describe("Codec", func() {
 			})
 			It("proto decodec", func() {
 				ts := timestamppb.New(time.Now())
-				err := ProtoDeCodecFunc(bsoncodec.DecodeContext{}, &MockbsonRead{}, reflect.ValueOf(ts))
+				err := ProtoDeCodecFunc(bsoncodec.DecodeContext{}, &MockbsonReader{}, reflect.ValueOf(ts))
 				Expect(err).To(Succeed())
 			})
 			It("proto decodec error read time", func() {
 				ts := timestamppb.New(time.Now())
-				err := ProtoDeCodecFunc(bsoncodec.DecodeContext{}, &MockbsonRead{ErrReadDateTime: errors.New("error read time")}, reflect.ValueOf(ts))
+				err := ProtoDeCodecFunc(bsoncodec.DecodeContext{}, &MockbsonReader{ErrReadDateTime: errors.New("error read time")}, reflect.ValueOf(ts))
 				Expect(err).NotTo(Succeed())
 			})
 		})

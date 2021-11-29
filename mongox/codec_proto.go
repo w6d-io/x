@@ -13,6 +13,7 @@ import (
 var ts = timestamppb.New(time.Now())
 var tsProtoType = reflect.TypeOf(ts)
 
+// ProtoCodecFunc is the Proto Encoding Function
 var ProtoCodecFunc = func(_ bsoncodec.EncodeContext, vw bsonrw.ValueWriter, val reflect.Value) error {
 	if !val.IsValid() || val.Type() != tsProtoType {
 		return bsoncodec.ValueEncoderError{Name: "ObjectIDEncodeValue", Types: []reflect.Type{tsProtoType}, Received: val}
@@ -22,6 +23,7 @@ var ProtoCodecFunc = func(_ bsoncodec.EncodeContext, vw bsonrw.ValueWriter, val 
 	return vw.WriteDateTime(s.Seconds * 1000)
 }
 
+// ProtoDeCodecFunc is the Proto Dencoding Function
 var ProtoDeCodecFunc = func(_ bsoncodec.DecodeContext, vr bsonrw.ValueReader, val reflect.Value) error {
 	// this is the function when we read the datetime format
 	read, err := vr.ReadDateTime()
@@ -33,6 +35,7 @@ var ProtoDeCodecFunc = func(_ bsoncodec.DecodeContext, vr bsonrw.ValueReader, va
 	return nil
 }
 
+// ProtoCodecRegistry create a new bsoncodec with proto support
 func ProtoCodecRegistry() *bsoncodec.RegistryBuilder {
 
 	var primitiveCodecs bson.PrimitiveCodecs

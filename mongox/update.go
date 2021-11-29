@@ -10,6 +10,7 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// Update single document from a collection based on filter input
 func (m *MongoDB) Update(filter interface{}, update interface{}) error {
 	log := logx.WithName(nil, "Update")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -26,6 +27,7 @@ func (m *MongoDB) Update(filter interface{}, update interface{}) error {
 	return err
 }
 
+// Upsert single document from a collection based on filter input
 func (m *MongoDB) Upsert(filter interface{}, update interface{}) error {
 	log := logx.WithName(nil, "Upsert")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -42,6 +44,7 @@ func (m *MongoDB) Upsert(filter interface{}, update interface{}) error {
 	return err
 }
 
+// FindAndUpdate single document from a collection based on filter input
 func (m *MongoDB) FindAndUpdate(filter interface{}, update interface{}, data interface{}) error {
 	log := logx.WithName(nil, "FindOneAndUpdate")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

@@ -7,13 +7,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+// MockClient is the internal mock client
 type MockClient struct {
 	ClientAPI
-	ErrConnect   error
-	ErrPing      error
-	ErrInsertOne error
-	ErrBulkWrite error
-	// NumSessionsInProgress   int
+	ErrConnect              error
+	ErrPing                 error
+	ErrInsertOne            error
+	ErrBulkWrite            error
 	InsertOneResult         mongo.InsertOneResult
 	BulkWriteResult         mongo.BulkWriteResult
 	ErrFind                 error
@@ -32,21 +32,21 @@ type MockClient struct {
 	ErrIndex                error
 }
 
+// SetCollection is an internal mock method
 func (p *MockClient) SetCollection(collection string) {
 }
 
+// Connect is an internal mock method
 func (p *MockClient) Connect(ctx context.Context) error {
 	return p.ErrConnect
 }
 
+// Ping is an internal mock method
 func (p *MockClient) Ping(ctx context.Context, rp *readpref.ReadPref) error {
 	return p.ErrPing
 }
 
-// func (p *MockClient) NumberSessionsInProgress() int {
-// 	return p.NumSessionsInProgress
-// }
-
+// GetCollection is an internal mock method
 func (p *MockClient) GetCollection() CollectionAPI {
 	return &MockCollection{
 		ErrInsertOne:           p.ErrInsertOne,
@@ -68,12 +68,14 @@ func (p *MockClient) GetCollection() CollectionAPI {
 	}
 }
 
+// SetCursor is an internal mock method
 func (p *MockClient) SetCursor(*mongo.Cursor) CursorAPI {
 	return &MockCursor{
 		ErrorCursorAll: p.ErrorCursorAll,
 	}
 }
 
+// SetSingleResult is an internal mock method
 func (p *MockClient) SetSingleResult(*mongo.SingleResult) SingleResultAPI {
 	return &MockSingleResult{
 		ErrorSingleResultDecode: p.ErrorSingleResultDecode,

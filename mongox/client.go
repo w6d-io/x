@@ -11,22 +11,26 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// SetCollection set collection name for the internal client
 func (c *Client) SetCollection(collection string) {
 	c.Collection = collection
 }
 
+// GetCollection return a CollectionAPI
 func (c *Client) GetCollection() CollectionAPI {
 	return &ClientCollection{
 		c.Client.Database(c.Database).Collection(c.Collection),
 	}
 }
 
+// SetCursor return a CursorAPI
 func (c *Client) SetCursor(cursor *mongo.Cursor) CursorAPI {
 	return &ClientCursor{
 		cursor,
 	}
 }
 
+// SetSingleResult return a SingleResultAPI
 func (c *Client) SetSingleResult(singleresult *mongo.SingleResult) SingleResultAPI {
 	return &ClientSingleResult{
 		singleresult,
@@ -73,6 +77,7 @@ func (cfg *Mongo) New() MongoAPI {
 	}
 }
 
+// SetCollection set collection name for the public client
 func (m *MongoDB) SetCollection(collection string) MongoAPI {
 	m.Collection = collection
 	if m.ClientAPI != nil {
@@ -81,12 +86,14 @@ func (m *MongoDB) SetCollection(collection string) MongoAPI {
 	return m
 }
 
+// SetOptions set options for the public client
 func (m *MongoDB) SetOptions(opts ...Option) MongoAPI {
 	options := NewOptions(opts...)
 	m.options = &options
 	return m
 }
 
+// Connect public client to the internal client
 func (m *MongoDB) Connect() error {
 	log := logx.WithName(nil, "Connect")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

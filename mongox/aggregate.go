@@ -10,6 +10,7 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// Aggregate operator over mongo client
 func (m *MongoDB) Aggregate(pipeline mongo.Pipeline, data interface{}) error {
 	log := logx.WithName(nil, "Aggregate")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

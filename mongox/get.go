@@ -10,6 +10,7 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// Get return documents from collection based on input filter
 func (m *MongoDB) Get(filter interface{}, data interface{}) error {
 	log := logx.WithName(nil, "Get")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
