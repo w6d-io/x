@@ -14,14 +14,17 @@ import (
 	"github.com/w6d-io/x/errorx"
 )
 
+// Alive handles the liveness probe
 func Alive(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// AddAliveHandler add the liveness probe handler function into the http server
 func AddAliveHandler(r *mux.Router) {
 	r.Methods("GET").Path("/health/alive").HandlerFunc(Alive)
 }
 
+// AddReadyHandler add the readiness probe handler function into the http server
 func AddReadyHandler(r *mux.Router, c Checker) {
 	r.Methods("GET").Path("/health/ready").Handler(c)
 }
@@ -70,18 +73,22 @@ func (c Checker) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	successHandler(w, r)
 }
 
+// UnhealthyHandler type for unhealthy
 type UnhealthyHandler func(w http.ResponseWriter, r *http.Request, err error)
 
+// StatusResponse payloads to respect for check error
 type StatusResponse struct {
 	Status  string                 `json:"status"`
 	Details *StatusResponseDetails `json:"details,omitempty"`
 }
 
+// StatusResponseDetails details for payload error response
 type StatusResponseDetails struct {
 	Code    int    `json:"code,omitempty"`
 	Message string `json:"message,omitempty"`
 }
 
+// Check runs all healthy functions from the list
 func Check(checks []Checkable) (err error) {
 	var errs []error
 	for _, c := range checks {
@@ -102,6 +109,7 @@ func Check(checks []Checkable) (err error) {
 	return
 }
 
+// DefaultHealthyHandler is the handler used if no healthy handler present
 func DefaultHealthyHandler(w http.ResponseWriter, r *http.Request) {
 	err := httpx.EncodeHTTPResponse(r.Context(), w, StatusResponse{
 		Status: "ok",
@@ -109,6 +117,7 @@ func DefaultHealthyHandler(w http.ResponseWriter, r *http.Request) {
 	cmdx.ShouldWithCtx(r.Context(), "failed to write JSON response in DefaultHealthyHandler", err)
 }
 
+// DefaultUnhealthyHandler is the handler used if no unhealthy handler present
 func DefaultUnhealthyHandler(w http.ResponseWriter, r *http.Request, err error) {
 	e := errorx.GetError(err)
 	if e.StatusCode == 0 {
@@ -129,6 +138,7 @@ type checkGoRoutine struct {
 	threshold int
 }
 
+// Healthy from checkGoRoutine implements the checkable interface
 func (c checkGoRoutine) Healthy() error {
 	count := runtime.NumGoroutine()
 	if count > c.threshold {

@@ -2,6 +2,7 @@ package grpcx_test
 
 import (
 	"context"
+	"github.com/w6d-io/x/logx"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -32,11 +33,11 @@ var _ = Describe("run all grpc package functions", func() {
 				ctx = peer.NewContext(ctx, p)
 			})
 			nCtx := grpcx.BeforeGrpcFunc(ctx, nil)
-			Expect(nCtx.Value("correlation_id")).ToNot(BeNil())
-			Expect(nCtx.Value("kind")).ToNot(BeNil())
-			Expect(nCtx.Value("kind").(string)).To(Equal("grpc"))
-			Expect(nCtx.Value("ipaddress")).ToNot(BeNil())
-			Expect(nCtx.Value("ipaddress").(string)).To(Equal("127.0.0.1"))
+			Expect(nCtx.Value(logx.CorrelationId)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.Kind)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.Kind).(string)).To(Equal("grpc"))
+			Expect(nCtx.Value(logx.IpAddress)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.IpAddress).(string)).To(Equal("127.0.0.1"))
 		})
 		It("gets context field without ipaddress into metadata", func() {
 			var ctx context.Context
@@ -49,10 +50,10 @@ var _ = Describe("run all grpc package functions", func() {
 				ctx = peer.NewContext(ctx, p)
 			})
 			nCtx := grpcx.BeforeGrpcFunc(ctx, nil)
-			Expect(nCtx.Value("correlation_id")).ToNot(BeNil())
-			Expect(nCtx.Value("kind")).ToNot(BeNil())
-			Expect(nCtx.Value("kind").(string)).To(Equal("grpc"))
-			Expect(nCtx.Value("ipaddress")).To(BeNil())
+			Expect(nCtx.Value(logx.CorrelationId)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.Kind)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.Kind).(string)).To(Equal("grpc"))
+			Expect(nCtx.Value(logx.IpAddress)).To(BeNil())
 
 			By("set a bad ip address", func() {
 				addr := &mockAddr{Address: "127.0.0..1:8080"}
@@ -64,19 +65,18 @@ var _ = Describe("run all grpc package functions", func() {
 
 			})
 			nCtx = grpcx.BeforeGrpcFunc(ctx, nil)
-			Expect(nCtx.Value("correlation_id")).ToNot(BeNil())
-			Expect(nCtx.Value("kind")).ToNot(BeNil())
-			Expect(nCtx.Value("kind").(string)).To(Equal("grpc"))
-			Expect(nCtx.Value("ipaddress")).ToNot(BeNil())
-			Expect(nCtx.Value("ipaddress").(string)).To(Equal("-"))
-
+			Expect(nCtx.Value(logx.CorrelationId)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.Kind)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.Kind).(string)).To(Equal("grpc"))
+			Expect(nCtx.Value(logx.IpAddress)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.IpAddress).(string)).To(Equal("-"))
 			By("an empty context")
 			ctx = context.Background()
 			nCtx = grpcx.BeforeGrpcFunc(ctx, nil)
-			Expect(nCtx.Value("correlation_id")).ToNot(BeNil())
-			Expect(nCtx.Value("kind")).ToNot(BeNil())
-			Expect(nCtx.Value("kind").(string)).To(Equal("grpc"))
-			Expect(nCtx.Value("ipaddress")).To(BeNil())
+			Expect(nCtx.Value(logx.CorrelationId)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.Kind)).ToNot(BeNil())
+			Expect(nCtx.Value(logx.Kind).(string)).To(Equal("grpc"))
+			Expect(nCtx.Value(logx.IpAddress)).To(BeNil())
 		})
 	})
 })

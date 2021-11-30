@@ -8,6 +8,7 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// OsExit is for unit-test hack
 var OsExit = os.Exit
 
 // Must fatales with the optional message if err is not nil.

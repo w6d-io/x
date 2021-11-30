@@ -2,15 +2,14 @@ package grpcx
 
 import (
 	"context"
+	"github.com/w6d-io/x/logx"
 	"net"
 
 	grpctransport "github.com/go-kit/kit/transport/grpc"
 	"github.com/google/uuid"
+	"github.com/w6d-io/x/errorx"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
-	ctrl "sigs.k8s.io/controller-runtime"
-
-	"github.com/w6d-io/x/errorx"
 )
 
 // GrpcOptions is used in go-kit transport to handle error response and before http function
@@ -24,8 +23,8 @@ func GrpcOptions() []grpctransport.ServerOption {
 // BeforeGrpcFunc adds metadata into context
 func BeforeGrpcFunc(ctx context.Context, _ metadata.MD) context.Context {
 	correlationID := uuid.New().String()
-	ctx = context.WithValue(ctx, "correlation_id", correlationID)
-	ctx = context.WithValue(ctx, "kind", "grpc")
+	ctx = context.WithValue(ctx, logx.CorrelationId, correlationID)
+	ctx = context.WithValue(ctx, logx.Kind, "grpc")
 	p, ok := peer.FromContext(ctx)
 	if !ok {
 		return ctx
@@ -33,7 +32,7 @@ func BeforeGrpcFunc(ctx context.Context, _ metadata.MD) context.Context {
 	ip := p.Addr.String()
 	ip, _, err := net.SplitHostPort(ip)
 	if err != nil {
-		ctrl.Log.WithName("Transport.beforeGrpcFunc").WithValues("correlation_id", correlationID).Error(err, "get ipaddress failed")
+		logx.WithName(ctx, "Transport.beforeHttpFunc").Error(err, "get ipaddress failed")
 		return ctx
 	}
 	if ip != "" {
@@ -42,6 +41,6 @@ func BeforeGrpcFunc(ctx context.Context, _ metadata.MD) context.Context {
 			ip = "-"
 		}
 	}
-	ctx = context.WithValue(ctx, "ipaddress", ip)
+	ctx = context.WithValue(ctx, logx.IpAddress, ip)
 	return ctx
 }

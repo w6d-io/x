@@ -163,6 +163,7 @@ func UsageFor(short string) func() {
 	}
 }
 
+// CallerSkip increases the number of callers skipped by caller annotation
 var CallerSkip = 0
 
 // Init the default flags

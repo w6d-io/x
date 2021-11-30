@@ -57,14 +57,17 @@ type OutputFormatFlag struct {
 	value      string
 }
 
+// Type returns the output format flag type
 func (o *OutputFormatFlag) Type() string {
 	return "string"
 }
 
+// String returns the output format flag value
 func (o *OutputFormatFlag) String() string {
 	return o.value
 }
 
+// Set flag output format value
 func (o *OutputFormatFlag) Set(flagValue string) error {
 	flagValue = LookupEnvOrString("LOG_FORMAT", flagValue)
 	val := strings.ToLower(flagValue)
@@ -93,14 +96,17 @@ type LevelFlag struct {
 	value      string
 }
 
+// Type returns the level flag type
 func (l LevelFlag) Type() string {
 	return "string"
 }
 
+// String returns the level flag value
 func (l LevelFlag) String() string {
 	return l.value
 }
 
+// Set flag value for level
 func (l LevelFlag) Set(flagValue string) error {
 	flagValue = LookupEnvOrString("LOG_LEVEL", flagValue)
 	level, validLevel := levelStrings[strings.ToLower(flagValue)]
@@ -169,6 +175,7 @@ func UsageFor(short string) func() {
 	}
 }
 
+// CallerSkip increases the number of callers skipped by caller annotation
 var CallerSkip = 0
 
 // Init the default flags
