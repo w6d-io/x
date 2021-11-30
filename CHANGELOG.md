@@ -1,4 +1,12 @@
 
+<a name="v0.9.1"></a>
+## [v0.9.1](https://github.com/w6d-io/x/compare/v0.9.0...v0.9.1) (2021-11-30)
+
+### Chore
+
+* httpx: fix misspelling
+
+
 <a name="v0.9.0"></a>
 ## [v0.9.0](https://github.com/w6d-io/x/compare/v0.8.0...v0.9.0) (2021-11-30)
 

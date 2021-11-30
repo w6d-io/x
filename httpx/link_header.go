@@ -134,7 +134,7 @@ func ParseMultiple(headers []string) Links {
 }
 
 // parseParam takes a raw param in the form key="val" and
-// returns the key and value as seperate strings
+// returns the key and value as separate strings
 func parseParam(raw string) (key, val string) {
 
 	parts := strings.SplitN(raw, "=", 2)
