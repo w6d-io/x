@@ -10,13 +10,11 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/w6d-io/x/logx"
-
 	"github.com/w6d-io/x/errorx"
+	"github.com/w6d-io/x/logx"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/google/uuid"
-	ctrl "sigs.k8s.io/controller-runtime"
 )
 
 // ReadRemoteIP tries to find the public address ip from the http header
@@ -63,19 +61,20 @@ func EncodeHTTPResponse(ctx context.Context, w http.ResponseWriter, response int
 	return json.NewEncoder(w).Encode(response)
 }
 
-// BeforeHttpFunc adds metadata into context
-func BeforeHttpFunc(ctx context.Context, req *http.Request) context.Context {
+// BeforeHTTPFunc adds metadata into context
+func BeforeHTTPFunc(ctx context.Context, req *http.Request) context.Context {
 	correlationID := uuid.New().String()
-	ctx = context.WithValue(ctx, "correlation_id", correlationID)
-	ctx = context.WithValue(ctx, "kind", "http")
+	ctx = context.WithValue(ctx, logx.CorrelationID, correlationID)
+	ctx = context.WithValue(ctx, logx.Kind, "http")
 	if req.URL != nil {
-		ctx = context.WithValue(ctx, "uri", req.URL.RequestURI())
+		ctx = context.WithValue(ctx, logx.URI, req.URL.RequestURI())
 	}
-	ctx = context.WithValue(ctx, "method", strings.ToUpper(req.Method))
+	ctx = context.WithValue(ctx, logx.Method, strings.ToUpper(req.Method))
 	ip := ReadRemoteIP(req)
 	ip, _, err := net.SplitHostPort(ip)
 	if err != nil {
-		ctrl.Log.WithName("Transport.beforeHttpFunc").WithValues("correlation_id", correlationID).Error(err, "get ipaddress failed")
+		logx.WithName(ctx, "Transport.beforeHttpFunc").Error(err, "get ipaddress failed")
+		return ctx
 	}
 	if ip != "" {
 		userIP := net.ParseIP(ip)
@@ -83,6 +82,6 @@ func BeforeHttpFunc(ctx context.Context, req *http.Request) context.Context {
 			ip = "-"
 		}
 	}
-	ctx = context.WithValue(ctx, "ipaddress", ip)
+	ctx = context.WithValue(ctx, logx.IPAddress, ip)
 	return ctx
 }

@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// CreatePipelineFromTemplate creates a Mongodb Pipeline from json aggregation string
 func CreatePipelineFromTemplate(
 	aggTemplate string,
 	fields interface{},

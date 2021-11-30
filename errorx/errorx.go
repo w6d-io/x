@@ -13,6 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Interface of errorx
 type Interface interface {
 	// Error type representing an error condition, with the nil value representing no error.
 	Error() string
@@ -29,19 +30,20 @@ type Interface interface {
 	// ShowStack prints the stack if exist
 	ShowStack()
 
-	// Edit cause field from Error struct then return it
+	// EditCause field from Error struct then return it
 	EditCause(error) *Error
 
-	// Edit message field from Error struct then return it
+	// EditMessage field from Error struct then return it
 	EditMessage(string) *Error
 
-	// Edit code field from Error struct then return it
+	// EditCode field from Error struct then return it
 	EditCode(string) *Error
 
-	// Edit statusCode field from Error struct then return it
+	// EditStatusCode field from Error struct then return it
 	EditStatusCode(int) *Error
 }
 
+// Error ...
 type Error struct {
 	// Cause original error
 	Cause error `json:"-"`
@@ -78,38 +80,46 @@ var (
 	ErrServiceUnavailable = errors.New("service unavailable")
 )
 
+// EditCause returns Error by updating cause
 func (e Error) EditCause(err error) *Error {
 	e.Cause = err
 	return &e
 }
 
+// EditMessage returns Error by updating message
 func (e Error) EditMessage(msg string) *Error {
 	e.Message = msg
 	return &e
 }
 
+// EditCode returns Error by updating code
 func (e Error) EditCode(code string) *Error {
 	e.Code = code
 	return &e
 }
 
+// EditStatusCode returns Error by updating status code
 func (e Error) EditStatusCode(statusCode int) *Error {
 	e.StatusCode = statusCode
 	return &e
 }
 
+// GetMessage returns the message from Error
 func (e *Error) GetMessage() string {
 	return e.Message
 }
 
+// GetStatusCode returns the http status code from Error
 func (e *Error) GetStatusCode() int {
 	return e.StatusCode
 }
 
+// GetCause returns the cause from Error
 func (e *Error) GetCause() error {
 	return errors.Cause(e.Cause)
 }
 
+// ShowStack prints the stack trace if available
 func (e *Error) ShowStack() {
 	type stackTracer interface {
 		StackTrace() errors.StackTrace
@@ -122,6 +132,7 @@ func (e *Error) ShowStack() {
 	}
 }
 
+// Error return a custom message from Error
 func (e *Error) Error() string {
 	if e.Cause == nil {
 		return e.Message
@@ -132,18 +143,22 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("%s: %s", e.GetMessage(), e.GetCause())
 }
 
+// New returns Error with err in Cause and message
 func New(err error, message string) error {
 	return &Error{Cause: err, Message: message}
 }
 
+// NewHTTP returns Error with err in Cause, code in http.StatusCode and message
 func NewHTTP(err error, code int, message string) error {
 	return &Error{Cause: err, StatusCode: code, Message: message}
 }
 
+// Wrap the error with Error type
 func Wrap(err error, message string) error {
 	return &Error{Cause: errors.Wrap(err, message), Message: message}
 }
 
+// GetError builds or gets the Error type
 func GetError(err error) *Error {
 	if err == nil {
 		return nil
@@ -190,6 +205,7 @@ func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 // GRPC stuff
 //
 
+// NewErrorHandler returns an instance of transport.ErrorHandler
 func NewErrorHandler() transport.ErrorHandler {
 	return &errorHandler{}
 }

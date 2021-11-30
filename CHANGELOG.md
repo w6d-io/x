@@ -1,4 +1,14 @@
 
+<a name="v0.8.0"></a>
+## [v0.8.0](https://github.com/w6d-io/x/compare/v0.7.8...v0.8.0) (2021-11-30)
+
+### Chore
+
+* code style and lint BREAK CHANGE: change methods signature
+* mongox fix golint
+* kafkax fix golint
+
+
 <a name="v0.7.8"></a>
 ## [v0.7.8](https://github.com/w6d-io/x/compare/v0.7.7...v0.7.8) (2021-11-29)
 

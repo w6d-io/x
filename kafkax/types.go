@@ -10,7 +10,7 @@ type Header struct {
 	Value []byte // Header value (nil, empty, or binary)
 }
 
-// Client Event
+// Event is the Kafka message content
 type Event struct {
 	Key, Value []byte
 	Topic      string

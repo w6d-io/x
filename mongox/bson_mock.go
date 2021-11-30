@@ -2,19 +2,23 @@ package mongox
 
 import "go.mongodb.org/mongo-driver/bson/bsonrw"
 
+// MockbsonWriter structure used by codec
 type MockbsonWriter struct {
 	bsonrw.ValueWriter
 }
 
+// WriteDateTime API
 func (b *MockbsonWriter) WriteDateTime(dt int64) error {
 	return nil
 }
 
-type MockbsonRead struct {
+// MockbsonReader structure used by codec
+type MockbsonReader struct {
 	bsonrw.ValueReader
 	ErrReadDateTime error
 }
 
-func (b *MockbsonRead) ReadDateTime() (int64, error) {
+// ReadDateTime API
+func (b *MockbsonReader) ReadDateTime() (int64, error) {
 	return 10, b.ErrReadDateTime
 }

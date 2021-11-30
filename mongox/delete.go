@@ -10,8 +10,9 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// Delete remove documents from collection based on input filter setting
 func (m *MongoDB) Delete(filter interface{}) error {
-	log := logx.WithName(nil, "Delete")
+	log := logx.WithName(context.TODO(), "Delete")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {
@@ -27,8 +28,9 @@ func (m *MongoDB) Delete(filter interface{}) error {
 
 }
 
+// DeleteAll remove all documents inside collection
 func (m *MongoDB) DeleteAll() error {
-	log := logx.WithName(nil, "Delete All")
+	log := logx.WithName(context.TODO(), "Delete All")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {

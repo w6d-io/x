@@ -8,6 +8,7 @@ import (
 	"github.com/w6d-io/x/logx"
 )
 
+// OsExit is for unit-test hack
 var OsExit = os.Exit
 
 // Must fatales with the optional message if err is not nil.
@@ -21,7 +22,7 @@ func Must(err error, message string, args ...interface{}) {
 
 // Should checks the error and write the message in log in Error level
 func Should(message string, err error) {
-	ShouldWithCtx(nil, message, err)
+	ShouldWithCtx(context.TODO(), message, err)
 }
 
 // ShouldWithCtx checks the error and write the message in log in Error level

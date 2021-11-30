@@ -7,22 +7,42 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 )
 
+// Field is key for logs in context
+type Field int
+
+const (
+	// CorrelationID correlation ID key
+	CorrelationID Field = iota + 1
+	// Kind kind key
+	Kind
+	// Method http method key
+	Method
+	// IPAddress ip address key
+	IPAddress
+	// URI http uri
+	URI
+)
+
+// FieldString match string and Field
+var FieldString = map[string]Field{
+	"correlation_id": CorrelationID,
+	"kind":           Kind,
+	"method":         Method,
+	"ipaddress":      IPAddress,
+	"uri":            URI,
+}
+
+//func (f Field) String() string {
+//	//return FieldString[f]
+//}
+
 // GetLogValues get values from context and return a key/value interface
 func GetLogValues(ctx context.Context) []interface{} {
 	var values []interface{}
-	if ctx == nil {
-		return values
-	}
-	keys := []string{
-		"correlation_id",
-		"kind",
-		"method",
-		"ipaddress",
-		"uri",
-	}
-	for _, key := range keys {
-		if ctx.Value(key) != nil {
-			values = append(values, key)
+
+	for text, key := range FieldString {
+		if ctx != nil && ctx.Value(key) != nil {
+			values = append(values, text)
 			values = append(values, ctx.Value(key))
 		}
 	}
@@ -36,12 +56,8 @@ func WithName(ctx context.Context, name string) logr.Logger {
 
 // GetCorrelationID get the correlation id from the context or return an empty string
 func GetCorrelationID(ctx context.Context) string {
-	if ctx == nil {
-		return ""
+	if ctx != nil && ctx.Value(CorrelationID) != nil {
+		return ctx.Value(CorrelationID).(string)
 	}
-	value := ctx.Value("correlation_id")
-	if value == nil {
-		return ""
-	}
-	return value.(string)
+	return ""
 }

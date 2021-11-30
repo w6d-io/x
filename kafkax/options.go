@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Option
+// Option ...
 type Option func(*Options)
 
 // Options ...
@@ -30,7 +30,7 @@ type Options struct {
 	ConfigMapKey       string
 	AutoOffsetReset    string
 	EnableRebalance    bool
-	EnablePartitionEof bool
+	EnablePartitionEOF bool
 }
 
 // NewOptions ...
@@ -57,7 +57,7 @@ func NewOptions(opts ...Option) Options {
 		ConfigMapKey:       "kafka",
 		AutoOffsetReset:    "earliest",
 		EnableRebalance:    false,
-		EnablePartitionEof: false,
+		EnablePartitionEOF: false,
 	}
 	for _, o := range opts {
 		o(&opt)
@@ -184,21 +184,21 @@ func ConfigMapKey(s string) Option {
 	}
 }
 
-// Rebalance option ...
+// Rebalance option
 func Rebalance(enable bool) Option {
 	return func(o *Options) {
 		o.EnableRebalance = enable
 	}
 }
 
-// PartitionEof option ...
-func PartitionEof(enable bool) Option {
+// PartitionEOF option
+func PartitionEOF(enable bool) Option {
 	return func(o *Options) {
-		o.EnablePartitionEof = enable
+		o.EnablePartitionEOF = enable
 	}
 }
 
-// Earliest Offset Strategy ...
+// EarliestOffset Strategy
 func EarliestOffset() Option {
 	return func(o *Options) {
 		o.AutoOffsetReset = "earliest"

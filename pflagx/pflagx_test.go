@@ -27,7 +27,7 @@ var _ = Describe("Flags", func() {
 		//	}
 		//})
 		It("JsonEncoderConfig", func() {
-			Expect(pflagx.JsonEncoderConfig()).ToNot(BeNil())
+			Expect(pflagx.JSONEncoderConfig()).ToNot(BeNil())
 		})
 		It("TextEncoderConfig", func() {
 			Expect(pflagx.TextEncoderConfig()).ToNot(BeNil())

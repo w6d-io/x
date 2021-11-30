@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+// MongoAPI is the public Mongo API interface
 type MongoAPI interface {
 	SetCollection(string) MongoAPI
 	SetOptions(...Option) MongoAPI
@@ -26,6 +27,7 @@ type MongoAPI interface {
 	Incr(string) (int64, error)
 }
 
+// ClientAPI is the internal Client API interface
 type ClientAPI interface {
 	SetCollection(collection string)
 	GetCollection() CollectionAPI
@@ -35,6 +37,7 @@ type ClientAPI interface {
 	Ping(context.Context, *readpref.ReadPref) error
 }
 
+// CollectionAPI is the internal Collection API interface
 type CollectionAPI interface {
 	GetIndex() IndexAPI
 	InsertOne(context.Context, interface{}, ...*mgoOtions.InsertOneOptions) (*mongo.InsertOneResult, error)
@@ -48,16 +51,19 @@ type CollectionAPI interface {
 	Aggregate(context.Context, interface{}, ...*options.AggregateOptions) (*mongo.Cursor, error)
 }
 
+// CursorAPI is the internal Cursor API interface
 type CursorAPI interface {
 	Next(context.Context) bool
 	All(context.Context, interface{}) error
 	Decode(interface{}) error
 }
 
+// SingleResultAPI is the internal Single Result API interface
 type SingleResultAPI interface {
 	Decode(interface{}) error
 }
 
+// IndexAPI is the internal Index API interface
 type IndexAPI interface {
 	CreateOne(context.Context, mongo.IndexModel, ...*options.CreateIndexesOptions) (string, error)
 }

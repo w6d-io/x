@@ -24,8 +24,8 @@ var _ = Describe("Flags", func() {
 		//		Encoder: zapcore.NewConsoleEncoder(flagx.TextEncoderConfig()),
 		//	}
 		//})
-		It("JsonEncoderConfig", func() {
-			Expect(flagx.JsonEncoderConfig()).ToNot(BeNil())
+		It("JSONEncoderConfig", func() {
+			Expect(flagx.JSONEncoderConfig()).ToNot(BeNil())
 		})
 		It("TextEncoderConfig", func() {
 			Expect(flagx.TextEncoderConfig()).ToNot(BeNil())

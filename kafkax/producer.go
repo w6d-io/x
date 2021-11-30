@@ -1,6 +1,7 @@
 package kafkax
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -10,10 +11,13 @@ import (
 )
 
 var (
-	ErrProducer              = errors.New("producer error")
+	// ErrProducer ...
+	ErrProducer = errors.New("producer error")
+	// ErrProducerTopicIsNotSet ...
 	ErrProducerTopicIsNotSet = errors.New("topic for producing message is not set")
 )
 
+// GetProducerClient returns a ClientProducerAPI
 func GetProducerClient(bootstrapServer string, username string, password string, opts ...Option) (ClientProducerAPI, error) {
 	options := NewOptions(opts...)
 
@@ -36,6 +40,7 @@ func GetProducerClient(bootstrapServer string, username string, password string,
 	}, err
 }
 
+// NewProducer creates a ProducerAPI
 func (cfg *Kafka) NewProducer(opts ...Option) (ProducerAPI, error) {
 	clt, err := GetProducerClient(cfg.BootstrapServer, cfg.Username, cfg.Password, opts...)
 	if err != nil {
@@ -46,18 +51,21 @@ func (cfg *Kafka) NewProducer(opts ...Option) (ProducerAPI, error) {
 	}, nil
 }
 
+// SetTopic assign topic to the producer
 func (p *Producer) SetTopic(topic string) ProducerAPI {
 	p.topic = topic
 	return p
 }
 
+// GetTopic return topic assigned to the producer
 func (p *Producer) GetTopic() string {
 	return p.topic
 }
 
+// Produce send message
 func (p *Producer) Produce(key string, value []byte, opts ...Option) error {
 
-	log := logx.WithName(nil, "Producer")
+	log := logx.WithName(context.TODO(), "Producer")
 
 	topic := p.GetTopic()
 

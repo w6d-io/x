@@ -2,6 +2,7 @@ package httpx_test
 
 import (
 	"context"
+	"github.com/w6d-io/x/logx"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -34,10 +35,10 @@ var _ = Describe("", func() {
 			req := &http.Request{
 				RemoteAddr: "10.0.1.1:4242",
 			}
-			ctx := httpx.BeforeHttpFunc(context.Background(), req)
-			Expect(ctx.Value("correlation_id")).ShouldNot(BeNil())
-			Expect(ctx.Value("kind")).ShouldNot(BeNil())
-			Expect(ctx.Value("ipaddress")).ShouldNot(BeNil())
+			ctx := httpx.BeforeHTTPFunc(context.Background(), req)
+			Expect(ctx.Value(logx.CorrelationID)).ShouldNot(BeNil())
+			Expect(ctx.Value(logx.Kind)).ShouldNot(BeNil())
+			Expect(ctx.Value(logx.IPAddress)).ShouldNot(BeNil())
 		})
 	})
 	Context("On bad request", func() {
@@ -45,8 +46,8 @@ var _ = Describe("", func() {
 			req := &http.Request{
 				RemoteAddr: "[10.0.1.1:4242",
 			}
-			ctx := httpx.BeforeHttpFunc(context.Background(), req)
-			Expect(ctx.Value("ipaddress")).Should(BeEmpty())
+			ctx := httpx.BeforeHTTPFunc(context.Background(), req)
+			Expect(ctx.Value(logx.IPAddress)).Should(BeNil())
 		})
 		It("fills ip address with an hyphen", func() {
 			req := &http.Request{
@@ -55,8 +56,8 @@ var _ = Describe("", func() {
 					Path: "/test",
 				},
 			}
-			ctx := httpx.BeforeHttpFunc(context.Background(), req)
-			Expect(ctx.Value("ipaddress")).Should(Equal("-"))
+			ctx := httpx.BeforeHTTPFunc(context.Background(), req)
+			Expect(ctx.Value(logx.IPAddress).(string)).Should(Equal("-"))
 		})
 	})
 	Context("Encode http response", func() {

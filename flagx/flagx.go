@@ -15,8 +15,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
 
-// JsonEncoderConfig returns an opinionated EncoderConfig
-func JsonEncoderConfig() zapcore.EncoderConfig {
+// JSONEncoderConfig returns an opinionated EncoderConfig
+func JSONEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
 		TimeKey:        "ts",
 		LevelKey:       "level",
@@ -66,7 +66,7 @@ func (o *OutputFormatFlag) Set(flagValue string) error {
 	val := strings.ToLower(flagValue)
 	switch val {
 	case "json":
-		o.ZapOptions.Encoder = zapcore.NewJSONEncoder(JsonEncoderConfig())
+		o.ZapOptions.Encoder = zapcore.NewJSONEncoder(JSONEncoderConfig())
 	case "text":
 		o.ZapOptions.Encoder = zapcore.NewConsoleEncoder(TextEncoderConfig())
 	default:
@@ -97,9 +97,10 @@ func (l LevelFlag) String() string {
 // Set the level flag
 func (l LevelFlag) Set(flagValue string) error {
 	flagValue = LookupEnvOrString("LOG_LEVEL", flagValue)
-	level, validLevel := levelStrings[strings.ToLower(flagValue)]
+	l.value = flagValue
+	level, validLevel := levelStrings[strings.ToLower(l.value)]
 	if !validLevel {
-		logLevel, err := strconv.Atoi(flagValue)
+		logLevel, err := strconv.Atoi(l.value)
 		if err != nil {
 			return fmt.Errorf("invalid log level \"%s\"", flagValue)
 		}
@@ -112,7 +113,7 @@ func (l LevelFlag) Set(flagValue string) error {
 	} else {
 		l.ZapOptions.Level = level
 	}
-	l.value = flagValue
+
 	return nil
 }
 
@@ -163,6 +164,7 @@ func UsageFor(short string) func() {
 	}
 }
 
+// CallerSkip increases the number of callers skipped by caller annotation
 var CallerSkip = 0
 
 // Init the default flags
