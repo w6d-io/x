@@ -13,6 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Interface of errorx
 type Interface interface {
 	// Error type representing an error condition, with the nil value representing no error.
 	Error() string
@@ -29,19 +30,20 @@ type Interface interface {
 	// ShowStack prints the stack if exist
 	ShowStack()
 
-	// Edit cause field from Error struct then return it
+	// EditCause field from Error struct then return it
 	EditCause(error) *Error
 
-	// Edit message field from Error struct then return it
+	// EditMessage field from Error struct then return it
 	EditMessage(string) *Error
 
-	// Edit code field from Error struct then return it
+	// EditCode field from Error struct then return it
 	EditCode(string) *Error
 
-	// Edit statusCode field from Error struct then return it
+	// EditStatusCode field from Error struct then return it
 	EditStatusCode(int) *Error
 }
 
+// Error ...
 type Error struct {
 	// Cause original error
 	Cause error `json:"-"`

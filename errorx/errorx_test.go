@@ -51,10 +51,10 @@ var _ = Describe("Error x", func() {
 			Expect(errorx.Error2code(errorx.ErrMethod)).To(Equal(http.StatusBadRequest))
 			Expect(errorx.Error2code(errors.New("internal server error test"))).To(Equal(http.StatusInternalServerError))
 			w := httptest.NewRecorder()
-			errorx.ErrorEncoder(nil, errorx.ErrTokenCheck, w)
+			errorx.ErrorEncoder(context.TODO(), errorx.ErrTokenCheck, w)
 			Expect(w.Code).To(Equal(http.StatusServiceUnavailable))
 			w = httptest.NewRecorder()
-			errorx.ErrorEncoder(nil, &errorx.Error{
+			errorx.ErrorEncoder(context.TODO(), &errorx.Error{
 				Cause:      errorx.ErrServiceUnavailable,
 				StatusCode: 600,
 				Code:       "unit_test_with_error",

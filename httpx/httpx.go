@@ -61,10 +61,10 @@ func EncodeHTTPResponse(ctx context.Context, w http.ResponseWriter, response int
 	return json.NewEncoder(w).Encode(response)
 }
 
-// BeforeHttpFunc adds metadata into context
-func BeforeHttpFunc(ctx context.Context, req *http.Request) context.Context {
+// BeforeHTTPFunc adds metadata into context
+func BeforeHTTPFunc(ctx context.Context, req *http.Request) context.Context {
 	correlationID := uuid.New().String()
-	ctx = context.WithValue(ctx, logx.CorrelationId, correlationID)
+	ctx = context.WithValue(ctx, logx.CorrelationID, correlationID)
 	ctx = context.WithValue(ctx, logx.Kind, "http")
 	if req.URL != nil {
 		ctx = context.WithValue(ctx, logx.URI, req.URL.RequestURI())
@@ -82,6 +82,6 @@ func BeforeHttpFunc(ctx context.Context, req *http.Request) context.Context {
 			ip = "-"
 		}
 	}
-	ctx = context.WithValue(ctx, logx.IpAddress, ip)
+	ctx = context.WithValue(ctx, logx.IPAddress, ip)
 	return ctx
 }

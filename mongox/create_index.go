@@ -12,7 +12,7 @@ import (
 
 // CreateIndexes create index based on input mongo index model
 func (m *MongoDB) CreateIndexes(opt mongo.IndexModel) error {
-	log := logx.WithName(nil, "Create Index")
+	log := logx.WithName(context.TODO(), "Create Index")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {

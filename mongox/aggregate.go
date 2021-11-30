@@ -12,7 +12,7 @@ import (
 
 // Aggregate operator over mongo client
 func (m *MongoDB) Aggregate(pipeline mongo.Pipeline, data interface{}) error {
-	log := logx.WithName(nil, "Aggregate")
+	log := logx.WithName(context.TODO(), "Aggregate")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {

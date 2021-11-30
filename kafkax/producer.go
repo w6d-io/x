@@ -1,6 +1,7 @@
 package kafkax
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -64,7 +65,7 @@ func (p *Producer) GetTopic() string {
 // Produce send message
 func (p *Producer) Produce(key string, value []byte, opts ...Option) error {
 
-	log := logx.WithName(nil, "Producer")
+	log := logx.WithName(context.TODO(), "Producer")
 
 	topic := p.GetTopic()
 

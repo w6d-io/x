@@ -72,7 +72,7 @@ func (cfg *Kafka) NewConsumer(opts ...Option) (ConsumerAPI, error) {
 
 // SetTopics assign topics to the consumer
 func (c *Consumer) SetTopics(topics ...string) (ConsumerAPI, error) {
-	log := logx.WithName(nil, "Set topics")
+	log := logx.WithName(context.TODO(), "Set topics")
 
 	if c.topicsReqChan == nil {
 		c.topicsReqChan = make(chan []string, 1)
@@ -97,7 +97,7 @@ func (c *Consumer) GetTopics() []string {
 //gocyclo:ignore
 func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 
-	log := logx.WithName(nil, "Consumer")
+	log := logx.WithName(context.TODO(), "Consumer")
 
 	if c.topicsReqChan == nil {
 		return nil, ErrConsumerTopicsIsNotSet

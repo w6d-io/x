@@ -1,6 +1,7 @@
 package mongox
 
 import (
+	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
@@ -10,7 +11,7 @@ import (
 
 // Incr behaves a counter based on a key string value
 func (m *MongoDB) Incr(key string) (int64, error) {
-	log := logx.WithName(nil, "Incr")
+	log := logx.WithName(context.TODO(), "Incr")
 	if err := m.Connect(); err != nil {
 		return -1, errorx.Wrap(err, "fail connect")
 	}

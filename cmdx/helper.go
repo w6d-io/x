@@ -22,7 +22,7 @@ func Must(err error, message string, args ...interface{}) {
 
 // Should checks the error and write the message in log in Error level
 func Should(message string, err error) {
-	ShouldWithCtx(nil, message, err)
+	ShouldWithCtx(context.TODO(), message, err)
 }
 
 // ShouldWithCtx checks the error and write the message in log in Error level

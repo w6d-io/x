@@ -9,7 +9,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	. "github.com/w6d-io/x/mongox"
+	"github.com/w6d-io/x/mongox"
 )
 
 var _ = Describe("Aggregate", func() {
@@ -21,8 +21,8 @@ var _ = Describe("Aggregate", func() {
 		AfterEach(func() {
 		})
 		It("aggregate success", func() {
-			m := &MongoDB{
-				ClientAPI:  &MockClient{},
+			m := &mongox.MongoDB{
+				ClientAPI:  &mongox.MockClient{},
 				Collection: "collection",
 			}
 			var v interface{}
@@ -30,8 +30,8 @@ var _ = Describe("Aggregate", func() {
 			Expect(err).To(Succeed())
 		})
 		It("aggregate error", func() {
-			m := &MongoDB{
-				ClientAPI: &MockClient{
+			m := &mongox.MongoDB{
+				ClientAPI: &mongox.MockClient{
 					ErrAggregate: errors.New("error aggregate"),
 				},
 				Collection: "collection",
@@ -41,8 +41,8 @@ var _ = Describe("Aggregate", func() {
 			Expect(err).NotTo(Succeed())
 		})
 		It("aggregate error connect", func() {
-			m := &MongoDB{
-				ClientAPI: &MockClient{
+			m := &mongox.MongoDB{
+				ClientAPI: &mongox.MockClient{
 					ErrConnect: errors.New("error connect"),
 				},
 				Collection: "collection",
@@ -52,8 +52,8 @@ var _ = Describe("Aggregate", func() {
 			Expect(err).NotTo(Succeed())
 		})
 		It("aggregate error cursor", func() {
-			m := &MongoDB{
-				ClientAPI: &MockClient{
+			m := &mongox.MongoDB{
+				ClientAPI: &mongox.MockClient{
 					ErrorCursorAll: errors.New("error cursor"),
 				},
 				Collection: "collection",

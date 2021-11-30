@@ -12,7 +12,7 @@ import (
 
 // Update single document from a collection based on filter input
 func (m *MongoDB) Update(filter interface{}, update interface{}) error {
-	log := logx.WithName(nil, "Update")
+	log := logx.WithName(context.TODO(), "Update")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {
@@ -29,7 +29,7 @@ func (m *MongoDB) Update(filter interface{}, update interface{}) error {
 
 // Upsert single document from a collection based on filter input
 func (m *MongoDB) Upsert(filter interface{}, update interface{}) error {
-	log := logx.WithName(nil, "Upsert")
+	log := logx.WithName(context.TODO(), "Upsert")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {
@@ -46,7 +46,7 @@ func (m *MongoDB) Upsert(filter interface{}, update interface{}) error {
 
 // FindAndUpdate single document from a collection based on filter input
 func (m *MongoDB) FindAndUpdate(filter interface{}, update interface{}, data interface{}) error {
-	log := logx.WithName(nil, "FindOneAndUpdate")
+	log := logx.WithName(context.TODO(), "FindOneAndUpdate")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {

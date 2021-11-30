@@ -23,7 +23,7 @@ func GrpcOptions() []grpctransport.ServerOption {
 // BeforeGrpcFunc adds metadata into context
 func BeforeGrpcFunc(ctx context.Context, _ metadata.MD) context.Context {
 	correlationID := uuid.New().String()
-	ctx = context.WithValue(ctx, logx.CorrelationId, correlationID)
+	ctx = context.WithValue(ctx, logx.CorrelationID, correlationID)
 	ctx = context.WithValue(ctx, logx.Kind, "grpc")
 	p, ok := peer.FromContext(ctx)
 	if !ok {
@@ -41,6 +41,6 @@ func BeforeGrpcFunc(ctx context.Context, _ metadata.MD) context.Context {
 			ip = "-"
 		}
 	}
-	ctx = context.WithValue(ctx, logx.IpAddress, ip)
+	ctx = context.WithValue(ctx, logx.IPAddress, ip)
 	return ctx
 }

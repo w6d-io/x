@@ -35,10 +35,10 @@ var _ = Describe("", func() {
 			req := &http.Request{
 				RemoteAddr: "10.0.1.1:4242",
 			}
-			ctx := httpx.BeforeHttpFunc(context.Background(), req)
-			Expect(ctx.Value(logx.CorrelationId)).ShouldNot(BeNil())
+			ctx := httpx.BeforeHTTPFunc(context.Background(), req)
+			Expect(ctx.Value(logx.CorrelationID)).ShouldNot(BeNil())
 			Expect(ctx.Value(logx.Kind)).ShouldNot(BeNil())
-			Expect(ctx.Value(logx.IpAddress)).ShouldNot(BeNil())
+			Expect(ctx.Value(logx.IPAddress)).ShouldNot(BeNil())
 		})
 	})
 	Context("On bad request", func() {
@@ -46,8 +46,8 @@ var _ = Describe("", func() {
 			req := &http.Request{
 				RemoteAddr: "[10.0.1.1:4242",
 			}
-			ctx := httpx.BeforeHttpFunc(context.Background(), req)
-			Expect(ctx.Value(logx.IpAddress)).Should(BeNil())
+			ctx := httpx.BeforeHTTPFunc(context.Background(), req)
+			Expect(ctx.Value(logx.IPAddress)).Should(BeNil())
 		})
 		It("fills ip address with an hyphen", func() {
 			req := &http.Request{
@@ -56,8 +56,8 @@ var _ = Describe("", func() {
 					Path: "/test",
 				},
 			}
-			ctx := httpx.BeforeHttpFunc(context.Background(), req)
-			Expect(ctx.Value(logx.IpAddress).(string)).Should(Equal("-"))
+			ctx := httpx.BeforeHTTPFunc(context.Background(), req)
+			Expect(ctx.Value(logx.IPAddress).(string)).Should(Equal("-"))
 		})
 	})
 	Context("Encode http response", func() {
