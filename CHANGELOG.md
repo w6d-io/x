@@ -1,6 +1,18 @@
 
+<a name="v0.9.0"></a>
+## [v0.9.0](https://github.com/w6d-io/x/compare/v0.8.0...v0.9.0) (2021-11-30)
+
+### BREAKING CHANGE
+
+* p/flagx improve init
+
+
 <a name="v0.8.0"></a>
 ## [v0.8.0](https://github.com/w6d-io/x/compare/v0.7.8...v0.8.0) (2021-11-30)
+
+### BREAKING CHANGE
+
+* logx change context key
 
 ### Chore
 
@@ -280,6 +292,10 @@
 
 <a name="v0.3.0"></a>
 ## [v0.3.0](https://github.com/w6d-io/x/compare/v0.2.4...v0.3.0) (2021-10-07)
+
+### BREAKING CHANGE
+
+* change flag to pflag from spf13
 
 
 <a name="v0.2.4"></a>

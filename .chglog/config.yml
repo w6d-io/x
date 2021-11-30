@@ -15,6 +15,9 @@ options:
         - refactor
         - style
         - chore
+        - break
+        - BREAKING CHANGE
+        - BREAK CHANGE
   commit_groups:
     title_maps:
       feat: Features
@@ -23,8 +26,11 @@ options:
       refactor: Code Refactoring
       style: Style
       chore: Chore
+      break: BREAKING CHANGE
+      BREAKING CHANGE: BREAKING CHANGE
+      BREAK CHANGE: BREAKING CHANGE
   header:
-    pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
+    pattern: "^(\\w*(?:\\s\\w*)?)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
     pattern_maps:
       - Type
       - Scope
