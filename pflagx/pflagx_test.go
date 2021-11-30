@@ -38,7 +38,9 @@ var _ = Describe("Flags", func() {
 	})
 	Context("Check Init", func() {
 		It("returns the config path", func() {
-			Expect(pflagx.Init(&cobra.Command{})).ToNot(BeNil())
+			configFile := ""
+			pflagx.Init(&cobra.Command{}, &configFile)
+			Expect(configFile).ToNot(BeEmpty())
 		})
 	})
 	Context("Check flags methods", func() {

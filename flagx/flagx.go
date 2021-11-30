@@ -168,9 +168,9 @@ func UsageFor(short string) func() {
 var CallerSkip = 0
 
 // Init the default flags
-func Init() *string {
+func Init(configPath *string) {
 
-	configPath := flag.String("config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
+	flag.StringVar(configPath, "config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
 
 	opts := zap.Options{
 		Development:     os.Getenv("RELEASE") != "prod",
@@ -181,7 +181,4 @@ func Init() *string {
 	flag.Usage = UsageFor(os.Args[0] + " [flags]")
 	flag.Parse()
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(CallerSkip))))
-
-	return configPath
-
 }

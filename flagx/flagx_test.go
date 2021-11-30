@@ -36,7 +36,9 @@ var _ = Describe("Flags", func() {
 	})
 	Context("Check Init", func() {
 		It("returns the config path", func() {
-			Expect(flagx.Init()).ToNot(BeNil())
+			configFile := ""
+			flagx.Init(&configFile)
+			Expect(configFile).ToNot(BeEmpty())
 		})
 	})
 	Context("Check flags methods", func() {
