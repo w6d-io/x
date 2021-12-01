@@ -2,10 +2,11 @@ package httpx_test
 
 import (
 	"context"
-	"github.com/w6d-io/x/logx"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+
+	"github.com/w6d-io/x/logx"
 
 	"github.com/pkg/errors"
 

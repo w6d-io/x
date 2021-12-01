@@ -2,14 +2,16 @@ package grpcx
 
 import (
 	"context"
-	"github.com/w6d-io/x/logx"
 	"net"
+
+	"github.com/w6d-io/x/logx"
 
 	grpctransport "github.com/go-kit/kit/transport/grpc"
 	"github.com/google/uuid"
-	"github.com/w6d-io/x/errorx"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
+
+	"github.com/w6d-io/x/errorx"
 )
 
 // GrpcOptions is used in go-kit transport to handle error response and before http function
