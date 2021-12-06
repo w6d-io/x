@@ -9,7 +9,6 @@ type Kafka struct {
 	BootstrapServer string `json:"boostrapserver" mapstructure:"boostrapserver"`
 	Username        string `json:"username" mapstructure:"username"`
 	Password        string `json:"password" mapstructure:"password"`
-	GroupID         string `json:"groupid" mapstructure:"groupid"`
 }
 
 // ClientConsumer is the internal Kafka client consumer

@@ -38,7 +38,7 @@ var _ = Describe("Consumer", func() {
 				Password:        "test",
 				BootstrapServer: "localhost:9092",
 			}
-			_, err := k.NewConsumer(opts...)
+			_, err := k.NewConsumer("groupID", opts...)
 			Expect(err).ToNot(Succeed())
 			Expect(err.Error()).To(Equal("Invalid value \"Unknown\" for configuration property \"security.protocol\""))
 		})
@@ -51,7 +51,7 @@ var _ = Describe("Consumer", func() {
 				Password:        "test",
 				BootstrapServer: "localhost:9092",
 			}
-			_, err := k.NewConsumer(opts...)
+			_, err := k.NewConsumer("groupID", opts...)
 			Expect(err).ToNot(Succeed())
 			Expect(err.Error()).To(Equal("Invalid value \"deep\" for configuration property \"debug\""))
 		})
@@ -72,7 +72,7 @@ var _ = Describe("Consumer", func() {
 				Password:        "test",
 				BootstrapServer: "localhost:9092",
 			}
-			_, err := k.NewConsumer(opts...)
+			_, err := k.NewConsumer("groupID", opts...)
 			Expect(err).To(Succeed())
 		})
 	})
