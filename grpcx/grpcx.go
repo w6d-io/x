@@ -3,6 +3,7 @@ package grpcx
 import (
 	"context"
 	"net"
+	"strings"
 
 	"github.com/w6d-io/x/logx"
 
@@ -32,10 +33,13 @@ func BeforeGrpcFunc(ctx context.Context, _ metadata.MD) context.Context {
 		return ctx
 	}
 	ip := p.Addr.String()
-	ip, _, err := net.SplitHostPort(ip)
-	if err != nil {
-		logx.WithName(ctx, "Transport.beforeHttpFunc").Error(err, "get ipaddress failed")
-		return ctx
+	if strings.Contains(ip, ":") {
+		var err error
+		ip, _, err = net.SplitHostPort(ip)
+		if err != nil {
+			logx.WithName(ctx, "Transport.beforeHttpFunc").Error(err, "get ipaddress failed")
+			ip = "-"
+		}
 	}
 	if ip != "" {
 		userIP := net.ParseIP(ip)

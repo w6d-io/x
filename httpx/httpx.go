@@ -71,10 +71,13 @@ func BeforeHTTPFunc(ctx context.Context, req *http.Request) context.Context {
 	}
 	ctx = context.WithValue(ctx, logx.Method, strings.ToUpper(req.Method))
 	ip := ReadRemoteIP(req)
-	ip, _, err := net.SplitHostPort(ip)
-	if err != nil {
-		logx.WithName(ctx, "Transport.beforeHttpFunc").Error(err, "get ipaddress failed")
-		return ctx
+	if strings.Contains(ip, ":") {
+		var err error
+		ip, _, err = net.SplitHostPort(ip)
+		if err != nil {
+			logx.WithName(ctx, "Transport.beforeHttpFunc").Error(err, "get ipaddress failed")
+			return ctx
+		}
 	}
 	if ip != "" {
 		userIP := net.ParseIP(ip)
