@@ -1,10 +1,19 @@
 
+<a name="v0.9.4"></a>
+## [v0.9.4](https://github.com/w6d-io/x/compare/v0.9.3...v0.9.4) (2021-12-06)
+
+### Chore
+
+* kafkax groupid is set while creating a new consumer ([4f5cc82]("https://github.com/w6d-io/x/commit/4f5cc82ff154acb6b99df5e1c9c92fa617cb32ce"))
+* kafkax add headers option for producer ([8f27d5e]("https://github.com/w6d-io/x/commit/8f27d5e5bc67d8f162691214f550db56869906c4"))
+
+
 <a name="v0.9.3"></a>
 ## [v0.9.3](https://github.com/w6d-io/x/compare/v0.9.2...v0.9.3) (2021-12-06)
 
 ### Performance Improvements
 
-* improve getting ip address ([56fcfb8]("https://github.com/w6d-io/x/commit/56fcfb893a61e8251a207d8fab8c7bd028eff1fc"))
+* improve getting ip address ([8e79b30]("https://github.com/w6d-io/x/commit/8e79b30106c440f661a5b70e1994981ff7ec2590"))
 
 
 <a name="v0.9.2"></a>
