@@ -58,7 +58,11 @@ var _ = Describe("Producer", func() {
 			pm := kafka.Producer{
 				ClientProducerAPI: client,
 			}
-			err := pm.SetTopic("test").Produce("key", []byte(string("Hello World")))
+			header := []kafka.Header{{
+				Key:   "key",
+				Value: []byte("hello world"),
+			}}
+			err := pm.SetTopic("test").Produce("key", []byte(string("Hello World")), kafka.WithHeaders(header))
 			Expect(err).To(Succeed())
 		})
 		It("missing topic while producing", func() {

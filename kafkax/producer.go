@@ -94,11 +94,20 @@ func (p *Producer) Produce(key string, value []byte, opts ...Option) error {
 		}
 	}()
 
+	headers := make([]cgo.Header, len(options.Headers))
+	for i, h := range options.Headers {
+		headers[i] = cgo.Header{
+			Key:   h.Key,
+			Value: h.Value,
+		}
+	}
+
 	if err := p.ClientProducerAPI.Produce(&cgo.Message{
 		TopicPartition: cgo.TopicPartition{Topic: &topic, Partition: cgo.PartitionAny},
 		Key:            []byte(key),
 		Value:          value,
 		Timestamp:      time.Now(),
+		Headers:        headers,
 	}, nil); err != nil {
 		log.Error(err, "produce failed")
 		return err

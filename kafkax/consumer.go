@@ -60,8 +60,8 @@ func GetConsumerClient(bootstrapServer string, groupID string, username string, 
 }
 
 // NewConsumer creates a ConsumerAPI
-func (cfg *Kafka) NewConsumer(opts ...Option) (ConsumerAPI, error) {
-	clt, err := GetConsumerClient(cfg.BootstrapServer, cfg.GroupID, cfg.Username, cfg.Password, opts...)
+func (cfg *Kafka) NewConsumer(groupID string, opts ...Option) (ConsumerAPI, error) {
+	clt, err := GetConsumerClient(cfg.BootstrapServer, groupID, cfg.Username, cfg.Password, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +164,7 @@ func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 					log.Info("OffsetsCommitted", "len", len(e.Offsets))
 
 				default:
-					log.V(2).Info("Ignored", "code", e)
+					log.V(3).Info("Ignored", "code", e)
 				}
 			}
 		}

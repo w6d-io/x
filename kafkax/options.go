@@ -31,6 +31,7 @@ type Options struct {
 	AutoOffsetReset    string
 	EnableRebalance    bool
 	EnablePartitionEOF bool
+	Headers            []Header
 }
 
 // NewOptions ...
@@ -202,5 +203,12 @@ func PartitionEOF(enable bool) Option {
 func EarliestOffset() Option {
 	return func(o *Options) {
 		o.AutoOffsetReset = "earliest"
+	}
+}
+
+// WithHeaders ...
+func WithHeaders(headers []Header) Option {
+	return func(o *Options) {
+		o.Headers = headers
 	}
 }
