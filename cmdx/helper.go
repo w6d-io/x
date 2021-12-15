@@ -3,6 +3,7 @@ package cmdx
 import (
 	"context"
 	"fmt"
+	"github.com/w6d-io/x/errorx"
 	"os"
 
 	"github.com/w6d-io/x/logx"
@@ -17,6 +18,12 @@ func Must(err error, message string, args ...interface{}) {
 		return
 	}
 	_, _ = fmt.Fprintf(os.Stderr, message+"\n", args...)
+	if e, ok := err.(*errorx.Error); ok {
+		_, _ = fmt.Fprintf(os.Stderr, "%+v\n", e)
+		e.ShowStack()
+	} else {
+		_, _ = fmt.Fprintf(os.Stderr, "%+v\n", err)
+	}
 	OsExit(1)
 }
 
