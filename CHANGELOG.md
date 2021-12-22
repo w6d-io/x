@@ -1,10 +1,18 @@
 
+<a name="v0.10.0"></a>
+## [v0.10.0](https://github.com/w6d-io/x/compare/v0.9.5...v0.10.0) (2021-12-22)
+
+### Code Refactoring
+
+* change should signature ([3ce96cd]("https://github.com/w6d-io/x/commit/3ce96cdfb6887122b30ac7586529c22406ee05be"))
+
+
 <a name="v0.9.5"></a>
 ## [v0.9.5](https://github.com/w6d-io/x/compare/v0.9.4...v0.9.5) (2021-12-16)
 
 ### Bug Fixes
 
-* add error in cmdx.Must message ([c66c9ae]("https://github.com/w6d-io/x/commit/c66c9ae12227b0ea1ce2a421e428ef2866f9d772"))
+* add error in cmdx.Must message ([5e8da27]("https://github.com/w6d-io/x/commit/5e8da277971ea6d680939d1f0fc86f2bc6abdf52"))
 
 
 <a name="v0.9.4"></a>
@@ -159,15 +167,15 @@
 
 
 <a name="v0.6.0"></a>
-## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.6.0) (2021-11-10)
-
-
-<a name="v0.5.1"></a>
-## [v0.5.1](https://github.com/w6d-io/x/compare/v0.5.0...v0.5.1) (2021-11-06)
+## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.0...v0.6.0) (2021-11-10)
 
 
 <a name="v0.5.0"></a>
-## [v0.5.0](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.0) (2021-11-06)
+## [v0.5.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.5.0) (2021-11-06)
+
+
+<a name="v0.5.1"></a>
+## [v0.5.1](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.1) (2021-11-06)
 
 ### Chore
 
