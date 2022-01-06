@@ -64,6 +64,6 @@ func (m *MongoDB) FindAndUpdate(filter interface{}, update interface{}, data int
 		log.Error(err, "get data")
 		return err
 	}
-	log.WithValues("data", data).V(1).Info("result from FindOneAndUpdate")
+	log.WithValues("data", data).V(GetLogLevel(data)).Info("result from FindOneAndUpdate")
 	return nil
 }

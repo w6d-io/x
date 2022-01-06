@@ -28,6 +28,8 @@ func (m *MongoDB) Aggregate(pipeline mongo.Pipeline, data interface{}) error {
 		log.Error(err, "get data")
 		return err
 	}
-	log.WithValues("data", data).V(1).Info("result from aggregate")
+
+	log.WithValues("data", data).V(GetLogLevel(data)).Info("result from aggregate")
+
 	return nil
 }

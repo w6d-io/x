@@ -1,10 +1,18 @@
 
+<a name="v0.10.1"></a>
+## [v0.10.1](https://github.com/w6d-io/x/compare/v0.10.0...v0.10.1) (2022-01-06)
+
+### Chore
+
+* mongox change log level if data is empty ([048d304]("https://github.com/w6d-io/x/commit/048d304f9c55153f03c950e7fbb874770fe18e28"))
+
+
 <a name="v0.10.0"></a>
 ## [v0.10.0](https://github.com/w6d-io/x/compare/v0.9.5...v0.10.0) (2021-12-22)
 
 ### Code Refactoring
 
-* change should signature ([3ce96cd]("https://github.com/w6d-io/x/commit/3ce96cdfb6887122b30ac7586529c22406ee05be"))
+* change should signature ([0775953]("https://github.com/w6d-io/x/commit/0775953949a24a8e62421a4f186fc012223de9bc"))
 
 
 <a name="v0.9.5"></a>
