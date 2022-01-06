@@ -29,6 +29,6 @@ func (m *MongoDB) Get(filter interface{}, data interface{}) error {
 		log.Error(err, "get data")
 		return err
 	}
-	log.WithValues("data", data).V(1).Info("result from search")
+	log.WithValues("data", data).V(GetLogLevel(data)).Info("result from search")
 	return nil
 }
