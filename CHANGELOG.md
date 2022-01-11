@@ -1,10 +1,14 @@
 
+<a name="v0.11.0"></a>
+## [v0.11.0](https://github.com/w6d-io/x/compare/v0.10.1...v0.11.0) (2022-01-11)
+
+### Features
+
+* add redisx ([f0ea4ec]("https://github.com/w6d-io/x/commit/f0ea4eccd478553833666df3bf58ff866a0a2c91"))
+
+
 <a name="v0.10.1"></a>
 ## [v0.10.1](https://github.com/w6d-io/x/compare/v0.10.0...v0.10.1) (2022-01-06)
-
-### Chore
-
-* mongox change log level if data is empty ([048d304]("https://github.com/w6d-io/x/commit/048d304f9c55153f03c950e7fbb874770fe18e28"))
 
 
 <a name="v0.10.0"></a>
@@ -175,15 +179,15 @@
 
 
 <a name="v0.6.0"></a>
-## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.0...v0.6.0) (2021-11-10)
-
-
-<a name="v0.5.0"></a>
-## [v0.5.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.5.0) (2021-11-06)
+## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.6.0) (2021-11-10)
 
 
 <a name="v0.5.1"></a>
-## [v0.5.1](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.1) (2021-11-06)
+## [v0.5.1](https://github.com/w6d-io/x/compare/v0.5.0...v0.5.1) (2021-11-06)
+
+
+<a name="v0.5.0"></a>
+## [v0.5.0](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.0) (2021-11-06)
 
 ### Chore
 
