@@ -1,4 +1,12 @@
 
+<a name="v0.11.1"></a>
+## [v0.11.1](https://github.com/w6d-io/x/compare/v0.11.0...v0.11.1) (2022-02-11)
+
+### Chore
+
+* mongox add findoptions for get api ([c765149]("https://github.com/w6d-io/x/commit/c7651496208bba51a3e475e256b5dca64cb10cb5"))
+
+
 <a name="v0.11.0"></a>
 ## [v0.11.0](https://github.com/w6d-io/x/compare/v0.10.1...v0.11.0) (2022-01-11)
 

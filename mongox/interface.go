@@ -14,7 +14,7 @@ type MongoAPI interface {
 	SetCollection(string) MongoAPI
 	SetOptions(...Option) MongoAPI
 	Connect() error
-	Get(interface{}, interface{}) error
+	Get(interface{}, interface{}, ...*options.FindOptions) error
 	Insert(interface{}) error
 	InsertBulk([]*mongo.UpdateOneModel) error
 	Delete(interface{}) error
