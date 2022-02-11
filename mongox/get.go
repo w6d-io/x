@@ -11,15 +11,20 @@ import (
 )
 
 // Get return documents from collection based on input filter
-func (m *MongoDB) Get(filter interface{}, data interface{}) error {
+func (m *MongoDB) Get(filter interface{}, data interface{}, findOptions ...*options.FindOptions) error {
 	log := logx.WithName(context.TODO(), "Get")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")
 	}
-	findOptions := options.Find()
-	cursor, err := m.GetCollection().Find(ctx, filter, findOptions)
+
+	if findOptions == nil {
+		findOptions = make([]*options.FindOptions, 1)
+		findOptions[0] = options.Find()
+	}
+
+	cursor, err := m.GetCollection().Find(ctx, filter, findOptions...)
 	if err != nil {
 		log.Error(err, "find")
 		return err
