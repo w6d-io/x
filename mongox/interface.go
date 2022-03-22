@@ -3,6 +3,7 @@ package mongox
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	mgoOtions "go.mongodb.org/mongo-driver/mongo/options"
@@ -24,6 +25,8 @@ type MongoAPI interface {
 	FindAndUpdate(interface{}, interface{}, interface{}) error
 	Aggregate(mongo.Pipeline, interface{}) error
 	CreateIndexes(mongo.IndexModel) error
+	ListIndexes() ([]string, error)
+	DropIndex(string) error
 	Incr(string) (int64, error)
 }
 
@@ -65,5 +68,7 @@ type SingleResultAPI interface {
 
 // IndexAPI is the internal Index API interface
 type IndexAPI interface {
+	ListSpecifications(ctx context.Context, opts ...*options.ListIndexesOptions) ([]*mongo.IndexSpecification, error)
+	DropOne(ctx context.Context, name string, opts ...*options.DropIndexesOptions) (bson.Raw, error)
 	CreateOne(context.Context, mongo.IndexModel, ...*options.CreateIndexesOptions) (string, error)
 }

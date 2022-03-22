@@ -3,6 +3,7 @@ package mongox
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	mgoOtions "go.mongodb.org/mongo-driver/mongo/options"
@@ -11,23 +12,27 @@ import (
 // MockCollection is the internal mock collection
 type MockCollection struct {
 	CollectionAPI
-	ErrInsertOne           error
-	ErrBulkWrite           error
-	ErrFind                error
-	ErrDeleteOne           error
-	ErrDeleteMany          error
-	InsertOneResult        mongo.InsertOneResult
-	BulkWriteResult        mongo.BulkWriteResult
-	DeleteResult           mongo.DeleteResult
-	ErrUpdateOne           error
-	ErrReplaceOne          error
-	UpdateOneResult        mongo.UpdateResult
-	ReplaceOneResult       mongo.UpdateResult
-	FindOneAndUpdateResult mongo.SingleResult
-	AggregateResult        mongo.Cursor
-	ErrAggregate           error
-	IndexResult            string
-	ErrIndex               error
+	ErrInsertOne            error
+	ErrBulkWrite            error
+	ErrFind                 error
+	ErrDeleteOne            error
+	ErrDeleteMany           error
+	InsertOneResult         mongo.InsertOneResult
+	BulkWriteResult         mongo.BulkWriteResult
+	DeleteResult            mongo.DeleteResult
+	ErrUpdateOne            error
+	ErrReplaceOne           error
+	UpdateOneResult         mongo.UpdateResult
+	ReplaceOneResult        mongo.UpdateResult
+	FindOneAndUpdateResult  mongo.SingleResult
+	AggregateResult         mongo.Cursor
+	ErrAggregate            error
+	CreateIndexResult       string
+	ErrCreateIndex          error
+	ListSpecificationResult []*mongo.IndexSpecification
+	ErrListSpecifications   error
+	DropOneResult           bson.Raw
+	ErrDropOne              error
 }
 
 // InsertOne is an internal mock method
@@ -78,7 +83,11 @@ func (c *MockCollection) Aggregate(ctx context.Context, pipeline interface{}, op
 // GetIndex is an internal mock method
 func (c *MockCollection) GetIndex() IndexAPI {
 	return &MockIndex{
-		IndexResult: c.IndexResult,
-		ErrIndex:    c.ErrIndex,
+		CreateIndexResult:       c.CreateIndexResult,
+		ErrCreateIndex:          c.ErrCreateIndex,
+		ListSpecificationResult: c.ListSpecificationResult,
+		ErrListSpecifications:   c.ErrListSpecifications,
+		DropOneResult:           c.DropOneResult,
+		ErrDropOne:              c.ErrDropOne,
 	}
 }
