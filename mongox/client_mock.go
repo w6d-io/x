@@ -3,6 +3,7 @@ package mongox
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
@@ -28,8 +29,12 @@ type MockClient struct {
 	ErrorSingleResultDecode error
 	AggregateResult         mongo.Cursor
 	ErrAggregate            error
-	IndexResult             string
-	ErrIndex                error
+	CreateIndexResult       string
+	ErrCreateIndex          error
+	ListSpecificationResult []*mongo.IndexSpecification
+	ErrListSpecifications   error
+	DropOneResult           bson.Raw
+	ErrDropOne              error
 }
 
 // SetCollection is an internal mock method
@@ -49,22 +54,26 @@ func (p *MockClient) Ping(ctx context.Context, rp *readpref.ReadPref) error {
 // GetCollection is an internal mock method
 func (p *MockClient) GetCollection() CollectionAPI {
 	return &MockCollection{
-		ErrInsertOne:           p.ErrInsertOne,
-		ErrBulkWrite:           p.ErrBulkWrite,
-		InsertOneResult:        p.InsertOneResult,
-		BulkWriteResult:        p.BulkWriteResult,
-		ErrFind:                p.ErrFind,
-		ErrDeleteOne:           p.ErrDeleteOne,
-		ErrDeleteMany:          p.ErrDeleteMany,
-		ErrUpdateOne:           p.ErrUpdateOne,
-		ErrReplaceOne:          p.ErrReplaceOne,
-		UpdateOneResult:        p.UpdateOneResult,
-		ReplaceOneResult:       p.ReplaceOneResult,
-		FindOneAndUpdateResult: p.FindOneAndUpdateResult,
-		AggregateResult:        p.AggregateResult,
-		ErrAggregate:           p.ErrAggregate,
-		IndexResult:            p.IndexResult,
-		ErrIndex:               p.ErrIndex,
+		ErrInsertOne:            p.ErrInsertOne,
+		ErrBulkWrite:            p.ErrBulkWrite,
+		InsertOneResult:         p.InsertOneResult,
+		BulkWriteResult:         p.BulkWriteResult,
+		ErrFind:                 p.ErrFind,
+		ErrDeleteOne:            p.ErrDeleteOne,
+		ErrDeleteMany:           p.ErrDeleteMany,
+		ErrUpdateOne:            p.ErrUpdateOne,
+		ErrReplaceOne:           p.ErrReplaceOne,
+		UpdateOneResult:         p.UpdateOneResult,
+		ReplaceOneResult:        p.ReplaceOneResult,
+		FindOneAndUpdateResult:  p.FindOneAndUpdateResult,
+		AggregateResult:         p.AggregateResult,
+		ErrAggregate:            p.ErrAggregate,
+		CreateIndexResult:       p.CreateIndexResult,
+		ErrCreateIndex:          p.ErrCreateIndex,
+		ListSpecificationResult: p.ListSpecificationResult,
+		ErrListSpecifications:   p.ErrListSpecifications,
+		DropOneResult:           p.DropOneResult,
+		ErrDropOne:              p.ErrDropOne,
 	}
 }
 
