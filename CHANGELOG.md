@@ -1,10 +1,11 @@
 
-<a name="v0.12.1"></a>
-## [v0.12.1](https://github.com/w6d-io/x/compare/v0.12.0...v0.12.1) (2022-03-22)
+<a name="v0.13.0"></a>
+## [v0.13.0](https://github.com/w6d-io/x/compare/v0.12.0...v0.13.0) (2022-03-22)
 
 ### Features
 
-* mongox add apis to list and drop index [59b89ad]("https://github.com/w6d-io/x/commit/59b89adacd3c402d5ecde74af44b9b1c4d035ae3")
+* add toolx package ([#25](https://github.com/w6d-io/x/issues/25)) [555ad47]("https://github.com/w6d-io/x/commit/555ad475e35978596f32d156557196a71ac04573")
+* mongox add apis to list and drop index ([#26](https://github.com/w6d-io/x/issues/26)) [4e8cfb0]("https://github.com/w6d-io/x/commit/4e8cfb01e806d0d8d2bb1d947f01aba539c256ee")
 
 
 <a name="v0.12.0"></a>
