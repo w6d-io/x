@@ -51,11 +51,18 @@ var _ = Describe("CreateIndexes", func() {
 		})
 		It("list index success", func() {
 			m := &MongoDB{
-				ClientAPI:  &MockClient{},
+				ClientAPI: &MockClient{
+					ListSpecificationResult: []*mongo.IndexSpecification{
+						{
+							Name: "my_index",
+						},
+					},
+				},
 				Collection: "collection",
 			}
-			_, err := m.ListIndexes()
+			indexes, err := m.ListIndexes()
 			Expect(err).To(Succeed())
+			Expect(len(indexes)).To(Equal(1))
 		})
 		It("list index failure on connect", func() {
 			m := &MongoDB{
