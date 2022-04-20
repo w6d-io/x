@@ -5,6 +5,7 @@ package mongox_test
 
 import (
 	"errors"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -26,7 +27,8 @@ var _ = Describe("CreateIndexes", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			err := m.CreateIndexes(mongo.IndexModel{})
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.CreateIndexes(mongo.IndexModel{})
 			Expect(err).To(Succeed())
 		})
 		It("index one failure on connect", func() {
@@ -36,7 +38,8 @@ var _ = Describe("CreateIndexes", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.CreateIndexes(mongo.IndexModel{})
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.CreateIndexes(mongo.IndexModel{})
 			Expect(err).NotTo(Succeed())
 		})
 		It("create one failure", func() {
@@ -46,7 +49,8 @@ var _ = Describe("CreateIndexes", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.CreateIndexes(mongo.IndexModel{})
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.CreateIndexes(mongo.IndexModel{})
 			Expect(err).NotTo(Succeed())
 		})
 		It("list index success", func() {
@@ -60,7 +64,8 @@ var _ = Describe("CreateIndexes", func() {
 				},
 				Collection: "collection",
 			}
-			indexes, err := m.ListIndexes()
+			client := m.SetOptions(Timeout(10 * time.Second))
+			indexes, err := client.ListIndexes()
 			Expect(err).To(Succeed())
 			Expect(len(indexes)).To(Equal(1))
 		})
@@ -71,7 +76,8 @@ var _ = Describe("CreateIndexes", func() {
 				},
 				Collection: "collection",
 			}
-			_, err := m.ListIndexes()
+			client := m.SetOptions(Timeout(10 * time.Second))
+			_, err := client.ListIndexes()
 			Expect(err).NotTo(Succeed())
 		})
 		It("list index failure", func() {
@@ -81,7 +87,8 @@ var _ = Describe("CreateIndexes", func() {
 				},
 				Collection: "collection",
 			}
-			_, err := m.ListIndexes()
+			client := m.SetOptions(Timeout(10 * time.Second))
+			_, err := client.ListIndexes()
 			Expect(err).NotTo(Succeed())
 		})
 		It("drop index success", func() {
@@ -89,7 +96,8 @@ var _ = Describe("CreateIndexes", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			err := m.DropIndex("")
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.DropIndex("")
 			Expect(err).To(Succeed())
 		})
 		It("drop index failure on connect", func() {
@@ -99,7 +107,8 @@ var _ = Describe("CreateIndexes", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.DropIndex("")
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.DropIndex("")
 			Expect(err).NotTo(Succeed())
 		})
 		It("drop index failure", func() {
@@ -109,7 +118,8 @@ var _ = Describe("CreateIndexes", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.DropIndex("")
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.DropIndex("")
 			Expect(err).NotTo(Succeed())
 		})
 		It("get index", func() {

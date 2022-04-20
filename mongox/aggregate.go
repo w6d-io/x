@@ -2,8 +2,6 @@ package mongox
 
 import (
 	"context"
-	"time"
-
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/w6d-io/x/errorx"
@@ -13,7 +11,7 @@ import (
 // Aggregate operator over mongo client
 func (m *MongoDB) Aggregate(pipeline mongo.Pipeline, data interface{}) error {
 	log := logx.WithName(context.TODO(), "Aggregate")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")

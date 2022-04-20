@@ -5,6 +5,7 @@ package mongox_test
 
 import (
 	"errors"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -24,7 +25,8 @@ var _ = Describe("Delete", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			err := m.Delete(nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Delete(nil)
 			Expect(err).To(Succeed())
 		})
 		It("delete one failure on connect", func() {
@@ -34,7 +36,8 @@ var _ = Describe("Delete", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.Delete(nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Delete(nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("delete one failure", func() {
@@ -44,7 +47,8 @@ var _ = Describe("Delete", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.Delete(nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Delete(nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("delete many success", func() {
@@ -52,7 +56,8 @@ var _ = Describe("Delete", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			err := m.DeleteAll()
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.DeleteAll()
 			Expect(err).To(Succeed())
 		})
 		It("delete many failure on connect", func() {
@@ -62,7 +67,8 @@ var _ = Describe("Delete", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.DeleteAll()
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.DeleteAll()
 			Expect(err).NotTo(Succeed())
 		})
 		It("delete many failure", func() {
@@ -72,7 +78,8 @@ var _ = Describe("Delete", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.DeleteAll()
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.DeleteAll()
 			Expect(err).NotTo(Succeed())
 		})
 	})

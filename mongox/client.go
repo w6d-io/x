@@ -2,8 +2,6 @@ package mongox
 
 import (
 	"context"
-	"time"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	mgoOtions "go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -69,10 +67,12 @@ func GetClient(ctx context.Context, m *MongoDB) (ClientAPI, error) {
 }
 
 // New return a mongo instance
-func (cfg *Mongo) New() MongoAPI {
+func (cfg *Mongo) New(opts ...Option) MongoAPI {
+	options := NewOptions(opts...)
+
 	return &MongoDB{
 		cfg:         cfg,
-		options:     &Options{},
+		options:     &options,
 		isConnected: false,
 	}
 }
@@ -96,7 +96,7 @@ func (m *MongoDB) SetOptions(opts ...Option) MongoAPI {
 // Connect public client to the internal client
 func (m *MongoDB) Connect() error {
 	log := logx.WithName(context.TODO(), "Connect")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if m.ClientAPI == nil {
 		c, err := GetClient(ctx, m)

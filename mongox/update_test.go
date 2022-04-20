@@ -5,6 +5,7 @@ package mongox_test
 
 import (
 	"errors"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -24,7 +25,8 @@ var _ = Describe("update", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			err := m.Update(nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Update(nil, nil)
 			Expect(err).To(Succeed())
 		})
 		It("update one connect error", func() {
@@ -34,7 +36,8 @@ var _ = Describe("update", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.Update(nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Update(nil, nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("update one error", func() {
@@ -44,7 +47,8 @@ var _ = Describe("update", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.Update(nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Update(nil, nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("upsert one success", func() {
@@ -52,7 +56,8 @@ var _ = Describe("update", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			err := m.Upsert(nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Upsert(nil, nil)
 			Expect(err).To(Succeed())
 		})
 		It("upsert one connect error", func() {
@@ -62,7 +67,8 @@ var _ = Describe("update", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.Upsert(nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Upsert(nil, nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("upsert one error", func() {
@@ -72,7 +78,8 @@ var _ = Describe("update", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.Upsert(nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Upsert(nil, nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("findoneandupdate one success", func() {
@@ -80,7 +87,8 @@ var _ = Describe("update", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			err := m.FindAndUpdate(nil, nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.FindAndUpdate(nil, nil, nil)
 			Expect(err).To(Succeed())
 		})
 		It("findoneandupdate one connect error", func() {
@@ -90,7 +98,8 @@ var _ = Describe("update", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.FindAndUpdate(nil, nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.FindAndUpdate(nil, nil, nil)
 			Expect(err).NotTo(Succeed())
 		})
 		It("findoneandupdate one error", func() {
@@ -100,7 +109,8 @@ var _ = Describe("update", func() {
 				},
 				Collection: "collection",
 			}
-			err := m.FindAndUpdate(nil, nil, nil)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.FindAndUpdate(nil, nil, nil)
 			Expect(err).NotTo(Succeed())
 		})
 	})

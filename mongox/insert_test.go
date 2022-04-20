@@ -5,6 +5,7 @@ package mongox_test
 
 import (
 	"errors"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -36,7 +37,8 @@ var _ = Describe("Insert", func() {
 					Project: "test",
 				},
 			}
-			err := m.Insert(data)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Insert(data)
 			Expect(err).To(Succeed())
 		})
 		It("insert one connect failure", func() {
@@ -56,7 +58,8 @@ var _ = Describe("Insert", func() {
 					Project: "test",
 				},
 			}
-			err := m.Insert(data)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Insert(data)
 			Expect(err).NotTo(Succeed())
 		})
 		It("insert one failure", func() {
@@ -76,7 +79,8 @@ var _ = Describe("Insert", func() {
 					Project: "test",
 				},
 			}
-			err := m.Insert(data)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.Insert(data)
 			Expect(err).NotTo(Succeed())
 		})
 		It("insert bulk success", func() {
@@ -86,7 +90,8 @@ var _ = Describe("Insert", func() {
 			}
 			var operations []*mongo.UpdateOneModel
 			operations = append(operations, BuildBulkOperation(nil, nil, nil))
-			err := m.InsertBulk(operations)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.InsertBulk(operations)
 			Expect(err).To(Succeed())
 		})
 		It("insert bulk connect error", func() {
@@ -98,7 +103,8 @@ var _ = Describe("Insert", func() {
 			}
 			var operations []*mongo.UpdateOneModel
 			operations = append(operations, BuildBulkOperation(nil, nil, nil))
-			err := m.InsertBulk(operations)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.InsertBulk(operations)
 			Expect(err).NotTo(Succeed())
 		})
 		It("insert bulk write error", func() {
@@ -110,7 +116,8 @@ var _ = Describe("Insert", func() {
 			}
 			var operations []*mongo.UpdateOneModel
 			operations = append(operations, BuildBulkOperation(nil, nil, nil))
-			err := m.InsertBulk(operations)
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.InsertBulk(operations)
 			Expect(err).NotTo(Succeed())
 		})
 	})
