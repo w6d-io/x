@@ -2,8 +2,6 @@ package mongox
 
 import (
 	"context"
-	"time"
-
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/w6d-io/x/errorx"
@@ -13,7 +11,7 @@ import (
 // CreateIndexes create index based on input mongo index model
 func (m *MongoDB) CreateIndexes(opt mongo.IndexModel) error {
 	log := logx.WithName(context.TODO(), "Create Index")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")
@@ -29,7 +27,7 @@ func (m *MongoDB) CreateIndexes(opt mongo.IndexModel) error {
 // ListIndexes list indexes
 func (m *MongoDB) ListIndexes() ([]string, error) {
 	log := logx.WithName(context.TODO(), "List Index")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return nil, errorx.Wrap(err, "fail connect")
@@ -52,7 +50,7 @@ func (m *MongoDB) ListIndexes() ([]string, error) {
 // DropIndex remove index
 func (m *MongoDB) DropIndex(index string) error {
 	log := logx.WithName(context.TODO(), "Drop Index")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")

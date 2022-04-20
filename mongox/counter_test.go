@@ -5,6 +5,7 @@ package mongox_test
 
 import (
 	"errors"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -25,7 +26,8 @@ var _ = Describe("Counter", func() {
 				ClientAPI:  &MockClient{},
 				Collection: "collection",
 			}
-			_, err := m.Incr("key")
+			client := m.SetOptions(Timeout(10 * time.Second))
+			_, err := client.Incr("key")
 			Expect(err).To(Succeed())
 		})
 		It("incr error connect", func() {
@@ -35,7 +37,8 @@ var _ = Describe("Counter", func() {
 				},
 				Collection: "collection",
 			}
-			_, err := m.Incr("key")
+			client := m.SetOptions(Timeout(10 * time.Second))
+			_, err := client.Incr("key")
 			Expect(err).NotTo(Succeed())
 		})
 		It("incr error find", func() {
@@ -45,7 +48,8 @@ var _ = Describe("Counter", func() {
 				},
 				Collection: "collection",
 			}
-			_, err := m.Incr("key")
+			client := m.SetOptions(Timeout(10 * time.Second))
+			_, err := client.Incr("key")
 			Expect(err).NotTo(Succeed())
 		})
 		It("incr error insert", func() {
@@ -55,7 +59,8 @@ var _ = Describe("Counter", func() {
 				},
 				Collection: "collection",
 			}
-			_, err := m.Incr("key")
+			client := m.SetOptions(Timeout(10 * time.Second))
+			_, err := client.Incr("key")
 			Expect(err).NotTo(Succeed())
 		})
 		It("incr error update", func() {
@@ -65,7 +70,8 @@ var _ = Describe("Counter", func() {
 				},
 				Collection: "collection",
 			}
-			_, err := m.Incr("key")
+			client := m.SetOptions(Timeout(10 * time.Second))
+			_, err := client.Incr("key")
 			Expect(err).NotTo(Succeed())
 		})
 	})

@@ -5,6 +5,7 @@ package mongox_test
 
 import (
 	"errors"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -25,8 +26,9 @@ var _ = Describe("Aggregate", func() {
 				ClientAPI:  &mongox.MockClient{},
 				Collection: "collection",
 			}
+			client := m.SetOptions(mongox.Timeout(10 * time.Second))
 			var v interface{}
-			err := m.Aggregate(nil, &v)
+			err := client.Aggregate(nil, &v)
 			Expect(err).To(Succeed())
 		})
 		It("aggregate error", func() {
@@ -36,8 +38,9 @@ var _ = Describe("Aggregate", func() {
 				},
 				Collection: "collection",
 			}
+			client := m.SetOptions(mongox.Timeout(10 * time.Second))
 			var v interface{}
-			err := m.Aggregate(nil, &v)
+			err := client.Aggregate(nil, &v)
 			Expect(err).NotTo(Succeed())
 		})
 		It("aggregate error connect", func() {
@@ -47,8 +50,9 @@ var _ = Describe("Aggregate", func() {
 				},
 				Collection: "collection",
 			}
+			client := m.SetOptions(mongox.Timeout(10 * time.Second))
 			var v interface{}
-			err := m.Aggregate(nil, &v)
+			err := client.Aggregate(nil, &v)
 			Expect(err).NotTo(Succeed())
 		})
 		It("aggregate error cursor", func() {
@@ -58,8 +62,9 @@ var _ = Describe("Aggregate", func() {
 				},
 				Collection: "collection",
 			}
+			client := m.SetOptions(mongox.Timeout(10 * time.Second))
 			var v interface{}
-			err := m.Aggregate(nil, &v)
+			err := client.Aggregate(nil, &v)
 			Expect(err).NotTo(Succeed())
 		})
 	})

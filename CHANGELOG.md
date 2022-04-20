@@ -1,6 +1,18 @@
 
+<a name="v0.13.1"></a>
+## [v0.13.1](https://github.com/w6d-io/x/compare/v0.13.0...v0.13.1) (2022-04-20)
+
+### Features
+
+* mongox add timeout option [dd6e19f]("https://github.com/w6d-io/x/commit/dd6e19ffaeba9b499221508307f4db6e3915f265")
+
+
 <a name="v0.13.0"></a>
 ## [v0.13.0](https://github.com/w6d-io/x/compare/v0.12.0...v0.13.0) (2022-03-22)
+
+### Chore
+
+* update changelog [169645c]("https://github.com/w6d-io/x/commit/169645cf148799512ae6d47484dd62bfcdd18ae3")
 
 ### Features
 
@@ -192,15 +204,15 @@
 
 
 <a name="v0.6.0"></a>
-## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.0...v0.6.0) (2021-11-10)
-
-
-<a name="v0.5.0"></a>
-## [v0.5.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.5.0) (2021-11-06)
+## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.6.0) (2021-11-10)
 
 
 <a name="v0.5.1"></a>
-## [v0.5.1](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.1) (2021-11-06)
+## [v0.5.1](https://github.com/w6d-io/x/compare/v0.5.0...v0.5.1) (2021-11-06)
+
+
+<a name="v0.5.0"></a>
+## [v0.5.0](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.0) (2021-11-06)
 
 ### Chore
 

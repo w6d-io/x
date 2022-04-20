@@ -2,8 +2,6 @@ package mongox
 
 import (
 	"context"
-	"time"
-
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/w6d-io/x/errorx"
@@ -13,7 +11,7 @@ import (
 // Delete remove documents from collection based on input filter setting
 func (m *MongoDB) Delete(filter interface{}) error {
 	log := logx.WithName(context.TODO(), "Delete")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")
@@ -31,7 +29,7 @@ func (m *MongoDB) Delete(filter interface{}) error {
 // DeleteAll remove all documents inside collection
 func (m *MongoDB) DeleteAll() error {
 	log := logx.WithName(context.TODO(), "Delete All")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")

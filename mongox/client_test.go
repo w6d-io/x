@@ -5,20 +5,21 @@ package mongox_test
 
 import (
 	"errors"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"go.mongodb.org/mongo-driver/mongo"
 	mgoOtions "go.mongodb.org/mongo-driver/mongo/options"
 
-	. "github.com/w6d-io/x/mongox"
+	"github.com/w6d-io/x/mongox"
 )
 
 var _ = Describe("Client", func() {
 	Context("", func() {
 		When("Create client", func() {
 			It("fails option", func() {
-				cfg := &Mongo{
+				cfg := &mongox.Mongo{
 					URL:        "",
 					AuthSource: "db",
 				}
@@ -27,46 +28,49 @@ var _ = Describe("Client", func() {
 				Expect(err).NotTo(Succeed())
 			})
 			It("success option", func() {
-				cfg := &Mongo{
+				cfg := &mongox.Mongo{
 					URL:        "mongodb://127.0.0.1",
 					AuthSource: "db",
 				}
 				m := cfg.New()
 				m = m.SetCollection("test")
-				m = m.SetOptions(WithProtoCodec())
+				m = m.SetOptions(mongox.WithProtoCodec(), mongox.Timeout(10*time.Second))
 				err := m.Connect()
 				Expect(err).NotTo(Succeed())
 			})
 			It("failure connect", func() {
-				m := MongoDB{
-					ClientAPI: &MockClient{
+				m := &mongox.MongoDB{
+					ClientAPI: &mongox.MockClient{
 						ErrConnect: errors.New("error while connecting"),
 					},
 				}
-				err := m.Connect()
+				client := m.SetOptions(mongox.Timeout(10 * time.Second))
+				err := client.Connect()
 				Expect(err).NotTo(Succeed())
 			})
 			It("success connect", func() {
-				m := MongoDB{
-					ClientAPI: &MockClient{},
+				m := &mongox.MongoDB{
+					ClientAPI: &mongox.MockClient{},
 				}
-				err := m.Connect()
+				client := m.SetOptions(mongox.Timeout(10 * time.Second))
+				err := client.Connect()
 				Expect(err).To(Succeed())
 				m.GetCollection()
 			})
 			It("failure ping", func() {
-				m := MongoDB{
-					ClientAPI: &MockClient{
+				m := &mongox.MongoDB{
+					ClientAPI: &mongox.MockClient{
 						ErrPing: errors.New("error while ping"),
 					},
 				}
-				err := m.Connect()
+				client := m.SetOptions(mongox.Timeout(10 * time.Second))
+				err := client.Connect()
 				Expect(err).NotTo(Succeed())
 			})
 			It("set collection", func() {
 				clientOptions := mgoOtions.Client().ApplyURI("mongodb://127.0.0.1")
 				clt, _ := mongo.NewClient(clientOptions)
-				c := &Client{
+				c := &mongox.Client{
 					Client:     clt,
 					Database:   "db",
 					Collection: "collection",
@@ -74,15 +78,15 @@ var _ = Describe("Client", func() {
 				c.SetCollection("new_collection")
 			})
 			It("re-set collection", func() {
-				m := MongoDB{
-					ClientAPI: &MockClient{},
+				m := &mongox.MongoDB{
+					ClientAPI: &mongox.MockClient{},
 				}
 				m.SetCollection("collection")
 			})
 			It("get collection", func() {
 				clientOptions := mgoOtions.Client().ApplyURI("mongodb://127.0.0.1")
 				clt, _ := mongo.NewClient(clientOptions)
-				c := &Client{
+				c := &mongox.Client{
 					Client:     clt,
 					Database:   "db",
 					Collection: "collection",
@@ -92,7 +96,7 @@ var _ = Describe("Client", func() {
 			It("set cursor", func() {
 				clientOptions := mgoOtions.Client().ApplyURI("mongodb://127.0.0.1")
 				clt, _ := mongo.NewClient(clientOptions)
-				c := &Client{
+				c := &mongox.Client{
 					Client:     clt,
 					Database:   "db",
 					Collection: "collection",
@@ -102,7 +106,7 @@ var _ = Describe("Client", func() {
 			It("set single result", func() {
 				clientOptions := mgoOtions.Client().ApplyURI("mongodb://127.0.0.1")
 				clt, _ := mongo.NewClient(clientOptions)
-				c := &Client{
+				c := &mongox.Client{
 					Client:     clt,
 					Database:   "db",
 					Collection: "collection",

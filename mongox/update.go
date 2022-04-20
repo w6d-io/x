@@ -2,8 +2,6 @@ package mongox
 
 import (
 	"context"
-	"time"
-
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/w6d-io/x/errorx"
@@ -13,7 +11,7 @@ import (
 // Update single document from a collection based on filter input
 func (m *MongoDB) Update(filter interface{}, update interface{}) error {
 	log := logx.WithName(context.TODO(), "Update")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")
@@ -30,7 +28,7 @@ func (m *MongoDB) Update(filter interface{}, update interface{}) error {
 // Upsert single document from a collection based on filter input
 func (m *MongoDB) Upsert(filter interface{}, update interface{}) error {
 	log := logx.WithName(context.TODO(), "Upsert")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")
@@ -47,7 +45,7 @@ func (m *MongoDB) Upsert(filter interface{}, update interface{}) error {
 // FindAndUpdate single document from a collection based on filter input
 func (m *MongoDB) FindAndUpdate(filter interface{}, update interface{}, data interface{}) error {
 	log := logx.WithName(context.TODO(), "FindOneAndUpdate")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")

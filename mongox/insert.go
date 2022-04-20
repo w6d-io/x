@@ -2,8 +2,6 @@ package mongox
 
 import (
 	"context"
-	"time"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
@@ -14,7 +12,7 @@ import (
 // Insert single document value inside collection
 func (m *MongoDB) Insert(value interface{}) error {
 	log := logx.WithName(context.TODO(), "Insert")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")
@@ -36,7 +34,7 @@ func (m *MongoDB) Insert(value interface{}) error {
 // InsertBulk multiple documents value inside collection
 func (m *MongoDB) InsertBulk(operations []*mongo.UpdateOneModel) error {
 	log := logx.WithName(context.TODO(), "Insert Bulk")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")

@@ -2,8 +2,6 @@ package mongox
 
 import (
 	"context"
-	"time"
-
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/w6d-io/x/errorx"
@@ -13,7 +11,7 @@ import (
 // Get return documents from collection based on input filter
 func (m *MongoDB) Get(filter interface{}, data interface{}, findOptions ...*options.FindOptions) error {
 	log := logx.WithName(context.TODO(), "Get")
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if err := m.Connect(); err != nil {
 		return errorx.Wrap(err, "fail connect")
