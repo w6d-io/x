@@ -1,10 +1,14 @@
 
+<a name="v0.13.2"></a>
+## [v0.13.2](https://github.com/w6d-io/x/compare/v0.13.1...v0.13.2) (2022-05-09)
+
+### Chore
+
+* add mongox multithreading support [d20e7ee]("https://github.com/w6d-io/x/commit/d20e7eed68e23626b0ba4fba76a72e97e0caf5e7")
+
+
 <a name="v0.13.1"></a>
 ## [v0.13.1](https://github.com/w6d-io/x/compare/v0.13.0...v0.13.1) (2022-04-20)
-
-### Features
-
-* mongox add timeout option [dd6e19f]("https://github.com/w6d-io/x/commit/dd6e19ffaeba9b499221508307f4db6e3915f265")
 
 
 <a name="v0.13.0"></a>
