@@ -2,6 +2,7 @@ package mongox
 
 import (
 	mgo "go.mongodb.org/mongo-driver/mongo"
+	"sync"
 )
 
 // Mongo input structure
@@ -53,6 +54,8 @@ type ClientIndex struct {
 // MongoDB is the public Mongo Instance
 type MongoDB struct {
 	ClientAPI
+	// Mutex for connection reentrance
+	mutex sync.Mutex
 	// Keep internal connection status
 	isConnected bool
 	// From configuration section

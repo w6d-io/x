@@ -96,6 +96,8 @@ func (m *MongoDB) SetOptions(opts ...Option) MongoAPI {
 // Connect public client to the internal client
 func (m *MongoDB) Connect() error {
 	log := logx.WithName(context.TODO(), "Connect")
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
 	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
 	if m.ClientAPI == nil {
