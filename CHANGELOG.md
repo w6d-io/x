@@ -1,10 +1,18 @@
 
-<a name="v0.13.2"></a>
-## [v0.13.2](https://github.com/w6d-io/x/compare/v0.13.1...v0.13.2) (2022-05-09)
+<a name="v0.13.3"></a>
+## [v0.13.3](https://github.com/w6d-io/x/compare/v0.13.2...v0.13.3) (2022-05-12)
 
 ### Chore
 
-* add mongox multithreading support [d20e7ee]("https://github.com/w6d-io/x/commit/d20e7eed68e23626b0ba4fba76a72e97e0caf5e7")
+* mongox add string codec [b31871d]("https://github.com/w6d-io/x/commit/b31871d76d79e8e467f6b79e9003256a002056c1")
+
+
+<a name="v0.13.2"></a>
+## [v0.13.2](https://github.com/w6d-io/x/compare/v0.13.1...v0.13.2) (2022-05-10)
+
+### Chore
+
+* add mongox multithreading support ([#28](https://github.com/w6d-io/x/issues/28)) [627679a]("https://github.com/w6d-io/x/commit/627679a8c576c0a34ad54d357c48f96e498e1816")
 
 
 <a name="v0.13.1"></a>

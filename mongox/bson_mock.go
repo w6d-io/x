@@ -12,6 +12,11 @@ func (b *MockbsonWriter) WriteDateTime(dt int64) error {
 	return nil
 }
 
+// WriteDateTime API
+func (b *MockbsonWriter) WriteString(string) error {
+	return nil
+}
+
 // MockbsonReader structure used by codec
 type MockbsonReader struct {
 	bsonrw.ValueReader

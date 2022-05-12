@@ -8,6 +8,7 @@ type Option func(*Options)
 // Options ...
 type Options struct {
 	ProtoCodec bool
+	StrCodec   bool
 	Timeout    time.Duration
 }
 
@@ -15,6 +16,7 @@ type Options struct {
 func NewOptions(opts ...Option) Options {
 	opt := Options{
 		ProtoCodec: false,
+		StrCodec:   false,
 		Timeout:    10 * time.Second,
 	}
 	for _, o := range opts {
@@ -27,6 +29,13 @@ func NewOptions(opts ...Option) Options {
 func WithProtoCodec() Option {
 	return func(o *Options) {
 		o.ProtoCodec = true
+	}
+}
+
+// WithStrCodec option
+func WithStrCodec() Option {
+	return func(o *Options) {
+		o.StrCodec = true
 	}
 }
 

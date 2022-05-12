@@ -10,8 +10,24 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-var ts = timestamppb.New(time.Now())
-var tsProtoType = reflect.TypeOf(ts)
+var tsProto = timestamppb.New(time.Now())
+var tsProtoType = reflect.TypeOf(tsProto)
+
+var tsStr = ""
+var tsStrType = reflect.TypeOf(tsStr)
+
+// StrCodecFunc is the String Encoding Function
+var StrCodecFunc = func(_ bsoncodec.EncodeContext, vw bsonrw.ValueWriter, val reflect.Value) error {
+	if !val.IsValid() || val.Type() != tsStrType {
+		return bsoncodec.ValueEncoderError{Name: "ObjectIDEncodeValue", Types: []reflect.Type{tsProtoType}, Received: val}
+	}
+	s := val.Interface().(string)
+	t, err := time.Parse(time.RFC3339Nano, s)
+	if err != nil {
+		return vw.WriteString(s)
+	}
+	return vw.WriteDateTime(t.Unix() * 1000)
+}
 
 // ProtoCodecFunc is the Proto Encoding Function
 var ProtoCodecFunc = func(_ bsoncodec.EncodeContext, vw bsonrw.ValueWriter, val reflect.Value) error {
@@ -35,22 +51,31 @@ var ProtoDeCodecFunc = func(_ bsoncodec.DecodeContext, vr bsonrw.ValueReader, va
 	return nil
 }
 
-// ProtoCodecRegistry create a new bsoncodec with proto support
-func ProtoCodecRegistry() *bsoncodec.RegistryBuilder {
+// CodecRegistry create a new bsoncode
+func CodecRegistry(options *Options) *bsoncodec.RegistryBuilder {
 
 	var primitiveCodecs bson.PrimitiveCodecs
 	rb := bsoncodec.NewRegistryBuilder()
-	bsoncodec.DefaultValueEncoders{}.RegisterDefaultEncoders(rb)
-	bsoncodec.DefaultValueDecoders{}.RegisterDefaultDecoders(rb)
-	rb.RegisterTypeEncoder(
-		tsProtoType,
-		bsoncodec.ValueEncoderFunc(ProtoCodecFunc),
-	)
+	if options.ProtoCodec {
+		bsoncodec.DefaultValueEncoders{}.RegisterDefaultEncoders(rb)
+		bsoncodec.DefaultValueDecoders{}.RegisterDefaultDecoders(rb)
+		rb.RegisterTypeEncoder(
+			tsProtoType,
+			bsoncodec.ValueEncoderFunc(ProtoCodecFunc),
+		)
 
-	rb.RegisterTypeDecoder(
-		tsProtoType,
-		bsoncodec.ValueDecoderFunc(ProtoDeCodecFunc),
-	)
+		rb.RegisterTypeDecoder(
+			tsProtoType,
+			bsoncodec.ValueDecoderFunc(ProtoDeCodecFunc),
+		)
+	}
+	if options.StrCodec {
+		bsoncodec.DefaultValueDecoders{}.RegisterDefaultDecoders(rb)
+		rb.RegisterTypeEncoder(
+			tsStrType,
+			bsoncodec.ValueEncoderFunc(StrCodecFunc),
+		)
+	}
 	primitiveCodecs.RegisterPrimitiveCodecs(rb)
 	return rb
 }
