@@ -34,7 +34,7 @@ var _ = Describe("Client", func() {
 				}
 				m := cfg.New()
 				m = m.SetCollection("test")
-				m = m.SetOptions(mongox.WithProtoCodec(), mongox.Timeout(10*time.Second))
+				m = m.SetOptions(mongox.WithProtoCodec(), mongox.WithStrCodec(), mongox.Timeout(10*time.Second))
 				err := m.Connect()
 				Expect(err).NotTo(Succeed())
 			})

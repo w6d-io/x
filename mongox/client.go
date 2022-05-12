@@ -2,6 +2,7 @@ package mongox
 
 import (
 	"context"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	mgoOtions "go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -50,8 +51,8 @@ func GetClient(ctx context.Context, m *MongoDB) (ClientAPI, error) {
 			AuthSource: authSource,
 		}).ApplyURI(m.cfg.URL)
 
-	if m.options.ProtoCodec {
-		clientOptions.SetRegistry(ProtoCodecRegistry().Build())
+	if m.options.ProtoCodec || m.options.StrCodec {
+		clientOptions.SetRegistry(CodecRegistry(m.options).Build())
 	}
 
 	clt, err := mongo.NewClient(clientOptions)
