@@ -23,6 +23,11 @@ else
 GOARCH=$(shell go env GOARCH)
 endif
 
+ifeq (darwin,$(GOOS))
+GOTAGS = "-tags=dynamic"
+else
+GOTAGS =
+endif
 
 # go-get-tool will 'go get' any package $2 and install it to $1.
 PROJECT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -98,7 +103,7 @@ fmt:
 
 .PHONY: vet
 vet:
-	go vet ./...
+	go vet $(GOTAGS) ./...
 
 httpx/test1.pb_test.go: bin/protoc bin/protoc-gen-go
 	$(PROTOC) --go_out=. --go_opt=module=github.com/w6d-io/x httpx/testdata/test1.proto
@@ -123,7 +128,7 @@ cyclo: bin/gocyclo
 
 .PHONY: test
 test: fmt vet
-	go test -v -coverpkg=./... -coverprofile=cover.out ./...
+	go test $(GOTAGS) -v -coverpkg=./... -coverprofile=cover.out ./...
 	@go tool cover -func cover.out | grep total
 
 .PHONY: changelog

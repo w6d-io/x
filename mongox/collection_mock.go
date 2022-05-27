@@ -28,7 +28,9 @@ type MockCollection struct {
 	AggregateResult         mongo.Cursor
 	ErrAggregate            error
 	CreateIndexResult       string
+	CreateManyIndexResult   []string
 	ErrCreateIndex          error
+	ErrCreateManyIndex      error
 	ListSpecificationResult []*mongo.IndexSpecification
 	ErrListSpecifications   error
 	DropOneResult           bson.Raw
@@ -84,7 +86,9 @@ func (c *MockCollection) Aggregate(ctx context.Context, pipeline interface{}, op
 func (c *MockCollection) GetIndex() IndexAPI {
 	return &MockIndex{
 		CreateIndexResult:       c.CreateIndexResult,
+		CreateManyIndexResult:   c.CreateManyIndexResult,
 		ErrCreateIndex:          c.ErrCreateIndex,
+		ErrCreateManyIndex:      c.ErrCreateManyIndex,
 		ListSpecificationResult: c.ListSpecificationResult,
 		ErrListSpecifications:   c.ErrListSpecifications,
 		DropOneResult:           c.DropOneResult,

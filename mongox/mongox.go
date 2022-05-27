@@ -1,8 +1,9 @@
 package mongox
 
 import (
-	mgo "go.mongodb.org/mongo-driver/mongo"
 	"sync"
+
+	mgo "go.mongodb.org/mongo-driver/mongo"
 )
 
 // Mongo input structure
