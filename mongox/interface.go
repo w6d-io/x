@@ -25,6 +25,7 @@ type MongoAPI interface {
 	FindAndUpdate(interface{}, interface{}, interface{}) error
 	Aggregate(mongo.Pipeline, interface{}) error
 	CreateIndexes(mongo.IndexModel) error
+	CreateManyIndexes([]mongo.IndexModel) error
 	ListIndexes() ([]string, error)
 	DropIndex(string) error
 	Incr(string) (int64, error)
@@ -71,4 +72,5 @@ type IndexAPI interface {
 	ListSpecifications(ctx context.Context, opts ...*options.ListIndexesOptions) ([]*mongo.IndexSpecification, error)
 	DropOne(ctx context.Context, name string, opts ...*options.DropIndexesOptions) (bson.Raw, error)
 	CreateOne(context.Context, mongo.IndexModel, ...*options.CreateIndexesOptions) (string, error)
+	CreateMany(context.Context, []mongo.IndexModel, ...*options.CreateIndexesOptions) ([]string, error)
 }

@@ -2,6 +2,7 @@ package mongox
 
 import (
 	"context"
+
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/w6d-io/x/errorx"
@@ -18,6 +19,22 @@ func (m *MongoDB) CreateIndexes(opt mongo.IndexModel) error {
 	}
 
 	_, err := m.GetCollection().GetIndex().CreateOne(ctx, opt)
+	if err != nil {
+		log.Error(err, "create index err")
+	}
+	return err
+}
+
+// CreateManyIndexes create indexes based on input mongo index model array
+func (m *MongoDB) CreateManyIndexes(opt []mongo.IndexModel) error {
+	log := logx.WithName(context.TODO(), "Create Index")
+	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
+	defer cancel()
+	if err := m.Connect(); err != nil {
+		return errorx.Wrap(err, "fail connect")
+	}
+
+	_, err := m.GetCollection().GetIndex().CreateMany(ctx, opt)
 	if err != nil {
 		log.Error(err, "create index err")
 	}

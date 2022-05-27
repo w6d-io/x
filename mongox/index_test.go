@@ -53,6 +53,39 @@ var _ = Describe("CreateIndexes", func() {
 			err := client.CreateIndexes(mongo.IndexModel{})
 			Expect(err).NotTo(Succeed())
 		})
+
+		It("index many success", func() {
+			m := &MongoDB{
+				ClientAPI:  &MockClient{},
+				Collection: "collection",
+			}
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.CreateManyIndexes([]mongo.IndexModel{})
+			Expect(err).To(Succeed())
+		})
+		It("index many failure on connect", func() {
+			m := &MongoDB{
+				ClientAPI: &MockClient{
+					ErrConnect: errors.New("error on connect"),
+				},
+				Collection: "collection",
+			}
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.CreateManyIndexes([]mongo.IndexModel{})
+			Expect(err).NotTo(Succeed())
+		})
+		It("create many failure", func() {
+			m := &MongoDB{
+				ClientAPI: &MockClient{
+					ErrCreateManyIndex: errors.New("error index"),
+				},
+				Collection: "collection",
+			}
+			client := m.SetOptions(Timeout(10 * time.Second))
+			err := client.CreateManyIndexes([]mongo.IndexModel{})
+			Expect(err).NotTo(Succeed())
+		})
+
 		It("list index success", func() {
 			m := &MongoDB{
 				ClientAPI: &MockClient{

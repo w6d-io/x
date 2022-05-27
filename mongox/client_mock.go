@@ -30,7 +30,9 @@ type MockClient struct {
 	AggregateResult         mongo.Cursor
 	ErrAggregate            error
 	CreateIndexResult       string
+	CreateManyIndexResult   []string
 	ErrCreateIndex          error
+	ErrCreateManyIndex      error
 	ListSpecificationResult []*mongo.IndexSpecification
 	ErrListSpecifications   error
 	DropOneResult           bson.Raw
@@ -69,7 +71,9 @@ func (p *MockClient) GetCollection() CollectionAPI {
 		AggregateResult:         p.AggregateResult,
 		ErrAggregate:            p.ErrAggregate,
 		CreateIndexResult:       p.CreateIndexResult,
+		CreateManyIndexResult:   p.CreateManyIndexResult,
 		ErrCreateIndex:          p.ErrCreateIndex,
+		ErrCreateManyIndex:      p.ErrCreateManyIndex,
 		ListSpecificationResult: p.ListSpecificationResult,
 		ErrListSpecifications:   p.ErrListSpecifications,
 		DropOneResult:           p.DropOneResult,

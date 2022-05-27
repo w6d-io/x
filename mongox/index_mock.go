@@ -12,24 +12,31 @@ import (
 type MockIndex struct {
 	CursorAPI
 	CreateIndexResult       string
+	CreateManyIndexResult   []string
 	ListSpecificationResult []*mongo.IndexSpecification
 	DropOneResult           bson.Raw
 	ErrCreateIndex          error
+	ErrCreateManyIndex      error
 	ErrListSpecifications   error
 	ErrDropOne              error
 }
 
 // CreateOne is an internal mock method
-func (i *MockIndex) CreateOne(ctx context.Context, model mongo.IndexModel, opts ...*options.CreateIndexesOptions) (string, error) {
+func (i *MockIndex) CreateOne(_ context.Context, _ mongo.IndexModel, _ ...*options.CreateIndexesOptions) (string, error) {
 	return i.CreateIndexResult, i.ErrCreateIndex
 }
 
+// CreateMany is an internal mock method
+func (i *MockIndex) CreateMany(_ context.Context, _ []mongo.IndexModel, _ ...*options.CreateIndexesOptions) ([]string, error) {
+	return i.CreateManyIndexResult, i.ErrCreateManyIndex
+}
+
 // ListSpecifications is an internal mock method
-func (i *MockIndex) ListSpecifications(ctx context.Context, opts ...*options.ListIndexesOptions) ([]*mongo.IndexSpecification, error) {
+func (i *MockIndex) ListSpecifications(_ context.Context, _ ...*options.ListIndexesOptions) ([]*mongo.IndexSpecification, error) {
 	return i.ListSpecificationResult, i.ErrListSpecifications
 }
 
 // DropOne is an internal mock method
-func (i *MockIndex) DropOne(ctx context.Context, name string, opts ...*options.DropIndexesOptions) (bson.Raw, error) {
+func (i *MockIndex) DropOne(_ context.Context, _ string, _ ...*options.DropIndexesOptions) (bson.Raw, error) {
 	return i.DropOneResult, i.ErrDropOne
 }

@@ -1,10 +1,18 @@
 
+<a name="v0.13.4"></a>
+## [v0.13.4](https://github.com/w6d-io/x/compare/v0.13.3...v0.13.4) (2022-05-27)
+
+### Performance Improvements
+
+* add create many indexes [557cc39]("https://github.com/w6d-io/x/commit/557cc396e2ebc02a0109feac29062a8755b44765")
+
+### Style
+
+* format [16c3817]("https://github.com/w6d-io/x/commit/16c381784048720310c6794006ee1c575ec461a9")
+
+
 <a name="v0.13.3"></a>
 ## [v0.13.3](https://github.com/w6d-io/x/compare/v0.13.2...v0.13.3) (2022-05-12)
-
-### Chore
-
-* mongox add string codec [b31871d]("https://github.com/w6d-io/x/commit/b31871d76d79e8e467f6b79e9003256a002056c1")
 
 
 <a name="v0.13.2"></a>
@@ -216,15 +224,15 @@
 
 
 <a name="v0.6.0"></a>
-## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.6.0) (2021-11-10)
-
-
-<a name="v0.5.1"></a>
-## [v0.5.1](https://github.com/w6d-io/x/compare/v0.5.0...v0.5.1) (2021-11-06)
+## [v0.6.0](https://github.com/w6d-io/x/compare/v0.5.0...v0.6.0) (2021-11-10)
 
 
 <a name="v0.5.0"></a>
-## [v0.5.0](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.0) (2021-11-06)
+## [v0.5.0](https://github.com/w6d-io/x/compare/v0.5.1...v0.5.0) (2021-11-06)
+
+
+<a name="v0.5.1"></a>
+## [v0.5.1](https://github.com/w6d-io/x/compare/v0.4.6...v0.5.1) (2021-11-06)
 
 ### Chore
 
