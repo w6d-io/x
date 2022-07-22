@@ -1,14 +1,18 @@
 
+<a name="v0.13.5"></a>
+## [v0.13.5](https://github.com/w6d-io/x/compare/v0.13.4...v0.13.5) (2022-07-22)
+
+### Chore
+
+* bump go version [f69a4d4]("https://github.com/w6d-io/x/commit/f69a4d44924218708b3c9fc743973a6748016cb6")
+
+
 <a name="v0.13.4"></a>
 ## [v0.13.4](https://github.com/w6d-io/x/compare/v0.13.3...v0.13.4) (2022-05-27)
 
 ### Performance Improvements
 
-* add create many indexes [557cc39]("https://github.com/w6d-io/x/commit/557cc396e2ebc02a0109feac29062a8755b44765")
-
-### Style
-
-* format [16c3817]("https://github.com/w6d-io/x/commit/16c381784048720310c6794006ee1c575ec461a9")
+* add create many indexes ([#30](https://github.com/w6d-io/x/issues/30)) [9213647]("https://github.com/w6d-io/x/commit/92136478e6cb830c01b2976476c6da3430dd10a5")
 
 
 <a name="v0.13.3"></a>
