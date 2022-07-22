@@ -1,10 +1,15 @@
 
-<a name="v0.13.5"></a>
-## [v0.13.5](https://github.com/w6d-io/x/compare/v0.13.4...v0.13.5) (2022-07-22)
+<a name="v0.13.6"></a>
+## [v0.13.6](https://github.com/w6d-io/x/compare/v0.13.5...v0.13.6) (2022-07-22)
 
 ### Chore
 
-* bump go version [f69a4d4]("https://github.com/w6d-io/x/commit/f69a4d44924218708b3c9fc743973a6748016cb6")
+* bump pkg version [63b660e]("https://github.com/w6d-io/x/commit/63b660ed5415e91d079e0b847484031ed3fb1893")
+* bump pkg version [eebba2f]("https://github.com/w6d-io/x/commit/eebba2fd1e5979b4edfc4ba4274c0273cd4882cf")
+
+
+<a name="v0.13.5"></a>
+## [v0.13.5](https://github.com/w6d-io/x/compare/v0.13.4...v0.13.5) (2022-07-22)
 
 
 <a name="v0.13.4"></a>
