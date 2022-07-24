@@ -1,29 +1,19 @@
-module github.com/w6d-io/x
+module github.com/w6d-io/x/mongox
 
 go 1.17
 
 replace (
-	github.com/w6d-io/x/cmdx => ./cmdx
-	github.com/w6d-io/x/errorx => ./errorx
-	github.com/w6d-io/x/flagx => ./flagx
-	github.com/w6d-io/x/grpcx => ./grpcx
-	github.com/w6d-io/x/healthx => ./healthx
-	github.com/w6d-io/x/httpx => ./httpx
-	github.com/w6d-io/x/k8x => ./k8x
-	github.com/w6d-io/x/kafkax => ./kafkax
-	github.com/w6d-io/x/logx => ./logx
-	github.com/w6d-io/x/mongox => ./mongox
-	github.com/w6d-io/x/pflagx => ./pflagx
-	github.com/w6d-io/x/redisx => ./redisx
-	github.com/w6d-io/x/toolx => ./toolx
-
+	github.com/w6d-io/x/errorx => ../errorx
+	github.com/w6d-io/x/logx => ../logx
 )
 
 require (
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.20.0
-	github.com/w6d-io/x/mongox v0.0.0-00010101000000-000000000000
+	github.com/w6d-io/x/errorx v0.0.0-00010101000000-000000000000
+	github.com/w6d-io/x/logx v0.0.0-00010101000000-000000000000
 	go.mongodb.org/mongo-driver v1.10.0
+	google.golang.org/protobuf v1.28.0
 )
 
 require (
@@ -67,8 +57,6 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/w6d-io/x/errorx v0.0.0-00010101000000-000000000000 // indirect
-	github.com/w6d-io/x/logx v0.0.0-00010101000000-000000000000 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.1 // indirect
 	github.com/xdg-go/stringprep v1.0.3 // indirect
@@ -83,7 +71,6 @@ require (
 	golang.org/x/time v0.0.0-20220210224613-90d013bbcef8 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
