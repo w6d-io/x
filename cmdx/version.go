@@ -28,7 +28,7 @@ func Version(tag, commit, buildTime *string) *cobra.Command {
 			if len(*buildTime) == 0 {
 				_, _ = fmt.Fprintln(os.Stderr, "Unable to determine build timestamp because the build process did not properly configure it.")
 			} else {
-				fmt.Printf("Build Commit: %s\n", *buildTime)
+				fmt.Printf("Build Date: %s\n", *buildTime)
 			}
 			return nil
 		},
