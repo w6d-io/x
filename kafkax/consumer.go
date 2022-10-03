@@ -94,6 +94,7 @@ func (c *Consumer) GetTopics() []string {
 }
 
 // Consume consumer message for consumer
+//
 //gocyclo:ignore
 func (c *Consumer) Consume(ctx context.Context) (<-chan Event, error) {
 

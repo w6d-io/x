@@ -16,5 +16,4 @@
 // kv := logx.GetLogValues(ctx)
 // log = zapr.NewLogger(zapLog)
 // log.Info("test", kv...)
-//
 package logx
