@@ -50,7 +50,7 @@ var _ = Describe("", func() {
             k := k8x.New(k8x.ConfigPath("testdata/test1.yaml"), k8x.Context("test-1"), k8x.Namespace("default"), k8x.Timeout("5s"))
             _, err := k.GetClient(ctx)
             Expect(err).To(HaveOccurred())
-            Expect(err.Error()).To(Equal("get namespace failed: Get \"https://localhost:6444/api?timeout=32s\": dial tcp [::1]:6444: connect: connection refused"))
+            Expect(err.Error()).To(Equal("get namespace failed: Get \"https://localhost:6444/api?timeout=5s\": dial tcp [::1]:6444: connect: connection refused"))
         })
     })
 })
