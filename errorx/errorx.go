@@ -192,12 +192,13 @@ func Error2code(err error) int {
 
 // ErrorEncoder writes the error into http.ResponseWriter
 func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
-	logx.WithName(ctx, "ErrorEncoder").Error(err, "")
 	w.WriteHeader(Error2code(err))
 	if e, ok := err.(*Error); ok {
+		logx.WithName(ctx, "ErrorEncoder").WithValues("status_code", "").Error(err, "")
 		_ = json.NewEncoder(w).Encode(e)
 		return
 	}
+	logx.WithName(ctx, "ErrorEncoder").WithValues("status_code", "500").Error(err, "")
 	_ = json.NewEncoder(w).Encode(err.Error())
 }
 
