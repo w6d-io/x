@@ -6,14 +6,13 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-
 	"go.uber.org/zap/zapcore"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/w6d-io/x/pflagx"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+
+	"github.com/w6d-io/x/pflagx"
 )
 
 var _ = Describe("Flags", func() {
@@ -52,9 +51,12 @@ var _ = Describe("Flags", func() {
 				Encoder: zapcore.NewConsoleEncoder(pflagx.TextEncoderConfig()),
 			}
 		})
-		levelFlag := pflagx.LevelFlag{}
-		levelFlag.ZapOptions = &opts
 		When("level flag is used", func() {
+			var levelFlag pflagx.LevelFlag
+			BeforeEach(func() {
+				levelFlag = pflagx.LevelFlag{}
+				levelFlag.ZapOptions = &opts
+			})
 			It("Flag is empty", func() {
 				Expect(levelFlag.Set("")).Should(Equal(errors.New(`invalid log level ""`)))
 			})
