@@ -12,21 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Create kind cluster
-      uses: helm/kind-action@v1.4.0
+      uses: helm/kind-action@v1.8.0
       with:
-        version: v0.16.0
+        version: v0.20.0
 
     - name: Get kubebuilder
-      uses: RyanSiu1995/kubebuilder-action@v1.2.1
+      uses: RyanSiu1995/kubebuilder-action@v1.3.1
       with:
-        version: 3.7.0
+        version: 3.11.0
     - name: Set up Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v4
       with:
-        go-version: 1.19
+        go-version: 1.20
 
     - name: Download dependancies
       run: go mod download
