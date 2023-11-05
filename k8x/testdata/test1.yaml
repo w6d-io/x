@@ -15,4 +15,8 @@ preferences: {}
 users:
   - name: test-1
     user:
-      exec: {}
+      exec:
+        apiVersion: client.authentication.k8s.io/v1beta
+        command: provider
+        provideClusterInfo: true
+        interactiveMode: Always
