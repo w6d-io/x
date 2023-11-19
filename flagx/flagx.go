@@ -62,7 +62,6 @@ func (o *OutputFormatFlag) String() string {
 
 // Set the output format flag
 func (o *OutputFormatFlag) Set(flagValue string) error {
-	flagValue = LookupEnvOrString("LOG_FORMAT", flagValue)
 	val := strings.ToLower(flagValue)
 	switch val {
 	case "json":
@@ -96,7 +95,6 @@ func (l LevelFlag) String() string {
 
 // Set the level flag
 func (l LevelFlag) Set(flagValue string) error {
-	flagValue = LookupEnvOrString("LOG_LEVEL", flagValue)
 	l.value = flagValue
 	level, validLevel := levelStrings[strings.ToLower(l.value)]
 	if !validLevel {
@@ -121,12 +119,12 @@ func (l LevelFlag) Set(flagValue string) error {
 func BindFlags(o *zap.Options) {
 	var outputFormat OutputFormatFlag
 	outputFormat.ZapOptions = o
-	_ = outputFormat.Set("text")
+	_ = outputFormat.Set(LookupEnvOrString("LOG_FORMAT", "text"))
 	flag.Var(&outputFormat, "log-format", "log encoding ( 'json' or 'text')")
 
 	var level LevelFlag
 	level.ZapOptions = o
-	_ = level.Set("info")
+	_ = level.Set(LookupEnvOrString("LOG_LEVEL", "info"))
 	flag.Var(&level, "log-level", "log level verbosity. Can be 'debug', 'info', 'error', "+
 		"or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
 }
