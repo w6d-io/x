@@ -37,6 +37,8 @@ type MockClient struct {
 	ErrListSpecifications   error
 	DropOneResult           bson.Raw
 	ErrDropOne              error
+	CountResult             int64
+	ErrCount                error
 }
 
 // SetCollection is an internal mock method
@@ -78,6 +80,8 @@ func (p *MockClient) GetCollection() CollectionAPI {
 		ErrListSpecifications:   p.ErrListSpecifications,
 		DropOneResult:           p.DropOneResult,
 		ErrDropOne:              p.ErrDropOne,
+		CountResult:             p.CountResult,
+		ErrCount:                p.ErrCount,
 	}
 }
 
