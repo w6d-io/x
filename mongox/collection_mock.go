@@ -35,6 +35,13 @@ type MockCollection struct {
 	ErrListSpecifications   error
 	DropOneResult           bson.Raw
 	ErrDropOne              error
+	CountResult             int64
+	ErrCount                error
+}
+
+// CountDocuments is an internal mock method
+func (c *MockCollection) CountDocuments(context.Context, interface{}, ...*mgoOtions.CountOptions) (int64, error) {
+	return c.CountResult, c.ErrCount
 }
 
 // InsertOne is an internal mock method

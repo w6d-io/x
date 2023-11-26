@@ -15,6 +15,7 @@ type MongoAPI interface {
 	SetCollection(string) MongoAPI
 	SetOptions(...Option) MongoAPI
 	Connect() error
+	CountDocuments(interface{}, *int64, ...*options.CountOptions) error
 	Get(interface{}, interface{}, ...*options.FindOptions) error
 	Insert(interface{}) error
 	InsertBulk([]*mongo.UpdateOneModel) error
@@ -53,6 +54,7 @@ type CollectionAPI interface {
 	ReplaceOne(context.Context, interface{}, interface{}, ...*options.ReplaceOptions) (*mongo.UpdateResult, error)
 	FindOneAndUpdate(context.Context, interface{}, interface{}, ...*options.FindOneAndUpdateOptions) *mongo.SingleResult
 	Aggregate(context.Context, interface{}, ...*options.AggregateOptions) (*mongo.Cursor, error)
+	CountDocuments(context.Context, interface{}, ...*mgoOtions.CountOptions) (int64, error)
 }
 
 // CursorAPI is the internal Cursor API interface
