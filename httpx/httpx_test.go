@@ -2,6 +2,7 @@ package httpx_test
 
 import (
 	"context"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -124,6 +125,20 @@ var _ = Describe("", func() {
 			Expect(httpx.EncodeHTTPResponse(ctx, w, e)).To(Succeed())
 			Expect(w.Code).To(Equal(601))
 			Expect(w.Body.String()).To(Equal("{\"code\":\"httpx_write_errorx_error\",\"message\":\"should write this error\"}\n"))
+		})
+	})
+	Context("Miscellaneous", func() {
+		It("deals on not found handler", func() {
+			w := httptest.NewRecorder()
+			req, _ := http.NewRequest(http.MethodGet, "http://localhost", nil)
+			httpx.NotFoundHandler(w, req)
+			Expect(w.Code).To(Equal(http.StatusNotFound))
+		})
+		It("tests close listener", func() {
+			listener, err := net.Listen("tcp", ":0")
+			Expect(err).ShouldNot(HaveOccurred())
+			c := httpx.CloseListener(listener)
+			c(err)
 		})
 	})
 })

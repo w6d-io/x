@@ -15,6 +15,8 @@ func InArray(val interface{}, array interface{}) (exists bool) {
 				return
 			}
 		}
+	default:
+		panic("input is not a slice")
 	}
 	return
 }

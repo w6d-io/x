@@ -3,6 +3,7 @@ package httpx
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net"
 	"net/http"
 	"strings"
@@ -88,4 +89,24 @@ func BeforeHTTPFunc(ctx context.Context, req *http.Request) context.Context {
 	}
 	ctx = context.WithValue(ctx, logx.IPAddress, ip)
 	return ctx
+}
+
+func NotFoundHandler(w http.ResponseWriter, req *http.Request) {
+	logx.WithName(req.Context(), "NotFoundHandler").V(2).Info("call")
+	w.WriteHeader(http.StatusNotFound)
+	message := "page not found"
+	if req.URL != nil {
+		message = fmt.Sprintf("page not found (%s)", req.URL.RequestURI())
+	}
+	_ = json.NewEncoder(w).Encode(&errorx.Error{
+		Code:    "page_not_found",
+		Message: message,
+	})
+}
+
+func CloseListener(listener net.Listener) func(error) {
+	return func(err error) {
+		logx.WithName(nil, "Close").Error(err, "closing listener")
+		_ = listener.Close()
+	}
 }

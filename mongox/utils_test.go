@@ -1,5 +1,4 @@
 //go:build !integration
-// +build !integration
 
 package mongox_test
 
@@ -19,11 +18,11 @@ var _ = Describe("utils", func() {
 		})
 		It("get level with data", func() {
 			level := GetLogLevel("hello world")
-			Expect(level).To(Equal(1))
+			Expect(level).To(Equal(2))
 		})
 		It("get level without data", func() {
 			level := GetLogLevel(nil)
-			Expect(level).To(Equal(2))
+			Expect(level).To(Equal(3))
 		})
 	})
 })

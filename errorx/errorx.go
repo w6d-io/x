@@ -7,10 +7,9 @@ import (
 	"net/http"
 
 	"github.com/go-kit/kit/transport"
+	"github.com/pkg/errors"
 
 	"github.com/w6d-io/x/logx"
-
-	"github.com/pkg/errors"
 )
 
 // Interface of errorx
@@ -81,27 +80,27 @@ var (
 )
 
 // EditCause returns Error by updating cause
-func (e Error) EditCause(err error) *Error {
+func (e *Error) EditCause(err error) *Error {
 	e.Cause = err
-	return &e
+	return e
 }
 
 // EditMessage returns Error by updating message
-func (e Error) EditMessage(msg string) *Error {
+func (e *Error) EditMessage(msg string) *Error {
 	e.Message = msg
-	return &e
+	return e
 }
 
 // EditCode returns Error by updating code
-func (e Error) EditCode(code string) *Error {
+func (e *Error) EditCode(code string) *Error {
 	e.Code = code
-	return &e
+	return e
 }
 
 // EditStatusCode returns Error by updating status code
-func (e Error) EditStatusCode(statusCode int) *Error {
+func (e *Error) EditStatusCode(statusCode int) *Error {
 	e.StatusCode = statusCode
-	return &e
+	return e
 }
 
 // GetMessage returns the message from Error
@@ -127,7 +126,7 @@ func (e *Error) ShowStack() {
 
 	if err, ok := errors.Cause(e.Cause).(stackTracer); ok {
 		for _, f := range err.StackTrace() {
-			fmt.Printf("%+s:%d\n", f, f)
+			fmt.Printf("%+v:%d\n", f, f)
 		}
 	}
 }
@@ -163,7 +162,8 @@ func GetError(err error) *Error {
 	if err == nil {
 		return nil
 	}
-	e, ok := err.(*Error)
+	var e *Error
+	ok := errors.As(err, &e)
 	if ok {
 		return e
 	}
@@ -172,19 +172,20 @@ func GetError(err error) *Error {
 
 // Error2code return the http code according the Error code field or try to deduce it from the error itself
 func Error2code(err error) int {
-	if e, ok := err.(*Error); ok {
+	var e *Error
+	if errors.As(err, &e) {
 		code := http.StatusInternalServerError
 		if e.StatusCode != 0 {
 			code = e.StatusCode
 		}
 		return code
 	}
-	switch err {
-	case ErrTokenNotFound, ErrTokenInvalid, ErrUnAuthorized:
+	switch {
+	case errors.Is(err, ErrTokenNotFound), errors.Is(err, ErrTokenInvalid), errors.Is(err, ErrUnAuthorized):
 		return http.StatusUnauthorized
-	case ErrMethod:
+	case errors.Is(err, ErrMethod):
 		return http.StatusBadRequest
-	case ErrTokenCheck, ErrServiceUnavailable:
+	case errors.Is(err, ErrTokenCheck), errors.Is(err, ErrServiceUnavailable):
 		return http.StatusServiceUnavailable
 	}
 	return http.StatusInternalServerError
@@ -193,8 +194,9 @@ func Error2code(err error) int {
 // ErrorEncoder writes the error into http.ResponseWriter
 func ErrorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 	w.WriteHeader(Error2code(err))
-	if e, ok := err.(*Error); ok {
-		logx.WithName(ctx, "ErrorEncoder").WithValues("status_code", "").Error(err, "")
+	var e *Error
+	if errors.As(err, &e) {
+		logx.WithName(ctx, "ErrorEncoder").WithValues("status_code", e.StatusCode).Error(err, "")
 		_ = json.NewEncoder(w).Encode(e)
 		return
 	}

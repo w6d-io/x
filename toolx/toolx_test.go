@@ -17,5 +17,8 @@ var _ = Describe("InArray", func() {
 			r := toolx.InArray("z", []string{"a", "b", "c", "d"})
 			Expect(r).To(Equal(false))
 		})
+		It("should panic", func() {
+			Expect(func() { toolx.InArray("test", "test") }).To(Panic())
+		})
 	})
 })

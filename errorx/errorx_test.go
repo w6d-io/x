@@ -1,3 +1,5 @@
+//go:build !integration
+
 package errorx_test
 
 import (
@@ -17,7 +19,7 @@ var _ = Describe("Error x", func() {
 		It("check", func() {
 			var errUnitTest = errors.New("unit test")
 			By("build errorx")
-			e := errorx.Error{
+			e := &errorx.Error{
 				Cause:      errors.New("unit test"),
 				StatusCode: http.StatusInternalServerError,
 				Message:    "message error",
@@ -26,11 +28,16 @@ var _ = Describe("Error x", func() {
 			Expect(e.GetStatusCode()).To(Equal(http.StatusInternalServerError))
 			Expect(e.GetMessage()).To(Equal("message error"))
 			Expect(e.GetCause().Error()).To(Equal("unit test"))
-			Expect(errorx.Error{Message: "message"}.EditMessage("edit message")).To(Equal(&errorx.Error{Message: "edit message"}))
-			Expect(errorx.Error{Cause: errors.New("cause")}.EditCause(errors.New("edit cause"))).To(Equal(&errorx.Error{Cause: errors.New("edit cause")}))
-			Expect(errorx.Error{Code: "code"}.EditCode("edit code")).To(Equal(&errorx.Error{Code: "edit code"}))
-			Expect(errorx.Error{StatusCode: 500}.EditStatusCode(500)).To(Equal(&errorx.Error{StatusCode: 500}))
-			Expect(errorx.Error{}.EditStatusCode(500).EditMessage("edit message").EditCause(errors.New("edit cause")).EditCode("edit code")).To(Equal(&errorx.Error{Message: "edit message", Code: "edit code", Cause: errors.New("edit cause"), StatusCode: 500}))
+			emptyError := &errorx.Error{}
+			Expect(emptyError.EditMessage("edit message")).To(Equal(&errorx.Error{Message: "edit message"}))
+			emptyError = &errorx.Error{}
+			Expect(emptyError.EditCause(errors.New("edit cause"))).To(Equal(&errorx.Error{Cause: errors.New("edit cause")}))
+			emptyError = &errorx.Error{}
+			Expect(emptyError.EditCode("edit code")).To(Equal(&errorx.Error{Code: "edit code"}))
+			emptyError = &errorx.Error{}
+			Expect(emptyError.EditStatusCode(500)).To(Equal(&errorx.Error{StatusCode: 500}))
+			emptyError = &errorx.Error{}
+			Expect(emptyError.EditStatusCode(500).EditMessage("edit message").EditCause(errors.New("edit cause")).EditCode("edit code")).To(Equal(&errorx.Error{Message: "edit message", Code: "edit code", Cause: errors.New("edit cause"), StatusCode: 500}))
 			e.ShowStack()
 			By("remove cause")
 			e.Cause = nil
@@ -41,9 +48,10 @@ var _ = Describe("Error x", func() {
 			Expect(err).To(HaveOccurred())
 
 			Expect(errorx.GetError(e.Cause)).ToNot(HaveOccurred())
-			Expect(errorx.GetError(&e)).To(HaveOccurred())
+			Expect(errorx.GetError(e)).To(HaveOccurred())
 			err = errorx.GetError(errors.New("not implement Error"))
-			_, ok := err.(*errorx.Error)
+			var err2 *errorx.Error
+			ok := errors.As(err, &err2)
 			Expect(ok).To(Equal(true))
 			Expect(err.(*errorx.Error).Error()).To(Equal("not implement Error"))
 			Expect(errorx.Error2code(&errorx.Error{StatusCode: http.StatusContinue})).To(Equal(http.StatusContinue))
