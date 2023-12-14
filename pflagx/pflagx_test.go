@@ -1,3 +1,5 @@
+//go:build !integration
+
 package pflagx_test
 
 import (
