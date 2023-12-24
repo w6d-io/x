@@ -143,8 +143,8 @@ func (e *Error) Error() string {
 }
 
 // New returns Error with err in Cause and message
-func New(err error, message string) error {
-	return &Error{Cause: err, Message: message}
+func New(message string) error {
+	return &Error{Cause: nil, Message: message}
 }
 
 // NewHTTP returns Error with err in Cause, code in http.StatusCode and message

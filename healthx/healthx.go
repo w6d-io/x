@@ -142,7 +142,7 @@ type checkGoRoutine struct {
 func (c checkGoRoutine) Healthy() error {
 	count := runtime.NumGoroutine()
 	if count > c.threshold {
-		return errorx.New(nil, fmt.Sprintf("too many goroutines (%d > %d)", count, c.threshold))
+		return errorx.New(fmt.Sprintf("too many goroutines (%d > %d)", count, c.threshold))
 	}
 	return nil
 }
