@@ -128,14 +128,14 @@ func (l LevelFlag) Set(flagValue string) error {
 }
 
 // BindFlags custom flags
-func BindFlags(cmd *cobra.Command, o *zap.Options) {
+func BindFlags(cmd *cobra.Command) {
 	var outputFormat OutputFormatFlag
-	outputFormat.ZapOptions = o
+	outputFormat.ZapOptions = Options
 	_ = outputFormat.Set(LookupEnvOrString("LOG_FORMAT", "text"))
 	cmd.Flags().Var(&outputFormat, "log-format", "log encoding ( 'json' or 'text')")
 
 	var level LevelFlag
-	level.ZapOptions = o
+	level.ZapOptions = Options
 	_ = level.Set(LookupEnvOrString("LOG_LEVEL", "info"))
 	cmd.Flags().Var(&level, "log-level", "log level verbosity. Can be 'debug', 'info', 'error', "+
 		"or any integer value > 0 which corresponds to custom debug levels of increasing verbosity")
@@ -175,21 +175,24 @@ func UsageFor(short string) func() {
 }
 
 // CallerSkip increases the number of callers skipped by caller annotation
-var CallerSkip = 0
+var (
+	CallerSkip = 0
+	Options    = &zap.Options{
+		Development:     os.Getenv("RELEASE") != "prod",
+		StacktraceLevel: zapcore.PanicLevel,
+		Encoder:         zapcore.NewConsoleEncoder(TextEncoderConfig()),
+	}
+)
 
 // Init the default flags
 func Init(cmd *cobra.Command, configPath *string) {
 
 	cmd.PersistentFlags().StringVar(configPath, "config", LookupEnvOrString("CONFIG", "/data/etc/config.yaml"), "The path for the config file")
 
-	opts := zap.Options{
-		Development:     os.Getenv("RELEASE") != "prod",
-		StacktraceLevel: zapcore.PanicLevel,
-		Encoder:         zapcore.NewConsoleEncoder(TextEncoderConfig()),
-	}
-	BindFlags(cmd, &opts)
+	BindFlags(cmd)
 	cmd.Flags().Usage = UsageFor(os.Args[0] + " [flags]")
-	//cmd.Flags().Parse()
-	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(CallerSkip))))
-
+	SetLogger()
+}
+func SetLogger() {
+	ctrl.SetLogger(zap.New(zap.UseFlagOptions(Options), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(CallerSkip))))
 }
