@@ -42,7 +42,7 @@ var _ = Describe("Error x", func() {
 			By("remove cause")
 			e.Cause = nil
 			Expect(e.Error()).To(Equal("message error"))
-			Expect(errorx.New(nil, "")).To(HaveOccurred())
+			Expect(errorx.New("")).To(HaveOccurred())
 			Expect(errorx.NewHTTP(nil, 200, "")).To(HaveOccurred())
 			err := errorx.Wrap(errUnitTest, "error wrapped")
 			Expect(err).To(HaveOccurred())

@@ -55,5 +55,5 @@ func (nopOk) Healthy() error {
 type nopKo struct{}
 
 func (nopKo) Healthy() error {
-	return errorx.New(nil, "should raised that error")
+	return errorx.New("should raised that error")
 }

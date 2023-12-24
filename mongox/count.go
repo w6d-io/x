@@ -12,7 +12,7 @@ import (
 func (m *MongoDB) CountDocuments(filter interface{}, count *int64, countOptions ...*options.CountOptions) (err error) {
 	log := logx.WithName(context.Background(), "CountDocuments")
 	if count == nil {
-		return errorx.New(nil, "count must not be null")
+		return errorx.New("count must not be null")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), m.options.Timeout)
 	defer cancel()
