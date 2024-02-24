@@ -54,7 +54,7 @@ var _ = Describe("Consumer", func() {
 			Expect(err).ToNot(Succeed())
 			Expect(err.Error()).To(Equal("Invalid value \"deep\" for configuration property \"debug\""))
 		})
-		It("", func() {
+		It("success to configure a new consumer", func() {
 			var opts []kafka.Option
 			opts = append(opts, kafka.Protocol("SASL_SSL"))
 			opts = append(opts, kafka.Mechanisms("PLAIN"))
