@@ -9,7 +9,7 @@ import (
 	zapraw "go.uber.org/zap"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 
@@ -39,7 +39,7 @@ var _ = BeforeSuite(func() {
 		StacktraceLevel: zapcore.PanicLevel,
 	}
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller())))
-}, 60)
+})
 
 var _ = AfterSuite(func() {
 })

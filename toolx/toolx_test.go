@@ -1,13 +1,15 @@
 package toolx_test
 
 import (
-	. "github.com/onsi/ginkgo"
+	"sort"
+
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"github.com/w6d-io/x/toolx"
 )
 
-var _ = Describe("InArray", func() {
+var _ = Describe("Toolx functions", func() {
 	Context("", func() {
 		It("with InArray is true", func() {
 			r := toolx.InArray("a", []string{"a", "b", "c", "d"})
@@ -27,7 +29,9 @@ var _ = Describe("InArray", func() {
 		})
 		It("", func() {
 			myMap := map[string]int{"a": 1, "b": 2, "c": 3}
-			Expect(toolx.KeysMap(myMap)).To(Equal([]string{"a", "b", "c"}))
+			res := toolx.KeysMap(myMap)
+			sort.Strings(res)
+			Expect(res).To(Equal([]string{"a", "b", "c"}))
 		})
 	})
 })
