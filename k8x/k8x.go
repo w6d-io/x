@@ -1,8 +1,11 @@
 package k8x
 
 import (
+	"bytes"
 	"context"
 
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/serializer/json"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -145,4 +148,14 @@ func (k *k8x) SetClient(cli client.Client) {
 // SetConfig records the config in the structure
 func (k *k8x) SetConfig(config *rest.Config) {
 	k.config = config
+}
+
+// GetObjectContain ...
+func GetObjectContain(obj runtime.Object) string {
+	s := json.NewSerializerWithOptions(json.DefaultMetaFactory, nil, nil, json.SerializerOptions{Yaml: true})
+	buf := new(bytes.Buffer)
+	if err := s.Encode(obj, buf); obj == nil || err != nil {
+		return "<ERROR>\n"
+	}
+	return buf.String()
 }

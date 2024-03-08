@@ -4,23 +4,22 @@ import (
 	"context"
 	"testing"
 
-	"github.com/w6d-io/x/logx"
-
 	"github.com/google/uuid"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+	zapraw "go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
+	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	zapraw "go.uber.org/zap"
-	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
-	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
-	ctrl "sigs.k8s.io/controller-runtime"
-
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"github.com/w6d-io/x/logx"
 )
 
 func TestK8X(t *testing.T) {
@@ -73,11 +72,25 @@ var _ = BeforeSuite(func() {
 	correlationID := uuid.New().String()
 	ctx = context.Background()
 	ctx = context.WithValue(ctx, logx.CorrelationID, correlationID)
-
-}, 60)
+})
 
 var _ = AfterSuite(func() {
 	By("tearing down the test environment")
 	err := testEnv.Stop()
 	Expect(err).ToNot(HaveOccurred())
 })
+
+type testObject struct {
+	Test string
+}
+
+// GetObjectKind satisfies the runtime.Object interface but does nothing meaningful
+func (i *testObject) GetObjectKind() schema.ObjectKind {
+	// Return a placeholder to satisfy the interface, without proper setup
+	return schema.EmptyObjectKind
+}
+
+// DeepCopyObject satisfies the runtime.Object interface but returns itself
+func (i *testObject) DeepCopyObject() runtime.Object {
+	return i
+}

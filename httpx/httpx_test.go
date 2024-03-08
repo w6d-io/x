@@ -13,7 +13,7 @@ import (
 
 	"github.com/w6d-io/x/errorx"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"github.com/w6d-io/x/httpx"

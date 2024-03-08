@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"time"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"go.mongodb.org/mongo-driver/bson/bsoncodec"
 	"google.golang.org/protobuf/types/known/timestamppb"

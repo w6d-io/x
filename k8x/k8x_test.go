@@ -2,10 +2,8 @@ package k8x_test
 
 import (
 	"fmt"
-
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-
 	"github.com/w6d-io/x/k8x"
 )
 
@@ -51,6 +49,17 @@ var _ = Describe("Kubernetes client testing", func() {
 			_, err := k.GetClient(ctx)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal("get namespace failed: exec plugin: invalid apiVersion \"client.authentication.k8s.io/v1beta\""))
+		})
+		Context("GetObjectContain function", func() {
+			It("converts the kubernetes manifests", func() {
+				obj := &testObject{
+					Test: "should ok",
+				}
+				Expect(k8x.GetObjectContain(obj)).To(Equal("Test: should ok\n"))
+			})
+			It("returns a string error", func() {
+				Expect(k8x.GetObjectContain(nil)).To(Equal("<ERROR>\n"))
+			})
 		})
 	})
 })
