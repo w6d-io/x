@@ -28,6 +28,12 @@ type MockClient struct {
 	SetErr       error
 	HSetValue    int64
 	HSetErr      error
+	RPushValue   int64
+	RPushErr     error
+	BLPopValue   []string
+	BLPopErr     error
+	LPopValue    string
+	LPopErr      error
 }
 
 // Ping is an internal mock method
@@ -44,7 +50,7 @@ func (r *MockClient) Close() error {
 }
 
 // HDel is an internal mock method
-func (r *MockClient) HDel(key string, fields ...string) *redis.IntCmd {
+func (r *MockClient) HDel(_ string, _ ...string) *redis.IntCmd {
 	return redis.NewIntResult(
 		0,
 		r.HDelErr,
@@ -52,7 +58,7 @@ func (r *MockClient) HDel(key string, fields ...string) *redis.IntCmd {
 }
 
 // Get is an internal mock method
-func (r *MockClient) Get(key string) *redis.StringCmd {
+func (r *MockClient) Get(_ string) *redis.StringCmd {
 	return redis.NewStringResult(
 		r.GetValue,
 		r.GetErr,
@@ -60,7 +66,7 @@ func (r *MockClient) Get(key string) *redis.StringCmd {
 }
 
 // HGet is an internal mock method
-func (r *MockClient) HGet(key string, field string) *redis.StringCmd {
+func (r *MockClient) HGet(_ string, _ string) *redis.StringCmd {
 	return redis.NewStringResult(
 		r.HGetValue,
 		r.HGetErr,
@@ -68,7 +74,7 @@ func (r *MockClient) HGet(key string, field string) *redis.StringCmd {
 }
 
 // HGetAll is an internal mock method
-func (r *MockClient) HGetAll(key string) *redis.StringStringMapCmd {
+func (r *MockClient) HGetAll(_ string) *redis.StringStringMapCmd {
 	return redis.NewStringStringMapResult(
 		r.HGetAllValue,
 		r.HGetAllErr,
@@ -76,7 +82,7 @@ func (r *MockClient) HGetAll(key string) *redis.StringStringMapCmd {
 }
 
 // Keys is an internal mock method
-func (r *MockClient) Keys(pattern string) *redis.StringSliceCmd {
+func (r *MockClient) Keys(_ string) *redis.StringSliceCmd {
 	return redis.NewStringSliceResult(
 		r.KeysValue,
 		r.KeysErr,
@@ -84,7 +90,7 @@ func (r *MockClient) Keys(pattern string) *redis.StringSliceCmd {
 }
 
 // Scan is an internal mock method
-func (r *MockClient) Scan(cursor uint64, match string, count int64) *redis.ScanCmd {
+func (r *MockClient) Scan(_ uint64, _ string, _ int64) *redis.ScanCmd {
 	return redis.NewScanCmdResult(
 		r.ScanValue,
 		r.ScanCursor,
@@ -93,7 +99,7 @@ func (r *MockClient) Scan(cursor uint64, match string, count int64) *redis.ScanC
 }
 
 // Incr is an internal mock method
-func (r *MockClient) Incr(key string) *redis.IntCmd {
+func (r *MockClient) Incr(_ string) *redis.IntCmd {
 	return redis.NewIntResult(
 		r.IncrValue,
 		r.IncrErr,
@@ -101,7 +107,7 @@ func (r *MockClient) Incr(key string) *redis.IntCmd {
 }
 
 // Set is an internal mock method
-func (r *MockClient) Set(key string, value interface{}, expiration time.Duration) *redis.StatusCmd {
+func (r *MockClient) Set(_ string, _ interface{}, _ time.Duration) *redis.StatusCmd {
 	return redis.NewStatusResult(
 		r.SetValue,
 		r.SetErr,
@@ -109,9 +115,33 @@ func (r *MockClient) Set(key string, value interface{}, expiration time.Duration
 }
 
 // HSet is an internal mock method
-func (r *MockClient) HSet(key string, values ...interface{}) *redis.IntCmd {
+func (r *MockClient) HSet(_ string, _ ...interface{}) *redis.IntCmd {
 	return redis.NewIntResult(
 		r.HSetValue,
 		r.HSetErr,
+	)
+}
+
+// RPush is an internal mock method
+func (r *MockClient) RPush(_ string, _ ...interface{}) *redis.IntCmd {
+	return redis.NewIntResult(
+		r.RPushValue,
+		r.RPushErr,
+	)
+}
+
+// BLPop is an internal mock method
+func (r *MockClient) BLPop(_ time.Duration, _ ...string) *redis.StringSliceCmd {
+	return redis.NewStringSliceResult(
+		r.BLPopValue,
+		r.BLPopErr,
+	)
+}
+
+// LPop is an internal mock method
+func (r *MockClient) LPop(_ string) *redis.StringCmd {
+	return redis.NewStringResult(
+		r.LPopValue,
+		r.LPopErr,
 	)
 }

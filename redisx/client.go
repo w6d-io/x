@@ -10,7 +10,7 @@ import (
 )
 
 // GetClient return the redis client recorded or create a new instance
-func GetClient(ctx context.Context, r *RedisDB) ClientAPI {
+func GetClient(_ context.Context, r *RedisDB) ClientAPI {
 	clt := redis.NewClient(&redis.Options{
 		Addr:     r.cfg.AddressSvc + ":" + r.cfg.Port,
 		Password: r.cfg.Password,
@@ -38,7 +38,7 @@ func (r *RedisDB) Connect() error {
 	}
 	err := r.ClientAPI.Ping().Err()
 	if err != nil {
-		r.ClientAPI.Close()
+		_ = r.ClientAPI.Close()
 		log.Error(err, "redis client is unreachable")
 		return err
 	}

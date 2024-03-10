@@ -89,7 +89,7 @@ func (r *RedisDB) Scan(ctx context.Context, match string, count int) (map[string
 	var cursor uint64
 	var err error
 	var keys []string
-	keysMap := make(map[string]string, 0)
+	keysMap := make(map[string]string)
 
 	for {
 		keys, cursor, err = r.ClientAPI.Scan(cursor, match, int64(count)).Result()
