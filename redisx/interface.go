@@ -28,6 +28,12 @@ type RedisAPI interface {
 	Scan(ctx context.Context, match string, count int) (map[string]string, error)
 	// Incr ...
 	Incr(ctx context.Context, key string) (int64, error)
+	// RPush ...
+	RPush(context.Context, string, ...interface{}) error
+	// BLPop ...
+	BLPop(context.Context, time.Duration, ...string) ([]string, error)
+	// LPop ...
+	LPop(context.Context, string) (string, error)
 }
 
 // ClientAPI is the internal Client API interface
@@ -43,4 +49,7 @@ type ClientAPI interface {
 	Incr(string) *redis.IntCmd
 	Set(string, interface{}, time.Duration) *redis.StatusCmd
 	HSet(string, ...interface{}) *redis.IntCmd
+	RPush(string, ...interface{}) *redis.IntCmd
+	BLPop(time.Duration, ...string) *redis.StringSliceCmd
+	LPop(string) *redis.StringCmd
 }
