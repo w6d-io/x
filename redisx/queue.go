@@ -29,6 +29,9 @@ func (r *RedisDB) BLPop(ctx context.Context, timeout time.Duration, keys ...stri
 	}
 	result, err := r.ClientAPI.BLPop(timeout, keys...).Result()
 	if err != nil {
+		if err.Error() == NilRedis {
+			return []string{}, nil
+		}
 		log.Error(err, "fail to pop", "keys", keys)
 		return []string{}, err
 	}
@@ -43,6 +46,9 @@ func (r *RedisDB) LPop(ctx context.Context, key string) (string, error) {
 	}
 	result, err := r.ClientAPI.LPop(key).Result()
 	if err != nil {
+		if err.Error() == NilRedis {
+			return "", nil
+		}
 		log.Error(err, "fail to pop", "key", key)
 		return "", err
 	}

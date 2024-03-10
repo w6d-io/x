@@ -60,7 +60,7 @@ var _ = Describe("Queue methods", func() {
 				Expect(err).To(HaveOccurred())
 
 			})
-			It("successfully pop value ", func() {
+			It("fails on pop value", func() {
 				m := RedisDB{
 					ClientAPI: &MockClient{
 						BLPopErr: errors.New("error pop"),
@@ -69,6 +69,16 @@ var _ = Describe("Queue methods", func() {
 				ctx := context.Background()
 				_, err := m.BLPop(ctx, 0, "test")
 				Expect(err).To(HaveOccurred())
+			})
+			It("pops an empty value", func() {
+				m := RedisDB{
+					ClientAPI: &MockClient{
+						BLPopErr: errors.New(NilRedis),
+					},
+				}
+				ctx := context.Background()
+				_, err := m.BLPop(ctx, 0, "test")
+				Expect(err).ToNot(HaveOccurred())
 			})
 		})
 		When("deals with LPop", func() {
@@ -92,7 +102,7 @@ var _ = Describe("Queue methods", func() {
 				Expect(err).To(HaveOccurred())
 
 			})
-			It("successfully pop value ", func() {
+			It("fails pop value", func() {
 				m := RedisDB{
 					ClientAPI: &MockClient{
 						LPopErr: errors.New("error pop"),
@@ -101,6 +111,16 @@ var _ = Describe("Queue methods", func() {
 				ctx := context.Background()
 				_, err := m.LPop(ctx, "test")
 				Expect(err).To(HaveOccurred())
+			})
+			It("fails pop value", func() {
+				m := RedisDB{
+					ClientAPI: &MockClient{
+						LPopErr: errors.New(NilRedis),
+					},
+				}
+				ctx := context.Background()
+				_, err := m.LPop(ctx, "test")
+				Expect(err).ToNot(HaveOccurred())
 			})
 		})
 	})
