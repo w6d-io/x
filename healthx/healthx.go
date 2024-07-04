@@ -1,7 +1,9 @@
 package healthx
 
 import (
+	"context"
 	"fmt"
+	"github.com/w6d-io/x/logx"
 	"net/http"
 	"runtime"
 
@@ -21,11 +23,13 @@ func Alive(w http.ResponseWriter, _ *http.Request) {
 
 // AddAliveHandler add the liveness probe handler function into the http server
 func AddAliveHandler(r *mux.Router) {
+	logx.WithName(context.Background(), "AddReadyHandler").Info("add alive check")
 	r.Methods("GET").Path("/health/alive").HandlerFunc(Alive)
 }
 
 // AddReadyHandler add the readiness probe handler function into the http server
 func AddReadyHandler(r *mux.Router, c Checker) {
+	logx.WithName(context.Background(), "AddReadyHandler").Info("add ready check", "count", len(c.Checks))
 	r.Methods("GET").Path("/health/ready").Handler(c)
 }
 
