@@ -38,7 +38,9 @@ func (r *RedisDB) Connect() error {
 	}
 	err := r.ClientAPI.Ping().Err()
 	if err != nil {
-		_ = r.ClientAPI.Close()
+		if r.ClientAPI != nil {
+			_ = r.ClientAPI.Close()
+		}
 		r.ClientAPI = nil
 		log.Error(err, "redis client is unreachable")
 		return err
