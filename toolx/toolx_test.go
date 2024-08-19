@@ -1,6 +1,7 @@
 package toolx_test
 
 import (
+	"os"
 	"sort"
 
 	. "github.com/onsi/ginkgo/v2"
@@ -32,6 +33,24 @@ var _ = Describe("Toolx functions", func() {
 			res := toolx.KeysMap(myMap)
 			sort.Strings(res)
 			Expect(res).To(Equal([]string{"a", "b", "c"}))
+		})
+
+		It("returns the default value", func() {
+			v := toolx.Getenv("TEST_GO", "test")
+			Expect(v).To(Equal("test"))
+		})
+		It("returns the default value", func() {
+			v := toolx.Getenv("TEST_GO", "test")
+			Expect(v).To(Equal("test"))
+		})
+		It("returns empty value", func() {
+			v := toolx.Getenv("TEST_GO")
+			Expect(v).To(Equal(""))
+		})
+		It("returns empty value", func() {
+			os.Setenv("TEST_GO", "test_go")
+			v := toolx.Getenv("TEST_GO")
+			Expect(v).To(Equal("test_go"))
 		})
 	})
 })
