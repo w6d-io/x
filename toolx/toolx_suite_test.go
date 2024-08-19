@@ -39,7 +39,7 @@ var _ = BeforeSuite(func() {
 		StacktraceLevel: zapcore.PanicLevel,
 		Level:           zapcore.Level(int8(-2)),
 	}
-	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(-2))))
+	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts), zap.RawZapOpts(zapraw.AddCaller(), zapraw.AddCallerSkip(0))))
 })
 
 var _ = AfterSuite(func() {
